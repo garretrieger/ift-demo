@@ -2,7 +2,6 @@ let page_index = -1;
 let states = {};
 let also_load_unicode_range = true;
 let show_unicode_range = false;
-let use_prediction = false;
 
 async function update_all_fonts() {
     if (page_index < 0) {
@@ -68,9 +67,6 @@ function update_fonts(text, font_id, font_face) {
 }
 
 function patch_codepoints(font_id, font_face, cps) {
-    if (use_prediction) {
-        font_id = "with_prediction/" + font_id;
-    }
     if (!states[font_id]) {
         states[font_id] = new window.Module.State(font_id);
     }
@@ -149,9 +145,6 @@ window.addEventListener('DOMContentLoaded', function() {
         }
         update_all_fonts();
         update_sample_toggle();
-    });
-    document.getElementById("prediction").addEventListener("change", function(e) {
-        use_prediction = e.target.checked;
     });
     document.getElementById("sample_toggle").addEventListener("click", e => {
         show_unicode_range = !show_unicode_range;
