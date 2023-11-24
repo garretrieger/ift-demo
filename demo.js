@@ -23,11 +23,11 @@ async function update_all_fonts() {
     await p1;
     await p2;
 
-    document.getElementById("title_pfe").textContent = title_text;
-    document.getElementById("paragraph_pfe").textContent = paragraph_text;
+    document.getElementById("title_pfe").innerHTML = title_text;
+    document.getElementById("paragraph_pfe").innerHTML = paragraph_text;
     if (also_load_unicode_range) {
-        document.getElementById("title_ur").textContent = title_text;
-        document.getElementById("paragraph_ur").textContent = paragraph_text;
+        document.getElementById("title_ur").innerHTML = title_text;
+        document.getElementById("paragraph_ur").innerHTML = paragraph_text;
     }
 
     document.getElementById("prev").disabled = (page_index == 0);
@@ -53,26 +53,31 @@ function update_sample_toggle() {
 }
 
 function update_fonts(text, font_id, font_face) {
-    let cps = new Set();
-    for (let i = 0; text.codePointAt(i); i++) {
-        cps.add(text.codePointAt(i));
-    }
+  let cps = new Set();
+  for (let i = 0; text.codePointAt(i); i++) {
+    cps.add(text.codePointAt(i));
+  }
 
-    let cps_array = [];
-    for (let cp of cps) {
-        cps_array.push(cp);
-    }
+  let cps_array = [];
+  for (let cp of cps) {
+    cps_array.push(cp);
+  }
 
-    return patch_codepoints(font_id, font_face, cps_array);
+  let features_array = [];
+  if (text.includes("small-caps")) {
+    features_array = ["c2sc", "smcp"];
+  }
+
+  return patch_codepoints(font_id, font_face, cps_array, features_array);
 }
 
-function patch_codepoints(font_id, font_face, cps) {
+function patch_codepoints(font_id, font_face, cps, features) {
     if (!states[font_id]) {
         states[font_id] = new window.Module.State(font_id);
     }
     let state = states[font_id];
     return new Promise(resolve => {
-        state.extend(cps, async function(result) {
+        state.extend(cps, features, async function(result) {
             if (!result) {
                 resolve(result);
                 return;
@@ -138,6 +143,27 @@ window.addEventListener('DOMContentLoaded', function() {
         if (page_index >= PARAGRAPHS.length) page_index = PARAGRAPHS.length - 1;
         update_all_fonts();
     });
+    let sc = document.getElementById("to-small-caps");
+    sc.addEventListener("click", function() {
+        page_index = 2;
+        update_all_fonts();
+    });
+    let viet = document.getElementById("to-vietnamese");
+    viet.addEventListener("click", function() {
+        page_index = 3;
+        update_all_fonts();
+    });
+    let cg = document.getElementById("to-cyr-greek");
+    cg.addEventListener("click", function() {
+        page_index = 4;
+        update_all_fonts();
+    });
+    let sim_chinese = document.getElementById("to-sim-chinese");
+    sim_chinese.addEventListener("click", function() {
+        page_index = 7;
+        update_all_fonts();
+    });
+
     document.getElementById("also_ur").addEventListener("change", function(e) {
         also_load_unicode_range = e.target.checked;
         if (!also_load_unicode_range) {

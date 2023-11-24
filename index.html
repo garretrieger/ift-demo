@@ -7,11 +7,7 @@
       const SENTENCES = [
           ['fonts/Roboto-Thin.ift.woff2', 'Almost before we knew it, we had left the ground.'],
           ['fonts/Roboto-Thin.ift.woff2', 'All their equipment and instruments are alive.'],
-          ['fonts/Roboto-Thin.ift.woff2', 'A red flare silhouetted the jagged edge of a wing.'],
-          ['fonts/Roboto-Thin.ift.woff2', 'I watched the storm, so beautiful yet terrific.'],
-          ['fonts/Roboto-Thin.ift.woff2', 'A shining crescent far beneath the flying vessel.'],
-          ['fonts/Roboto-Thin.ift.woff2', 'It was going to be a lonely trip back.'],
-          ['fonts/Roboto-Thin.ift.woff2', 'Mist enveloped the ship three hours out from port.'],
+          ['fonts/Roboto-Thin.ift.woff2', '<span style="font-variant: small-caps;">Small Caps</span>'],
 
           ['fonts/Roboto-Thin.ift.woff2', 'Bầu trời trong xanh thăm thẳm, không một gợn mây.'],
 
@@ -31,7 +27,9 @@
       ];
 
       const PARAGRAPHS = [
-          ['fonts/Roboto-Regular.ift.woff2', 'A peep at some distant orb has power to raise and purify our '
+          ['fonts/Roboto-Regular.ift.woff2',
+           'Latin is part of the base font, so no augmentation is needed.<br/><br/>'
+           + 'A peep at some distant orb has power to raise and purify our '
            + 'thoughts like a strain of sacred music, or a noble picture, or a passage from the '
            + 'grander poets. It always does one good.'],
           ['fonts/Roboto-Regular.ift.woff2', 'Apparently we had reached a great height in the atmosphere, for '
@@ -39,40 +37,38 @@
            + 'which lifts the horizon of the sea to the level of the spectator on a hillside, the '
            + 'sable cloud beneath was dished out, and the car seemed to float in the middle of an '
            + 'immense dark sphere, whose upper half was strewn with silver.'],
-          ['fonts/Roboto-Regular.ift.woff2', 'As I went on, still gaining velocity, the palpitation of night '
-           + 'and day merged into one continuous greyness; the sky took on a wonderful deepness of '
-           + 'blue, a splendid luminous color like that of early twilight; the jerking sun became a '
-           + 'streak of fire, a brilliant arch, in space; the moon a fainter fluctuating band; and '
-           + 'I could see nothing of the stars, save now and then a brighter circle flickering in '
-           + 'the blue.'],
-          ['fonts/Roboto-Regular.ift.woff2', 'As the minuteness of the parts formed a great hindrance to my '
-           + 'speed, I resolved, contrary to my first intention, to make the being of a gigantic '
-           + 'stature; that is to say, about eight feet in height, and proportionably large. After '
-           + 'having formed this determination, and having spent some months in successfully '
-           + 'collecting and arranging my materials, I began.'],
-          ['fonts/Roboto-Regular.ift.woff2', 'I shall see the face of Mars, anyhow, and that will be a rare '
-           + 'experience. It seems to me that a view of the heavenly bodies through a fine telescope, '
-           + 'as well as a tour round the world, should form a part of a liberal education.'],
-          ['fonts/Roboto-Regular.ift.woff2', 'Though the gravity still dragged at him, his muscles were making '
-           + 'great efforts to adjust. After the daily classes he no longer collapsed immediately '
-           + 'into bed. Only the nightmares got worse.'],
-          ['fonts/Roboto-Regular.ift.woff2', 'Truly it was a great journey, and in it I met with many, whom to '
-           + 'know was to love; but whom never could I see again; for life has not space enough; '
-           + 'and each must do his duty to the security and well-being of the Redoubt. Yet, for all '
-           + 'that I have set down, we travelled much, always; but there were so many millions, '
-           + 'and so few years.'],
 
-          ['fonts/Roboto-Regular.ift.woff2', 'Chúng tôi đã đạt tới độ cao rất lớn trong khí quyển '
+
+          ['fonts/Roboto-Regular.ift.woff2',
+           'This sample incrementally loads the small caps (c2sc) optional layout feature. '
+           + 'Notice how under unicode range the small caps are rendered differently since they are synthesized '
+           + 'due to them not being present in the unicode range subsets.'
+          ],
+
+
+          ['fonts/Roboto-Regular.ift.woff2',
+           'Here we augment the font to add support for vietnamese. Notice that kerning is different '
+           + 'versus the unicode range implementation. This is because unicode range breaks kerning '
+           + 'between latin and vietnamese characters.<br/><br/>'
+           + 'Chúng tôi đã đạt tới độ cao rất lớn trong khí quyển '
            + 'vì bầu trời tối đen và các vì sao không còn lấp lánh. Ảo giác về đường chân trời khiến '
            + 'đám mây ảm đạm bên dưới lõm xuống và chiếc xe như trôi bồng bềnh giữa quả cầu khổng lồ '
            + 'tăm tối.'],
 
-           ['fonts/Roboto-Regular.ift.woff2', 'Высокая гравитация выматывала его, но мышцы изо '
+          ['fonts/Roboto-Regular.ift.woff2',
+           'This page demonstrates loading cyrillic and greek in a single patch: <br/><br/>'
+           + 'Είναι προικισμένοι με λογική και συνείδηση, και '
+           + 'οφείλουν να συμπεριφέρονται μεταξύ τους με πνεύμα αδελφοσύνης. Όλοι οι άνθρωποι '
+           + 'γεννιούνται ελεύθεροι και ίσοι στην αξιοπρέπεια και τα δικαιώματα. Είναι προικισμένοι με '
+           + 'λογική και συνείδηση, και οφείλουν να συμπεριφέρονται μεταξύ τους με πνεύμα αδελφοσύνης.<br/><br/>'
+           + 'Высокая гравитация выматывала его, но мышцы изо '
            + 'всех сил пытались приспособиться. Обессиленный, он уже не валился в постель сразу '
            + 'после занятий. Кошмары, не покидавшие его, стали только хуже.'],
+      
           ['fonts/Roboto-Regular.ift.woff2', 'Лишь один взгляд на далекую планету может возвысить '
            + 'и очистить наши мысли не хуже духовной музыки, прекрасной картины или поэтических '
            + 'строк. Это приносит человеку несомненную пользу.'],
+      
           ['fonts/Roboto-Regular.ift.woff2', 'Мелкие детали значительно замедлили бы работу, '
            + 'поэтому, вопреки моему первоначальному намерению, я решил создать существо огромного '
            + 'размера: мощное, около двух с половиной метров ростом. Потратив несколько месяцев на '
@@ -134,8 +130,13 @@
         <div class="type">Incremental Font transfer</div>
         <h1 id="title_pfe" class="pfe">Incremental Font Transfer Demo</h1>
         <div id="paragraph_pfe" class="pfe">
-          This demonstrates the use of the patch subset incremental font transfer protocol
-          to incrementaly load fonts for a variety of languages.
+          This demonstrates the use of the incrementally loads fonts (IFT) to dynamically
+          load font data for a variety of scripts. This is using a fully static version of IFT,
+          as described <a href="https://lists.w3.org/Archives/Public/public-webfonts-wg/2023Sep/0003.html">here</a>.
+
+          The non-cjk fonts (Roboto) are augmented by shared brotli patches, while the CJK fonts (Noto Sans/Serif SC)
+          are augmented by a mixture of shared brotli patches (non outline data) and IFTB patches (outline data).
+
           <br/><br/>
           Instructions:
           <ul>
@@ -150,12 +151,14 @@
             <li>If unicode range loading is enabled you can switch the displayed text
               sample between the two methods using the "Show unicode range" button.</li>
           </ul>
-          Interesting things to try:
+          Jump to:
           <ul>
-            <li>Switching between the unicode range and pfe text for the cyrillic and vietnamese
-              samples demonstrates how unicode range breaks kerning between characters in different
-              subsets</li>
+            <li><a href="#" id="to-small-caps">Small Caps Example</a></li>
+            <li><a href="#" id="to-vietnamese">Vietnamese</a></li>
+            <li><a href="#" id="to-cyr-greek">Cyrilic + Greek</a></li>
+            <li><a href="#" id="to-sim-chinese">Simplified Chinese</a></li>
           </ul>
+
         </div>
       </div>
       <div id="ur_sample" class="sample_text hide">
