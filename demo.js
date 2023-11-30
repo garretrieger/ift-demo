@@ -163,6 +163,11 @@ window.addEventListener('DOMContentLoaded', function() {
         page_index = 7;
         update_all_fonts();
     });
+    let lo_freq_sim_chinese = document.getElementById("to-lo-freq-sim-chinese");
+    lo_freq_sim_chinese.addEventListener("click", function() {
+        page_index = 15;
+        update_all_fonts();
+    });
 
     document.getElementById("also_ur").addEventListener("change", function(e) {
         also_load_unicode_range = e.target.checked;
