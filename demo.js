@@ -14,6 +14,12 @@ async function update_all_fonts() {
     let paragraph_font = PARAGRAPHS[page_index][0];
     let paragraph_text = PARAGRAPHS[page_index][1];
 
+    if (title_font.includes("Playfair")) {
+      document.getElementById("title_ur").classList.add("playfair");
+    } else {
+      document.getElementById("title_ur").classList.remove("playfair");
+    }
+
     let p1 = update_fonts(title_text,
                       title_font,
                       "Title Font");
@@ -68,30 +74,44 @@ function update_fonts(text, font_id, font_face) {
     features_array = ["c2sc", "smcp"];
   }
 
-  return patch_codepoints(font_id, font_face, cps_array, features_array);
+  axes = new Map();
+  if (text.includes("Condensed")) {
+    axes.set("wdth", 87.5);
+  }
+
+  return patch_codepoints(font_id, font_face, cps_array, features_array, axes);
 }
 
-function patch_codepoints(font_id, font_face, cps, features) {
-    if (!states[font_id]) {
-        states[font_id] = new window.Module.State(font_id);
-    }
-    let state = states[font_id];
-    return new Promise(resolve => {
-        state.extend(cps, features, async function(result) {
-            if (!result) {
-                resolve(result);
-                return;
-            }
-            font = state.font_data();
-            font = new FontFace(font_face, font);
-            if (font_face == "Title Font") {
-                font.weight = 100;
-            }
-            document.fonts.add(font);
-            await font.load();
-            resolve(result);
-        });
+function patch_codepoints(font_id, font_face, cps, features, axes) {
+  if (!states[font_id]) {
+    states[font_id] = new window.Module.State(font_id);
+  }
+  let state = states[font_id];
+
+  for (const [tag, point] of axes) {
+    state.extend_axis(tag, point);
+  }
+
+  return new Promise(resolve => {
+    state.extend(cps, features, async function(result) {
+      if (!result) {
+        resolve(result);
+        return;
+      }
+      font = state.font_data();
+      font = new FontFace(font_face, font);
+      if (font_face == "Title Font") {
+        font.weight = 100;
+      }
+      if (font_id.includes("Playfair")) {
+	font.weight = "300 900";
+	font.stretch = "87.5% 112.5%";
+      }
+      document.fonts.add(font);
+      await font.load();
+      resolve(result);
     });
+  });
 }
 
 function update_transfer_bars() {
@@ -158,14 +178,19 @@ window.addEventListener('DOMContentLoaded', function() {
         page_index = 4;
         update_all_fonts();
     });
+    let w = document.getElementById("to-width");
+    w.addEventListener("click", function() {
+        page_index = 7;
+        update_all_fonts();
+    });
     let sim_chinese = document.getElementById("to-sim-chinese");
     sim_chinese.addEventListener("click", function() {
-        page_index = 7;
+        page_index = 9;
         update_all_fonts();
     });
     let lo_freq_sim_chinese = document.getElementById("to-lo-freq-sim-chinese");
     lo_freq_sim_chinese.addEventListener("click", function() {
-        page_index = 15;
+        page_index = 17;
         update_all_fonts();
     });
 

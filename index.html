@@ -15,6 +15,9 @@
           ['fonts/Roboto-Thin.ift.woff2', 'В вечернем свете волны отчаянно бились о берег.'],
           ['fonts/Roboto-Thin.ift.woff2', 'Возвращаться назад предстояло в одиночку.'],
 
+          ['fonts/Playfair[opsz,wdth,wght].ift.woff2', '<span style="font-weight: 300; font-stretch: 112.5%;">Variable <span style="font-weight: 900;">Design Space</span> Augmentation Example (Expanded)</span>'],
+          ['fonts/Playfair[opsz,wdth,wght].ift.woff2', '<span style="font-weight: 300; font-stretch: 87.5%;">Variable <span style="font-weight: 900;">Design Space</span> Augmentation Example (Condensed)</span>'],
+
           ['fonts/NotoSerifSC-ExtraLight_1.ift.woff2', '他们所有的设备和仪器彷佛都是有生命的。'],
           ['fonts/NotoSerifSC-ExtraLight_1.ift.woff2', '红色火光映出锯齿形机翼的轮廓。'],
           ['fonts/NotoSerifSC-ExtraLight_1.ift.woff2', '我看着暴风雨，美不胜收却也惊心动魄。'],
@@ -77,6 +80,11 @@
            + 'размера: мощное, около двух с половиной метров ростом. Потратив несколько месяцев на '
            + 'сбор материалов, я приступил к делу.'],
 
+          ['fonts/Roboto-Regular.ift.woff2', 'Initially we\'ve loaded an only weight variable family '
+           + '(Playfair) for the title.'],
+          ['fonts/Roboto-Regular.ift.woff2', 'Here the width axis has been loaded on demand '
+           + 'to display the title in the condensed style.'],
+
           ['fonts/NotoSansSC-Regular_1.ift.woff2', '远方的星体犹如圣乐、名画或伟大诗人的诗句，一眼瞬'
            + '间就能让我们的思想升华与净化。它总是能给人带来积极的影响。'],
           ['fonts/NotoSansSC-Regular_1.ift.woff2', '显然，我们已到达大气层中极高的位置，天空是一片'
@@ -118,6 +126,11 @@
 
       div.ur {
           font-family: "Roboto", "Noto Sans SC";
+      }
+
+      h1.ur.playfair {
+          font-family: "Playfair", "Noto Serif SC";
+          font-weight: 100;
       }
     </style>
     <link href="fonts.css" type="text/css" rel="stylesheet" />
@@ -163,6 +176,7 @@
             <li><a href="#" id="to-small-caps">Small Caps Example</a></li>
             <li><a href="#" id="to-vietnamese">Vietnamese</a></li>
             <li><a href="#" id="to-cyr-greek">Cyrilic + Greek</a></li>
+            <li><a href="#" id="to-width">Design Space Augmentation</a></li>
             <li><a href="#" id="to-sim-chinese">Simplified Chinese</a></li>
             <li><a href="#" id="to-lo-freq-sim-chinese">Low Frequency Simplified Chinese Codepoints</a></li>
           </ul>
