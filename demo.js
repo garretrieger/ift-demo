@@ -75,7 +75,7 @@ function update_sample_toggle() {
     document.getElementById("sample_toggle").style.visibility =
         (page_index >= 0 && also_load_unicode_range) ? "visible" : "hidden";
     document.getElementById("sample_toggle").value =
-        show_unicode_range ? "Show progressive font enrichment" : "Show unicode range";
+        show_unicode_range ? "Show Incremental Font Transfer" : "Show unicode range";
 
     if (show_unicode_range) {
         document.getElementById("pfe_sample").classList.add("hide");
