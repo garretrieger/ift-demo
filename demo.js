@@ -6,7 +6,6 @@ let text_samples_promise = fetch("./sample-texts.json").then(response => respons
 
 async function update_all_fonts() {
   if (page_index < 0) {
-    update_transfer_bars();
     return;
   }
 
@@ -64,7 +63,6 @@ async function update_all_fonts() {
     document.getElementById("prev").disabled = (page_index == 0);
     document.getElementById("next").disabled = (page_index ==  text_samples - 1);
 
-    update_transfer_bars();
     update_sample_toggle();
   }).catch(e => {
     console.log("Failed to load the text samples: ", e);
@@ -150,31 +148,43 @@ function patch_codepoints(font_id, font_face, cps, features, axes) {
   });
 }
 
-function update_transfer_bars() {
-    let pfe_total = 0;
-    let ur_total = 0;
-    for (let r of performance.getEntriesByType("resource")) {
-        if ((r.name.includes("/experimental/patch_subset")
-             || r.name.includes("/fonts/")
-             || r.name.includes("_iftb"))
-            && (r.name.endsWith(".ttf") || r.name.endsWith(".otf") || r.name.endsWith(".br") || r.name.endsWith(".woff2"))) {
-            pfe_total += r.transferSize;
-        }
-        if (r.name.includes("/s/")) {
-            ur_total += r.transferSize;
-        }
+let pfe_total = 0;
+let ur_total = 0;
+let total = 0;
+const observer = new PerformanceObserver((list, obj) => {
+  list.getEntries().forEach((r) => {
+    if ((r.name.includes("/experimental/patch_subset")
+         || r.name.includes("/fonts/")
+         || r.name.includes("_iftb"))
+        && (r.name.endsWith(".ttf") || r.name.endsWith(".otf") || r.name.endsWith(".br") || r.name.endsWith(".woff2"))) {
+      pfe_total += r.transferSize;
     }
-    let total = Math.max(Math.max(pfe_total, ur_total), 1);
-    document.getElementById("pfe_bar").style.width =
-        ((pfe_total / total) * 100) + "%";
-    document.getElementById("pfe_bar").textContent = as_string(pfe_total);
+    if (r.name.includes("/s/")) {
+      ur_total += r.transferSize;
+    }
+  });
+  update_transfer_bars();
+});
+observer.observe({ type: "resource", buffered: true });
 
-    document.getElementById("ur_bar").style.width =
-        ((ur_total / total) * 100) + "%";
-    document.getElementById("ur_bar").textContent = as_string(ur_total);
+function update_transfer_bars() {
+  let new_total = pfe_total + ur_total;
+  let max = Math.max(Math.max(pfe_total, ur_total), 1);
+  if (new_total <= total) {
+    return;
+  }
 
-    document.getElementById("ur_byte_counter").style.visibility =
-        (also_load_unicode_range ? "visible" : "hidden");
+  total = new_total;
+  document.getElementById("pfe_bar").style.width =
+      ((pfe_total / max) * 100) + "%";
+  document.getElementById("pfe_bar").textContent = as_string(pfe_total);
+
+  document.getElementById("ur_bar").style.width =
+      ((ur_total / max) * 100) + "%";
+  document.getElementById("ur_bar").textContent = as_string(ur_total);
+
+  document.getElementById("ur_byte_counter").style.visibility =
+      (also_load_unicode_range ? "visible" : "hidden");
 }
 
 function as_string(byte_count) {
@@ -182,8 +192,7 @@ function as_string(byte_count) {
 }
 
 createModule().then(function(Module) {
-    window.Module = Module;
-    update_transfer_bars();
+  window.Module = Module;
 });
 
 window.addEventListener('DOMContentLoaded', function() {
@@ -241,7 +250,4 @@ window.addEventListener('DOMContentLoaded', function() {
         show_unicode_range = !show_unicode_range;
         update_sample_toggle();
     });
-});
-document.fonts.addEventListener('loadingdone', function() {
-    update_transfer_bars();
 });
