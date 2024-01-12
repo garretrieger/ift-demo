@@ -163,11 +163,23 @@ const observer = new PerformanceObserver((list, obj) => {
       ur_total += r.transferSize;
     }
   });
-  update_transfer_bars();
+  schedule_update_transfer_bars();
 });
 observer.observe({ type: "resource", buffered: true });
 
+let transfer_bars_update = null;
+function schedule_update_transfer_bars() {
+  if (transfer_bars_update != null) {
+    return;
+  }
+
+  transfer_bars_update = setTimeout(() => {
+    update_transfer_bars();
+  }, 500);
+}
+
 function update_transfer_bars() {
+  transfer_bars_update = null;
   let new_total = pfe_total + ur_total;
   let max = Math.max(Math.max(pfe_total, ur_total), 1);
   if (new_total <= total) {
