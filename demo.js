@@ -18,6 +18,14 @@ async function update_all_fonts() {
     let title_text = sample.title;
     let paragraph_font = sample.paragraph_font;
     let paragraph_text = sample.paragraph.join('');
+    let title_features = [];
+    if (Object.hasOwn(sample, "title_features")) {
+      title_features = sample.title_features;
+    }
+    let paragraph_features = [];
+    if (Object.hasOwn(sample, "paragraph_features")) {
+      paragraph_features = sample.paragraph_features;
+    }
     let title_ds = {};
     if (Object.hasOwn(sample, "title_design_space")) {
       title_ds = sample.title_design_space;
@@ -36,10 +44,12 @@ async function update_all_fonts() {
     let p1 = update_fonts(title_text,
 			  title_font,
 			  "Title Font",
+			  title_features,
 			  title_ds);
     let p2 = update_fonts(paragraph_text,
 			  paragraph_font,
 			  "Paragraph Font",
+			  paragraph_features,
 			  paragraph_ds);
     await p1;
     await p2;
@@ -76,7 +86,7 @@ function update_sample_toggle() {
     }
 }
 
-function update_fonts(text, font_id, font_face, ds) {
+function update_fonts(text, font_id, font_face, features, ds) {
   let cps = new Set();
   for (let i = 0; text.codePointAt(i); i++) {
     cps.add(text.codePointAt(i));
@@ -87,17 +97,12 @@ function update_fonts(text, font_id, font_face, ds) {
     cps_array.push(cp);
   }
 
-  let features_array = [];
-  if (text.includes("small-caps")) {
-    features_array = ["c2sc", "smcp"];
-  }
-
   axes = new Map();
   for (let [tag, value] of Object.entries(ds)) {
     axes.set(tag, value);
   }
 
-  return patch_codepoints(font_id, font_face, cps_array, features_array, axes);
+  return patch_codepoints(font_id, font_face, cps_array, features, axes);
 }
 
 function save_font(filename, data) {
