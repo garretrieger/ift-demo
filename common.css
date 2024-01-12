@@ -6,9 +6,12 @@ div.pfe, div.ur {
     font-size: 1.5em;
 }
 
+h1.pfe, h1.ur {
+    font-weight: 100;
+}
+
 h1.pfe {
     font-family: "Title Font", serif;
-    font-weight: 100;
 }
 
 div.pfe {

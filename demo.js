@@ -2,17 +2,21 @@ let page_index = -1;
 let states = {};
 let also_load_unicode_range = true;
 let show_unicode_range = false;
+let text_samples_promise = fetch("./sample-texts.json").then(response => response.json());
 
 async function update_all_fonts() {
-    if (page_index < 0) {
-        update_transfer_bars();
-        return;
-    }
+  if (page_index < 0) {
+    update_transfer_bars();
+    return;
+  }
 
-    let title_font = SENTENCES[page_index][0];
-    let title_text = SENTENCES[page_index][1];
-    let paragraph_font = PARAGRAPHS[page_index][0];
-    let paragraph_text = PARAGRAPHS[page_index][1];
+  text_samples_promise.then(async (text_samples) => {
+    if (page_index >= text_samples.length) page_index = text_samples.length - 1;
+
+    let title_font = text_samples[page_index].title_font;
+    let title_text = text_samples[page_index].title;
+    let paragraph_font = text_samples[page_index].paragraph_font;
+    let paragraph_text = text_samples[page_index].paragraph.join('');
 
     if (title_font.includes("Playfair")) {
       document.getElementById("title_ur").classList.add("playfair");
@@ -21,26 +25,29 @@ async function update_all_fonts() {
     }
 
     let p1 = update_fonts(title_text,
-                      title_font,
-                      "Title Font");
+			  title_font,
+			  "Title Font");
     let p2 = update_fonts(paragraph_text,
-                      paragraph_font,
-                      "Paragraph Font");
+			  paragraph_font,
+			  "Paragraph Font");
     await p1;
     await p2;
 
     document.getElementById("title_pfe").innerHTML = title_text;
     document.getElementById("paragraph_pfe").innerHTML = paragraph_text;
     if (also_load_unicode_range) {
-        document.getElementById("title_ur").innerHTML = title_text;
-        document.getElementById("paragraph_ur").innerHTML = paragraph_text;
+      document.getElementById("title_ur").innerHTML = title_text;
+      document.getElementById("paragraph_ur").innerHTML = paragraph_text;
     }
 
     document.getElementById("prev").disabled = (page_index == 0);
-    document.getElementById("next").disabled = (page_index == PARAGRAPHS.length - 1);
+    document.getElementById("next").disabled = (page_index ==  text_samples - 1);
 
     update_transfer_bars();
     update_sample_toggle();
+  }).catch(e => {
+    console.log("Failed to load the text samples: ", e);
+  });
 }
 
 function update_sample_toggle() {
@@ -78,8 +85,21 @@ function update_fonts(text, font_id, font_face) {
   if (text.includes("Condensed")) {
     axes.set("wdth", 87.5);
   }
+  if (text.includes("add weight")) {
+    axes.set("wght", 300);
+  }
 
   return patch_codepoints(font_id, font_face, cps_array, features_array, axes);
+}
+
+function save_font(filename, data) {
+  const blob = new Blob([data], {type: 'font/ttf'});
+  const elem = window.document.createElement('a');
+  elem.href = window.URL.createObjectURL(blob);
+  elem.download = filename;
+  document.body.appendChild(elem);
+  elem.click();
+  document.body.removeChild(elem);
 }
 
 function patch_codepoints(font_id, font_face, cps, features, axes) {
@@ -98,14 +118,17 @@ function patch_codepoints(font_id, font_face, cps, features, axes) {
         resolve(result);
         return;
       }
-      font = state.font_data();
-      font = new FontFace(font_face, font);
+      font_data = state.font_data();
+      font = new FontFace(font_face, font_data);
       if (font_face == "Title Font") {
         font.weight = 100;
       }
       if (font_id.includes("Playfair")) {
 	font.weight = "300 900";
 	font.stretch = "87.5% 112.5%";
+      }
+      if (font_id.includes("NotoSansSC")) {
+	font.weight = "100 900";
       }
       document.fonts.add(font);
       await font.load();
@@ -160,7 +183,6 @@ window.addEventListener('DOMContentLoaded', function() {
     let next = document.getElementById("next");
     next.addEventListener("click", function() {
         page_index++;
-        if (page_index >= PARAGRAPHS.length) page_index = PARAGRAPHS.length - 1;
         update_all_fonts();
     });
     let sc = document.getElementById("to-small-caps");
