@@ -86,6 +86,9 @@
   {"title_font": "fonts/Playfair[opsz,wdth,wght].ift.woff2",
    "title": "<span style=\"font-weight: 300; font-stretch: 87.5%;\">Variable <span style=\"font-weight: 900;\">Design Space</span> Augmentation Example (Condensed)</span>",
    "paragraph_font": "fonts/Roboto-Regular.ift.woff2",
+   "title_design_space": {
+     "wdth": 87.5
+   },
    "paragraph": [
      "Here the width axis has been loaded on demand ",
      "to display the title in the condensed style."

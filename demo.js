@@ -13,10 +13,19 @@ async function update_all_fonts() {
   text_samples_promise.then(async (text_samples) => {
     if (page_index >= text_samples.length) page_index = text_samples.length - 1;
 
-    let title_font = text_samples[page_index].title_font;
-    let title_text = text_samples[page_index].title;
-    let paragraph_font = text_samples[page_index].paragraph_font;
-    let paragraph_text = text_samples[page_index].paragraph.join('');
+    let sample = text_samples[page_index];
+    let title_font = sample.title_font;
+    let title_text = sample.title;
+    let paragraph_font = sample.paragraph_font;
+    let paragraph_text = sample.paragraph.join('');
+    let title_ds = {};
+    if (Object.hasOwn(sample, "title_design_space")) {
+      title_ds = sample.title_design_space;
+    }
+    let paragraph_ds = {};
+    if (Object.hasOwn(sample, "paragraph_design_space")) {
+      paragraph_ds = sample.paragraph_design_space;
+    }
 
     if (title_font.includes("Playfair")) {
       document.getElementById("title_ur").classList.add("playfair");
@@ -26,10 +35,12 @@ async function update_all_fonts() {
 
     let p1 = update_fonts(title_text,
 			  title_font,
-			  "Title Font");
+			  "Title Font",
+			  title_ds);
     let p2 = update_fonts(paragraph_text,
 			  paragraph_font,
-			  "Paragraph Font");
+			  "Paragraph Font",
+			  paragraph_ds);
     await p1;
     await p2;
 
@@ -65,7 +76,7 @@ function update_sample_toggle() {
     }
 }
 
-function update_fonts(text, font_id, font_face) {
+function update_fonts(text, font_id, font_face, ds) {
   let cps = new Set();
   for (let i = 0; text.codePointAt(i); i++) {
     cps.add(text.codePointAt(i));
@@ -82,11 +93,8 @@ function update_fonts(text, font_id, font_face) {
   }
 
   axes = new Map();
-  if (text.includes("Condensed")) {
-    axes.set("wdth", 87.5);
-  }
-  if (text.includes("add weight")) {
-    axes.set("wght", 300);
+  for (let [tag, value] of Object.entries(ds)) {
+    axes.set(tag, value);
   }
 
   return patch_codepoints(font_id, font_face, cps_array, features_array, axes);
