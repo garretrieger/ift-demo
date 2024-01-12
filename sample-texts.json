@@ -108,8 +108,12 @@
   {"title_font": "fonts/NotoSerifSC[wght]_1.ift.woff2",
    "title": "<span style=\"font-weight: 200;\">红色火光映出锯齿形机翼的轮廓。</span>",
    "paragraph_font": "fonts/NotoSansSC[wght]_1.ift.woff2",
+   "paragraph_design_space": {
+     "wght": 400
+   },
    "paragraph": [
-     "<span style=\"font-weight: 100\">",
+     "Here Noto Sans SC has been extended to add a variable weight axis.<br/><br/>",
+     "<span style=\"font-weight: 400\">",
      "显然，我们已到达大气层中极高的位置，天空是一片",
      "死寂的黑，星星也不再闪烁。就像从山顶远眺时，会产",
      "生海平线与视野等高的错觉，下方乌云散开",
@@ -120,8 +124,11 @@
   {"title_font": "fonts/NotoSerifSC[wght]_1.ift.woff2",
    "title": "<span style=\"font-weight: 200;\">我看着暴风雨，美不胜收却也惊心动魄。</span>",
    "paragraph_font": "fonts/NotoSansSC[wght]_1.ift.woff2",
+   "paragraph_design_space": {
+     "wght": 700
+   },
    "paragraph": [
-     "<span style=\"font-weight: 100\">",
+     "<span style=\"font-weight: 700\">",
      "我继续航行，速度还在加快，日与夜交替晃动，融合",
      "成连贯的灰；天空是一片美好深蓝，犹如黄昏的灿烂明亮；跳跃的太阳成了一道火焰，在太空中",
      "画出一道耀眼圆弧；月亮则是一长条起伏不断的弱光；我看不见任何星星，只是偶尔能看到一个",
@@ -132,8 +139,11 @@
   {"title_font": "fonts/NotoSerifSC[wght]_1.ift.woff2",
    "title": "<span style=\"font-weight: 200;\">不知不觉间，我们已经离开了地面。</span>",
    "paragraph_font": "fonts/NotoSansSC[wght]_1.ift.woff2",
+   "paragraph_design_space": {
+     "wght": 900
+   },
    "paragraph": [
-     "<span style=\"font-weight: 100\">",
+     "<span style=\"font-weight: 900\">",
      "由于各个零件都过于微小，我的制造速度受到了极大",
      "的阻碍，因此我决定违背自己的初衷，改为制造一个庞然大物，也就是说，高约8英尺，各部分也",
      "都按比例放大。下定决心后，我花费几个月的时间成功收集和整理了所需的材料，然后就开始实",
