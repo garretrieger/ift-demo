@@ -6,6 +6,7 @@ let text_samples_promise = fetch("./sample-texts.json").then(response => respons
 
 async function update_all_fonts() {
   if (page_index < 0) {
+    show_intro();
     return;
   }
 
@@ -60,13 +61,22 @@ async function update_all_fonts() {
       document.getElementById("paragraph_ur").innerHTML = paragraph_text;
     }
 
-    document.getElementById("prev").disabled = (page_index == 0);
+    document.getElementById("prev").disabled = (page_index == -1);
     document.getElementById("next").disabled = (page_index ==  text_samples - 1);
 
     update_sample_toggle();
   }).catch(e => {
     console.log("Failed to load the text samples: ", e);
   });
+}
+
+function show_intro() {
+  document.getElementById("prev").disabled = true;
+  document.getElementById("next").disabled = false;
+
+  document.getElementById("pfe_sample").classList.add("hide");
+  document.getElementById("ur_sample").classList.add("hide");
+  document.getElementById("intro").classList.remove("hide");
 }
 
 function update_sample_toggle() {
@@ -78,9 +88,11 @@ function update_sample_toggle() {
     if (show_unicode_range) {
         document.getElementById("pfe_sample").classList.add("hide");
         document.getElementById("ur_sample").classList.remove("hide");
+        document.getElementById("intro").classList.add("hide");
     } else {
         document.getElementById("pfe_sample").classList.remove("hide");
         document.getElementById("ur_sample").classList.add("hide");
+        document.getElementById("intro").classList.add("hide");
     }
 }
 
@@ -211,7 +223,7 @@ window.addEventListener('DOMContentLoaded', function() {
     let prev = document.getElementById("prev");
     prev.addEventListener("click", function() {
         page_index--;
-        if (page_index < 0) page_index = 0;
+        if (page_index < -1) page_index = -1;
         update_all_fonts();
     });
     let next = document.getElementById("next");

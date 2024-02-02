@@ -30,13 +30,13 @@
       <label for="also_ur">Also load fonts via unicode range.</label><br/>
     </div>
     <div class="text_and_metrics">
-      <div id="pfe_sample" class="sample_text">
-        <div class="type">Incremental Font transfer</div>
-        <h1 id="title_pfe" class="pfe">Incremental Font Transfer Demo</h1>
-        <div id="paragraph_pfe" class="pfe">
+      <div id="intro" class="sample_text">
+        <div class="type"></div>
+        <h1 class="pfe">Incremental Font Transfer Demo</h1>
+        <div class="pfe">
           This demonstrates the use of the incrementally loads fonts (IFT) to dynamically
           load font data for a variety of scripts. This is using a fully static version of IFT,
-          as described <a href="https://lists.w3.org/Archives/Public/public-webfonts-wg/2023Sep/0003.html">here</a>.
+          as described <a href="https://garretrieger.github.io/IFT/Overview.html">here</a>.
 
           The non-cjk fonts (Roboto) are augmented by shared brotli patches, while the CJK fonts (Noto Sans/Serif SC)
           are augmented by a mixture of shared brotli patches (non outline data) and IFTB patches (outline data).
@@ -64,9 +64,17 @@
             <li><a href="#" id="to-sim-chinese">Simplified Chinese</a></li>
             <li><a href="#" id="to-lo-freq-sim-chinese">Low Frequency Simplified Chinese Codepoints</a></li>
           </ul>
-
         </div>
       </div>
+
+      <!-- IFT text -->
+      <div id="pfe_sample" class="sample_text hide">
+        <div class="type">Incremental Font transfer</div>
+        <h1 id="title_pfe" class="pfe"></h1>
+        <div id="paragraph_pfe" class="pfe"></div>
+      </div>
+
+      <!-- Unicode Range Text -->
       <div id="ur_sample" class="sample_text hide">
         <div class="type">Unicode range</div>
         <h1 id="title_ur" class="ur"></h1>
