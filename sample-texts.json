@@ -1,25 +1,13 @@
 [
   {"title_font": "fonts/Roboto-Thin.ift.woff2",
-   "title": "Almost before we knew it, we had left the ground.",
+   "title": "In this first sample only basic latin support is loaded.",
    "paragraph_font": "fonts/Roboto-Regular.ift.woff2",
    "paragraph": [
-     "Latin is part of the base font, so no augmentation is needed.<br/><br/>",
      "A peep at some distant orb has power to raise and purify our ",
      "thoughts like a strain of sacred music, or a noble picture, or a passage from the ",
      "grander poets. It always does one good."
    ]},
   
-  {"title_font": "fonts/Roboto-Thin.ift.woff2",
-   "title": "All their equipment and instruments are alive.",
-   "paragraph_font": "fonts/Roboto-Regular.ift.woff2",
-   "paragraph": [
-     "Apparently we had reached a great height in the atmosphere, for ",
-     "the sky was a dead black, and the stars had ceased to twinkle. By the same illusion ",
-     "which lifts the horizon of the sea to the level of the spectator on a hillside, the ",
-     "sable cloud beneath was dished out, and the car seemed to float in the middle of an ",
-     "immense dark sphere, whose upper half was strewn with silver."
-   ]},
-
   {"title_font": "fonts/Roboto-Thin.ift.woff2",
    "title": "<span style=\"font-variant: small-caps;\">Small Caps</span>",
    "title_features": ["c2sc", "smcp"],
@@ -47,7 +35,7 @@
    "title": "Алая вспышка осветила силуэт зазубренного крыла.",
    "paragraph_font": "fonts/Roboto-Regular.ift.woff2",
    "paragraph": [
-     "This page demonstrates loading cyrillic and greek in a single patch: <br/><br/>",
+     "This sample demonstrates loading cyrillic and greek in a single patch: <br/><br/>",
      "Είναι προικισμένοι με λογική και συνείδηση, και ",
      "οφείλουν να συμπεριφέρονται μεταξύ τους με πνεύμα αδελφοσύνης. Όλοι οι άνθρωποι ",
      "γεννιούνται ελεύθεροι και ίσοι στην αξιοπρέπεια και τα δικαιώματα. Είναι προικισμένοι με ",
@@ -58,18 +46,11 @@
    ]},
 
   {"title_font": "fonts/Roboto-Thin.ift.woff2",
-   "title": "В вечернем свете волны отчаянно бились о берег.",
-   "paragraph_font": "fonts/Roboto-Regular.ift.woff2",
-   "paragraph": [
-     "Лишь один взгляд на далекую планету может возвысить ",
-     "и очистить наши мысли не хуже духовной музыки, прекрасной картины или поэтических ",
-     "строк. Это приносит человеку несомненную пользу."
-   ]},
-
-  {"title_font": "fonts/Roboto-Thin.ift.woff2",
    "title": "Возвращаться назад предстояло в одиночку.",
    "paragraph_font": "fonts/Roboto-Regular.ift.woff2",
    "paragraph": [
+     "Notice that kerning of punctuation and cyrillic codepoints is different versus unicode range. ",
+     "This happens because kerning rules for punctuation are only defined in the latin subset with unicode range. <br/><br/>",
      "Мелкие детали значительно замедлили бы работу, ",
      "поэтому, вопреки моему первоначальному намерению, я решил создать существо огромного ",
      "размера: мощное, около двух с половиной метров ростом. Потратив несколько месяцев на ",
@@ -80,8 +61,7 @@
    "title": "<span style=\"font-weight: 300; font-stretch: 112.5%;\">Variable <span style=\"font-weight: 900;\">Design Space</span> Augmentation Example (Expanded)</span>",
    "paragraph_font": "fonts/Roboto-Regular.ift.woff2",
    "paragraph": [
-     "Initially we've loaded an only weight variable family ",
-     "(Playfair) for the title."
+     "Initially we've loaded a subset of Playfair with only a weight axis for the title."
    ]},
 
   {"title_font": "fonts/Playfair[opsz,wdth,wght].ift.woff2",
@@ -99,6 +79,8 @@
    "title": "<span style=\"font-weight: 200;\">他们所有的设备和仪器彷佛都是有生命的。</span>",
    "paragraph_font": "fonts/NotoSansSC[wght]_1.ift.woff2",
    "paragraph": [
+     "The next several samples show incrementally adding support for an increasing set of Chinese codepoints while simultaneously ",
+     "adding a variable weight axis.<br/><br/>",
      "<span style=\"font-weight: 100\">",
      "远方的星体犹如圣乐、名画或伟大诗人的诗句，一眼瞬",
      "间就能让我们的思想升华与净化。它总是能给人带来积极的影响。",
@@ -201,7 +183,7 @@
    "paragraph_font": "fonts/NotoSansSC[wght]_2.ift.woff2",
    "paragraph": [
      "<span style=\"font-weight: 100\">",
-     "The following samples test out loading of low frequency Chinese codepoints.<br/>",
+     "The last two samples test out loading of low frequency Chinese codepoints.<br/>",
      "醍醤迴遐踺辗",
      "</span>"
    ]},

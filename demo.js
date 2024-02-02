@@ -233,32 +233,32 @@ window.addEventListener('DOMContentLoaded', function() {
     });
     let sc = document.getElementById("to-small-caps");
     sc.addEventListener("click", function() {
-        page_index = 2;
+        page_index = 1;
         update_all_fonts();
     });
     let viet = document.getElementById("to-vietnamese");
     viet.addEventListener("click", function() {
-        page_index = 3;
+        page_index = 2;
         update_all_fonts();
     });
     let cg = document.getElementById("to-cyr-greek");
     cg.addEventListener("click", function() {
-        page_index = 4;
+        page_index = 3;
         update_all_fonts();
     });
     let w = document.getElementById("to-width");
     w.addEventListener("click", function() {
-        page_index = 7;
+        page_index = 5;
         update_all_fonts();
     });
     let sim_chinese = document.getElementById("to-sim-chinese");
     sim_chinese.addEventListener("click", function() {
-        page_index = 9;
+        page_index = 7;
         update_all_fonts();
     });
     let lo_freq_sim_chinese = document.getElementById("to-lo-freq-sim-chinese");
     lo_freq_sim_chinese.addEventListener("click", function() {
-        page_index = 17;
+        page_index = 15;
         update_all_fonts();
     });
 
