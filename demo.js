@@ -62,7 +62,7 @@ async function update_all_fonts() {
     }
 
     document.getElementById("prev").disabled = (page_index == -1);
-    document.getElementById("next").disabled = (page_index ==  text_samples - 1);
+    document.getElementById("next").disabled = (page_index ==  text_samples.length - 1);
 
     update_sample_toggle();
   }).catch(e => {
@@ -80,20 +80,24 @@ function show_intro() {
 }
 
 function update_sample_toggle() {
-    document.getElementById("sample_toggle").style.visibility =
-        (page_index >= 0 && also_load_unicode_range) ? "visible" : "hidden";
-    document.getElementById("sample_toggle").value =
-        show_unicode_range ? "Show Incremental Font Transfer" : "Show unicode range";
+  document.getElementById("sample_toggle").style.visibility =
+      (page_index >= 0 && also_load_unicode_range) ? "visible" : "hidden";
+  document.getElementById("sample_toggle").value =
+      show_unicode_range ? "Show Incremental Font Transfer" : "Show unicode range";
 
-    if (show_unicode_range) {
-        document.getElementById("pfe_sample").classList.add("hide");
-        document.getElementById("ur_sample").classList.remove("hide");
-        document.getElementById("intro").classList.add("hide");
-    } else {
-        document.getElementById("pfe_sample").classList.remove("hide");
-        document.getElementById("ur_sample").classList.add("hide");
-        document.getElementById("intro").classList.add("hide");
-    }
+  if (page_index < 0) {
+    return;
+  }
+
+  if (show_unicode_range) {
+    document.getElementById("pfe_sample").classList.add("hide");
+    document.getElementById("ur_sample").classList.remove("hide");
+    document.getElementById("intro").classList.add("hide");
+  } else {
+    document.getElementById("pfe_sample").classList.remove("hide");
+    document.getElementById("ur_sample").classList.add("hide");
+    document.getElementById("intro").classList.add("hide");
+  }
 }
 
 function update_fonts(text, font_id, font_face, features, ds) {
