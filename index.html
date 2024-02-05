@@ -38,7 +38,14 @@
           works by using patches to extend a font to cover more codepoints and/or axes as they are encountered in rendered text. This
           allows loading of only the parts of a font that are actually needed. This demo is using a fully static (ie. no dynamic backend)
           version of IFT. IFT is currently in development with the w3c webfonts working group and an early draft of the specification
-          implemented by this demo can be found <a href="https://garretrieger.github.io/IFT/Overview.html">here</a>.</p>
+            implemented by this demo can be found <a href="https://garretrieger.github.io/IFT/Overview.html">here</a>.</p>
+
+
+          <p>IFT is useful because fonts can be very large. For example, a CJK font can be tens of thousands of glyphs and multiple megabytes.
+          Incremental font transfer seeks to deliver only the data a website actually uses and thus dramatically reduce the performance
+          impact of web fonts. All languages are expected to benefit. See the IFT
+          <a href="https://www.w3.org/TR/PFE-evaluation/">Evaluation Report</a> for more information on the justification for and expected
+          performance impact of IFT.</p>
 
           <p>For comparison purposes fonts are also loaded in parallel using css
           <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/unicode-range">unicode-range</a> which splits each font
