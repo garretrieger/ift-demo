@@ -1,3 +1,5 @@
+import init, { greet } from './pkg/rust_client.js';
+
 let page_index = -1;
 let states = {};
 let also_load_unicode_range = true;
@@ -219,8 +221,8 @@ function as_string(byte_count) {
     return Math.round(byte_count / 1000).toLocaleString() + " kb";
 }
 
-createModule().then(function(Module) {
-  window.Module = Module;
+init().then(function(Module) {
+  window.IftClient = Module;
 });
 
 window.addEventListener('DOMContentLoaded', function() {
@@ -232,6 +234,7 @@ window.addEventListener('DOMContentLoaded', function() {
     });
     let next = document.getElementById("next");
     next.addEventListener("click", function() {
+        window.IftClient.greet();
         page_index++;
         update_all_fonts();
     });
