@@ -1,4 +1,4 @@
-import init, { greet } from './pkg/rust_client.js';
+import init, { IftState } from './pkg/rust_client.js';
 
 let page_index = -1;
 let states = {};
@@ -222,7 +222,7 @@ function as_string(byte_count) {
 }
 
 init().then(function(Module) {
-  window.IftClient = Module;
+  window.ift_memory = Module.memory;
 });
 
 window.addEventListener('DOMContentLoaded', function() {
@@ -234,7 +234,14 @@ window.addEventListener('DOMContentLoaded', function() {
     });
     let next = document.getElementById("next");
     next.addEventListener("click", function() {
-        window.IftClient.greet();
+        let state = IftState.new("my_font.ttf");
+        state.extend([12, 13, 14], v => {
+          console.log("Returned value: ", v);
+        });
+
+        const font_data = new Uint8Array(window.ift_memory.buffer, state.font_ptr(), state.font_size());
+        console.log("font_data: ", font_data);
+
         page_index++;
         update_all_fonts();
     });
