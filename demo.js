@@ -223,6 +223,7 @@ function as_string(byte_count) {
 
 init().then(function(Module) {
   window.ift_memory = Module.memory;
+  window.ift_state = IftState.new("my_font.ttf");
 });
 
 window.addEventListener('DOMContentLoaded', function() {
@@ -234,16 +235,13 @@ window.addEventListener('DOMContentLoaded', function() {
     });
     let next = document.getElementById("next");
     next.addEventListener("click", function() {
-        let state = IftState.new("my_font.ttf");
-        state.extend([12, 13, 14], v => {
-          console.log("Returned value: ", v);
-        });
+      window.ift_state.extend([12, 13, 14]).then(font => {
+	const font_data = new Uint8Array(window.ift_memory.buffer, font.data(), font.len());
+	console.log("Font subset: ", font_data);
+      });
 
-        const font_data = new Uint8Array(window.ift_memory.buffer, state.font_ptr(), state.font_size());
-        console.log("font_data: ", font_data);
-
-        page_index++;
-        update_all_fonts();
+      //page_index++;
+      //update_all_fonts();
     });
     let sc = document.getElementById("to-small-caps");
     sc.addEventListener("click", function() {
