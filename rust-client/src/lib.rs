@@ -1,7 +1,14 @@
 mod utils;
 
-use read_fonts::collections::int_set::IntSet;
-use std::sync::Arc;
+use futures::future::{self, join_all, FutureExt};
+use incremental_font_transfer::{
+    patch_group::{PatchGroup, UriStatus},
+    patchmap::SubsetDefinition,
+};
+use std::future::Future;
+
+use read_fonts::{collections::int_set::IntSet, FontRef};
+use std::{collections::HashMap, sync::Arc};
 use tokio::sync::Mutex;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::JsFuture;
@@ -10,7 +17,7 @@ use web_sys::{Request, RequestInit, RequestMode, Response};
 #[wasm_bindgen]
 pub struct IftState {
     font_url: String,
-    target_codepoints: IntSet<u32>,
+    target_subset_definition: SubsetDefinition,
     state: Arc<Mutex<InnerState>>,
 }
 
@@ -31,9 +38,12 @@ impl FontSubset {
     }
 }
 
+// Inner state is the collection of things that are accessed through
+// a lock. These are the parts that get modified by the extension process.
 struct InnerState {
     status: Status,
     font_subset: Vec<u8>,
+    patch_cache: HashMap<String, UriStatus>,
     // TODO store requested codepoints, features, design space.
     // TODO store loaded patch data by url
 }
@@ -50,7 +60,7 @@ impl IftState {
     pub fn new(font_url: String) -> Self {
         Self {
             font_url,
-            target_codepoints: IntSet::empty(),
+            target_subset_definition: Default::default(),
             state: Arc::new(Mutex::new(InnerState::new())),
         }
     }
@@ -59,20 +69,24 @@ impl IftState {
     ///
     /// Returns true if at least one new codepoint was added to the definition.
     pub fn add_to_target_subset_definition(&mut self, codepoints: &[u32]) -> bool {
-        let start_len = self.target_codepoints.len();
-        self.target_codepoints
+        let start_len = self.target_subset_definition.codepoints.len();
+        self.target_subset_definition
+            .codepoints
             .extend_unsorted(codepoints.iter().map(|v| *v));
-        self.target_codepoints.len() > start_len
+        self.target_subset_definition.codepoints.len() > start_len
     }
 
     pub async fn current_font_subset(&self) -> Result<FontSubset, String> {
-        let mut lock = Arc::clone(&self.state);
+        let lock = Arc::clone(&self.state);
         let mut state = lock.lock().await;
 
         loop {
             match &state.status {
                 Status::Uninitialized => state.initialize(&self.font_url).await,
                 Status::Error(err) => return Err(err.clone()),
+                Status::Ready => {
+                    todo!()
+                }
                 _ => break,
             };
         }
@@ -84,6 +98,52 @@ impl IftState {
             length: state.font_subset.len(),
         })
     }
+
+    async fn ensure_extended(&self, state: &mut InnerState) -> Result<(), String> {
+        // check the current font against the target subset
+        let font =
+            FontRef::new(&state.font_subset).map_err(|_| "Failed to load current font subset.")?;
+        let patch_group = PatchGroup::select_next_patches(font, &self.target_subset_definition)
+            .map_err(|_| "Failed to compute the patch group.")?;
+
+        // if there are pending urls fetch those
+        // once all fetches are done extend the font subset
+        // break out of the loop if no work remaings.
+
+        todo!()
+    }
+
+    async fn ensure_patches_loaded(&self, state: &mut InnerState, patch_group: &PatchGroup<'_>) {
+        let mut uris_to_load = patch_group
+            .uris()
+            .filter(|uri| {
+                let e = state.patch_cache.entry(uri.to_string());
+                let status = e.or_insert(UriStatus::Pending(Default::default()));
+                matches!(status, UriStatus::Pending(_))
+            })
+            .peekable();
+
+        if uris_to_load.peek().is_none() {
+            // Nothing to do.
+            return;
+        };
+
+        let futures: Vec<_> = uris_to_load
+            .map(|uri| IftState::load_patch(uri).boxed())
+            .collect();
+
+        let patches: Vec<(&str, Vec<u8>)> = join_all(futures).await;
+        for (uri, data) in patches {
+            let Some(UriStatus::Pending(cached_data)) = state.patch_cache.get_mut(uri) else {
+                continue;
+            };
+            *cached_data = data;
+        }
+    }
+
+    async fn load_patch(uri: &str) -> (&str, Vec<u8>) {
+        todo!()
+    }
 }
 
 impl InnerState {
@@ -91,6 +151,7 @@ impl InnerState {
         InnerState {
             status: Status::Uninitialized,
             font_subset: vec![],
+            patch_cache: Default::default(),
         }
     }
 
