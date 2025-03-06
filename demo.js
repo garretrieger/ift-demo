@@ -223,7 +223,7 @@ function as_string(byte_count) {
 
 init().then(function(Module) {
   window.ift_memory = Module.memory;
-  window.ift_state = IftState.new("common.css");
+  window.ift_state = IftState.new("fonts/roboto/Roboto-IFT.ttf");
 });
 
 window.addEventListener('DOMContentLoaded', function() {
