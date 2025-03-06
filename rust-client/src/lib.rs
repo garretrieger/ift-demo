@@ -113,7 +113,11 @@ impl IftState {
         todo!()
     }
 
-    async fn ensure_patches_loaded(&self, state: &mut InnerState, patch_group: &PatchGroup<'_>) {
+    async fn ensure_patches_loaded(
+        &self,
+        state: &mut InnerState,
+        patch_group: &PatchGroup<'_>,
+    ) -> Result<(), String> {
         let mut uris_to_load = patch_group
             .uris()
             .filter(|uri| {
@@ -125,24 +129,26 @@ impl IftState {
 
         if uris_to_load.peek().is_none() {
             // Nothing to do.
-            return;
+            return Ok(());
         };
 
-        let futures: Vec<_> = uris_to_load
-            .map(|uri| IftState::load_patch(uri).boxed())
-            .collect();
+        // TODO use &str instead of String?
+        let patches: Vec<Result<(String, Vec<u8>), String>> =
+            join_all(uris_to_load.map(|uri| IftState::load_patch(uri))).await;
+        for result in patches {
+            let (uri, data) = result?;
 
-        let patches: Vec<(&str, Vec<u8>)> = join_all(futures).await;
-        for (uri, data) in patches {
-            let Some(UriStatus::Pending(cached_data)) = state.patch_cache.get_mut(uri) else {
+            let Some(UriStatus::Pending(cached_data)) = state.patch_cache.get_mut(&uri) else {
                 continue;
             };
             *cached_data = data;
         }
+
+        Ok(())
     }
 
-    async fn load_patch(uri: &str) -> (&str, Vec<u8>) {
-        todo!()
+    async fn load_patch(uri: &str) -> Result<(String, Vec<u8>), String> {
+        Ok((uri.to_string(), load_file(uri).await?))
     }
 }
 
@@ -161,49 +167,49 @@ impl InnerState {
             panic!("Can only be called on an uninitialized client.");
         }
 
-        // TODO move request fetching code to a shared util function.
-
-        let opts = RequestInit::new();
-        opts.set_method("GET");
-        opts.set_mode(RequestMode::Cors);
-
-        let Ok(request) = Request::new_with_str_and_init(init_font_url, &opts) else {
-            self.status = Status::Error("Failed to create new GET request.".to_string());
-            return;
+        self.font_subset = match load_file(init_font_url).await {
+            Err(msg) => {
+                self.status = Status::Error(msg);
+                return;
+            }
+            Ok(data) => data,
         };
-
-        let window = web_sys::window().unwrap();
-        let Ok(response) = JsFuture::from(window.fetch_with_request(&request)).await else {
-            self.status = Status::Error(format!(
-                "Init font load request for {} failed.",
-                init_font_url
-            ));
-            return;
-        };
-
-        assert!(response.is_instance_of::<Response>());
-        let response: Response = response.dyn_into().unwrap();
-        if response.status() != 200 {
-            self.status = Status::Error(format!(
-                "Init font load request for {} failed. Status = {}",
-                init_font_url,
-                response.status()
-            ));
-            return;
-        }
-
-        let Ok(buffer) = response.array_buffer() else {
-            self.status = Status::Error("Unable to get array_buffer() from response.".to_string());
-            return;
-        };
-        let Ok(buffer) = JsFuture::from(buffer).await else {
-            self.status = Status::Error("Unable to get array_buffer() from response.".to_string());
-            return;
-        };
-        let array = js_sys::Uint8Array::new(&buffer);
-        self.font_subset.resize(array.length() as usize, 0);
-        array.copy_to(&mut self.font_subset);
-
         self.status = Status::Ready;
     }
+}
+
+async fn load_file(uri: &str) -> Result<Vec<u8>, String> {
+    let opts = RequestInit::new();
+    opts.set_method("GET");
+    opts.set_mode(RequestMode::Cors);
+
+    let Ok(request) = Request::new_with_str_and_init(uri, &opts) else {
+        return Err(format!("Failed to create new GET request for: {}", uri));
+    };
+
+    let window = web_sys::window().unwrap();
+    let Ok(response) = JsFuture::from(window.fetch_with_request(&request)).await else {
+        return Err(format!("Load request for {} failed.", uri));
+    };
+
+    assert!(response.is_instance_of::<Response>());
+    let response: Response = response.dyn_into().unwrap();
+    if response.status() != 200 {
+        return Err(format!(
+            "Load request for {} failed. Status = {}",
+            uri,
+            response.status()
+        ));
+    }
+
+    let Ok(buffer) = response.array_buffer() else {
+        return Err("Unable to get array_buffer() from response.".to_string());
+    };
+    let Ok(buffer) = JsFuture::from(buffer).await else {
+        return Err("Unable to get array_buffer() from response.".to_string());
+    };
+    let array = js_sys::Uint8Array::new(&buffer);
+    let mut result = vec![0u8; array.length() as usize];
+    array.copy_to(&mut result);
+    Ok(result)
 }
