@@ -15,6 +15,7 @@ wasm-bindgen = "0.2.100"
 wasm-bindgen-futures = "0.4.50"
 js-sys = "0.3.77"
 web-sys = { version = "0.3.77", features = ['Headers', 'Request', 'RequestInit', 'RequestMode', 'Response', 'Window'] }
+read-fonts = { git = "https://github.com/googlefonts/fontations.git" }
 incremental-font-transfer = { git = "https://github.com/googlefonts/fontations.git", default-features = false, features = [ "rust-brotli" ] }
 tokio = { version = "1.43.0", features = [ "sync" ] }
 
