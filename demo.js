@@ -223,7 +223,7 @@ function as_string(byte_count) {
 
 init().then(function(Module) {
   window.ift_memory = Module.memory;
-  window.ift_state = IftState.new("my_font.ttf");
+  window.ift_state = IftState.new("common.css");
 });
 
 window.addEventListener('DOMContentLoaded', function() {
@@ -235,7 +235,7 @@ window.addEventListener('DOMContentLoaded', function() {
     });
     let next = document.getElementById("next");
     next.addEventListener("click", function() {
-      window.ift_state.extend([12, 13, 14]).then(font => {
+      window.ift_state.current_font_subset().then(font => {
 	const font_data = new Uint8Array(window.ift_memory.buffer, font.data(), font.len());
 	console.log("Font subset: ", font_data);
       });
