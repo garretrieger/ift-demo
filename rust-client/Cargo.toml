@@ -16,6 +16,7 @@ wasm-bindgen-futures = "0.4.50"
 js-sys = "0.3.77"
 web-sys = { version = "0.3.77", features = ['Headers', 'Request', 'RequestInit', 'RequestMode', 'Response', 'Window'] }
 incremental-font-transfer = { git = "https://github.com/googlefonts/fontations.git", default-features = false, features = [ "rust-brotli" ] }
+tokio = { version = "1.43.0", features = [ "sync" ] }
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires
