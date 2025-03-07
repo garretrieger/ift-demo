@@ -4,7 +4,7 @@ let page_index = -1;
 let states = {};
 let also_load_unicode_range = true;
 let show_unicode_range = false;
-let text_samples_promise = fetch("./sample-texts.json").then(response => response.json());
+let text_samples_promise = fetch("./sample-texts.short.json").then(response => response.json());
 
 async function update_all_fonts() {
   if (page_index < 0) {
@@ -113,7 +113,7 @@ function update_fonts(text, font_id, font_face, features, ds) {
     cps_array.push(cp);
   }
 
-  axes = new Map();
+  let axes = new Map();
   for (let [tag, value] of Object.entries(ds)) {
     axes.set(tag, value);
   }
@@ -133,37 +133,37 @@ function save_font(filename, data) {
 
 function patch_codepoints(font_id, font_face, cps, features, axes) {
   if (!states[font_id]) {
-    states[font_id] = new window.Module.State(font_id);
+    states[font_id] = IftState.new(font_id);
   }
   let state = states[font_id];
 
-  for (const [tag, point] of axes) {
-    state.extend_axis(tag, point);
-  }
+  // TODO re-enable once supported.
+  //for (const [tag, point] of axes) {
+  //  state.extend_axis(tag, point);
+  //}
 
-  return new Promise(resolve => {
-    state.extend(cps, features, async function(result) {
-      if (!result) {
-        resolve(result);
-        return;
-      }
-      font_data = state.font_data();
-      font = new FontFace(font_face, font_data);
-      if (font_face == "Title Font") {
-        font.weight = 100;
-      }
-      if (font_id.includes("Playfair")) {
-	font.weight = "300 900";
-	font.stretch = "87.5% 112.5%";
-      }
-      if (font_id.includes("NotoSansSC")) {
-	font.weight = "100 900";
-      }
-      document.fonts.add(font);
-      await font.load();
-      resolve(result);
-    });
-  });
+  // TODO add features once supported.
+
+  state.add_to_target_subset_definition(cps);
+  return state.current_font_subset().then(font => {
+    const font_data = new Uint8Array(window.ift_memory.buffer, font.data(), font.len());
+    font = new FontFace(font_face, font_data);
+    /*
+      TODO reenable once other fonts have been re-added.
+    if (font_face == "Title Font") {
+      font.weight = 100;
+    }
+    if (font_id.includes("Playfair")) {
+      font.weight = "300 900";
+      font.stretch = "87.5% 112.5%";
+    }
+    if (font_id.includes("NotoSansSC")) {
+      font.weight = "100 900";
+    }
+    */
+    document.fonts.add(font);
+    return font.load();
+  })
 }
 
 let pfe_total = 0;
@@ -174,7 +174,7 @@ const observer = new PerformanceObserver((list, obj) => {
     if ((r.name.includes("/experimental/patch_subset")
          || r.name.includes("/fonts/")
          || r.name.includes("_iftb"))
-        && (r.name.endsWith(".ttf") || r.name.endsWith(".otf") || r.name.endsWith(".br") || r.name.endsWith(".woff2"))) {
+        && (r.name.endsWith(".ttf") || r.name.endsWith(".otf") || r.name.endsWith(".tk") || r.name.endsWith(".gk") || r.name.endsWith(".woff2"))) {
       pfe_total += r.transferSize;
     }
     if (r.name.includes("/s/")) {
@@ -223,7 +223,6 @@ function as_string(byte_count) {
 
 init().then(function(Module) {
   window.ift_memory = Module.memory;
-  window.ift_state = IftState.new("fonts/roboto/Roboto-IFT.ttf");
 });
 
 window.addEventListener('DOMContentLoaded', function() {
@@ -235,14 +234,8 @@ window.addEventListener('DOMContentLoaded', function() {
     });
     let next = document.getElementById("next");
     next.addEventListener("click", function() {
-      window.ift_state.add_to_target_subset_definition([0x61, 0x71, 0x72, 0x73]); // {a, q, r, s}
-      window.ift_state.current_font_subset().then(font => {
-	const font_data = new Uint8Array(window.ift_memory.buffer, font.data(), font.len());
-	console.log("Font subset: ", font_data);
-      });
-
-      //page_index++;
-      //update_all_fonts();
+      page_index++;
+      update_all_fonts();
     });
     let sc = document.getElementById("to-small-caps");
     sc.addEventListener("click", function() {

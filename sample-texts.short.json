@@ -1,0 +1,10 @@
+[
+  {"title_font": "fonts/roboto/Roboto-IFT.ttf",
+   "title": "In this first sample only basic latin support is loaded.",
+   "paragraph_font": "fonts/roboto/Roboto-IFT.ttf",
+   "paragraph": [
+     "A peep at some distant orb has power to raise and purify our ",
+     "thoughts like a strain of sacred music, or a noble picture, or a passage from the ",
+     "grander poets. It always does one good."
+   ]}
+]
