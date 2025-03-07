@@ -235,6 +235,7 @@ window.addEventListener('DOMContentLoaded', function() {
     });
     let next = document.getElementById("next");
     next.addEventListener("click", function() {
+      window.ift_state.add_to_target_subset_definition([0x61, 0x71, 0x72, 0x73]); // {a, q, r, s}
       window.ift_state.current_font_subset().then(font => {
 	const font_data = new Uint8Array(window.ift_memory.buffer, font.data(), font.len());
 	console.log("Font subset: ", font_data);

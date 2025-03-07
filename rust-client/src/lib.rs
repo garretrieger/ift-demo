@@ -1,13 +1,13 @@
 mod utils;
 
-use futures::future::{self, join_all, FutureExt};
+use futures::future::join_all;
 use incremental_font_transfer::{
     patch_group::{PatchGroup, UriStatus},
     patchmap::SubsetDefinition,
 };
-use std::future::Future;
 
-use read_fonts::{collections::int_set::IntSet, FontRef};
+use read_fonts::FontRef;
+use std::path::{Path, PathBuf};
 use std::{collections::HashMap, sync::Arc};
 use tokio::sync::Mutex;
 use wasm_bindgen::prelude::*;
@@ -51,7 +51,6 @@ struct InnerState {
 enum Status {
     Uninitialized,
     Ready,
-    LoadingPatches,
     Error(String),
 }
 
@@ -85,13 +84,14 @@ impl IftState {
                 Status::Uninitialized => state.initialize(&self.font_url).await,
                 Status::Error(err) => return Err(err.clone()),
                 Status::Ready => {
-                    todo!()
+                    if let Err(msg) = self.ensure_extended(&mut state).await {
+                        state.status = Status::Error(msg);
+                        continue;
+                    }
+                    break;
                 }
-                _ => break,
             };
         }
-
-        // TODO ...
 
         Ok(FontSubset {
             data: state.font_subset.as_ptr(),
@@ -100,55 +100,67 @@ impl IftState {
     }
 
     async fn ensure_extended(&self, state: &mut InnerState) -> Result<(), String> {
-        // check the current font against the target subset
-        let font =
-            FontRef::new(&state.font_subset).map_err(|_| "Failed to load current font subset.")?;
-        let patch_group = PatchGroup::select_next_patches(font, &self.target_subset_definition)
-            .map_err(|_| "Failed to compute the patch group.")?;
+        loop {
+            state.font_subset = {
+                // check the current font against the target subset
+                let font = FontRef::new(&state.font_subset)
+                    .map_err(|e| format!("Failed to load current font subset: {}", e))?;
+                let patch_group =
+                    PatchGroup::select_next_patches(font, &self.target_subset_definition)
+                        .map_err(|e| format!("Failed to compute the patch group: {}", e))?;
+                if !patch_group.has_uris() {
+                    // No more remaining work.
+                    return Ok(());
+                }
 
-        // if there are pending urls fetch those
-        // once all fetches are done extend the font subset
-        // break out of the loop if no work remaings.
+                // There are pending urls fetch any we don't yet have.
+                self.ensure_patches_loaded(&mut state.patch_cache, &patch_group)
+                    .await?;
 
-        todo!()
+                // Apply them and update the current font subset
+                patch_group
+                    .apply_next_patches(&mut state.patch_cache)
+                    .map_err(|e| format!("Failed to extend the current IFT font subset: {}", e))?
+            };
+        }
     }
 
     async fn ensure_patches_loaded(
         &self,
-        state: &mut InnerState,
+        patch_cache: &mut HashMap<String, UriStatus>,
         patch_group: &PatchGroup<'_>,
     ) -> Result<(), String> {
-        let mut uris_to_load = patch_group
-            .uris()
-            .filter(|uri| {
-                let e = state.patch_cache.entry(uri.to_string());
-                let status = e.or_insert(UriStatus::Pending(Default::default()));
-                matches!(status, UriStatus::Pending(_))
-            })
-            .peekable();
+        // TODO change back to iter
+        let mut uris_to_load: Vec<(&str, String)> = vec![];
+        for uri in patch_group.uris() {
+            if patch_cache.contains_key(uri) {
+                continue;
+            }
+            uris_to_load.push((uri, combine_urls(&self.font_url, uri)));
+        }
 
-        if uris_to_load.peek().is_none() {
+        let uris_to_load = uris_to_load;
+        if uris_to_load.is_empty() {
             // Nothing to do.
             return Ok(());
         };
 
-        // TODO use &str instead of String?
-        let patches: Vec<Result<(String, Vec<u8>), String>> =
-            join_all(uris_to_load.map(|uri| IftState::load_patch(uri))).await;
+        let patches: Vec<Result<(String, Vec<u8>), String>> = join_all(
+            uris_to_load
+                .iter()
+                .map(|(uri, full_uri)| IftState::load_patch(uri, &full_uri)),
+        )
+        .await;
         for result in patches {
             let (uri, data) = result?;
-
-            let Some(UriStatus::Pending(cached_data)) = state.patch_cache.get_mut(&uri) else {
-                continue;
-            };
-            *cached_data = data;
+            patch_cache.insert(uri, UriStatus::Pending(data));
         }
 
         Ok(())
     }
 
-    async fn load_patch(uri: &str) -> Result<(String, Vec<u8>), String> {
-        Ok((uri.to_string(), load_file(uri).await?))
+    async fn load_patch(uri: &str, full_uri: &str) -> Result<(String, Vec<u8>), String> {
+        Ok((uri.to_string(), load_file(full_uri).await?))
     }
 }
 
@@ -176,6 +188,13 @@ impl InnerState {
         };
         self.status = Status::Ready;
     }
+}
+
+fn combine_urls(base: &str, relative: &str) -> String {
+    let mut result = PathBuf::from(Path::new(base));
+    result.pop(); //remove the file name from the base path.
+    result.push(Path::new(relative));
+    result.to_string_lossy().to_string()
 }
 
 async fn load_file(uri: &str) -> Result<Vec<u8>, String> {
