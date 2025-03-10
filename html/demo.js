@@ -1,4 +1,4 @@
-import init, { IftState } from './pkg/rust_client.js';
+import init, { IftState } from './rust-client/pkg/rust_client.js';
 
 let page_index = -1;
 let states = {};
