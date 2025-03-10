@@ -1,0 +1,18 @@
+{
+  "name": "rust-client",
+  "type": "module",
+  "collaborators": [
+    "Garret Rieger <grieger@google.com>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "rust_client_bg.wasm",
+    "rust_client.js",
+    "rust_client.d.ts"
+  ],
+  "main": "rust_client.js",
+  "types": "rust_client.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

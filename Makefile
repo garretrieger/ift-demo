@@ -1,15 +1,23 @@
 
-all: fonts/roboto/Roboto-IFT.woff2
+all: html/rust-client/pkg/rust_client.js fonts
 
-fonts/roboto/Roboto-IFT.woff2: fonts/roboto/Roboto-IFT.ttf
-	woff2_compress --in=fonts/roboto/Roboto-IFT.ttf --out=fonts/roboto/Roboto-IFT.woff2 --allow_transforms=false
+fonts: html/fonts/roboto/Roboto-IFT.woff2
 
-fonts/roboto/Roboto-IFT.ttf: original_fonts//Roboto[wdth,wght].ttf build/roboto_config.txtpb
-	mkdir -p fonts/roboto
+always:
+
+html/rust-client/pkg/rust_client.js: always
+	cd rust-client; wasm-pack build --release --target web
+	cp rust-client/pkg/* html/rust-client/pkg/
+
+html/fonts/roboto/Roboto-IFT.woff2: html/fonts/roboto/Roboto-IFT.ttf
+	woff2_compress --in=html/fonts/roboto/Roboto-IFT.ttf --out=html/fonts/roboto/Roboto-IFT.woff2 --allow_transforms=false
+
+html/fonts/roboto/Roboto-IFT.ttf: original_fonts/Roboto[wdth,wght].ttf build/roboto_config.txtpb
+	mkdir -p html/fonts/roboto
 	bazel run -c opt  @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/original_fonts//Roboto[wdth,wght].ttf \
 		--config=$(CURDIR)/build/roboto_config.txtpb \
-		--output_path=$(CURDIR)/fonts/roboto/ \
+		--output_path=$(CURDIR)/html/fonts/roboto/ \
 		--output_font="Roboto-IFT.ttf"
 
 build/roboto_all_cps.txt: subsets/latin.txt subsets/cyrillic.txt subsets/vietnamese.txt subsets/greek.txt
@@ -30,6 +38,7 @@ build/roboto_glyph_keyed_config.txtpb: original_fonts/Roboto[wdth,wght].ttf buil
 	      --codepoints_file=$(CURDIR)/build/roboto_all_cps.txt --output_encoder_config > $(CURDIR)/build/roboto_glyph_keyed_config.txtpb
 
 clean:
-	rm build/*
-	rm -rf fonts/*
+	rm -f build/*
+	rm -rf rust-client/pkg/*
+	rm -rf html/fonts/* html/rust-client/pkg/*
 
