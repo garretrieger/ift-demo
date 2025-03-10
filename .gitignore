@@ -3,3 +3,7 @@ rust-client/pkg/
 rust-client/target/
 *~
 Cargo.lock
+MODULE.bazel.lock
+build/
+fonts/
+bazel-*

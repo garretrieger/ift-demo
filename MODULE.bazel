@@ -1,0 +1,2 @@
+bazel_dep(name = "ift_encoder", version = "git")
+git_override(module_name = "ift_encoder", remote = "https://github.com/garretrieger/ift-encoder.git", branch = "table_keyed_config")
