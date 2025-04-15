@@ -35,10 +35,17 @@ build/roboto_glyph_keyed_config.txtpb: original_fonts/Roboto[wdth,wght].ttf buil
 	      --input_font=$(CURDIR)/original_fonts/Roboto[wdth,wght].ttf \
 	      --number_of_segments=412 --min_patch_size_bytes=4000 --max_patch_size_bytes=12000 \
 	      --nooutput_segmentation_analysis \
-	      --codepoints_file=$(CURDIR)/build/roboto_all_cps.txt --output_encoder_config > $(CURDIR)/build/roboto_glyph_keyed_config.txtpb
+	      --noinclude_initial_codepoints_in_config \
+	      --initial_codepoints_file=$(CURDIR)/subsets/latin.txt \
+	      --codepoints_file=$(CURDIR)/build/roboto_all_cps.txt \
+	      --output_encoder_config > $(CURDIR)/build/roboto_glyph_keyed_config.txtpb
 
-clean:
+clean: clean_rust
 	rm -f build/*
-	rm -rf rust-client/pkg/*
 	rm -rf html/fonts/* html/rust-client/pkg/*
+
+clean_rust:
+	cd rust-client/; cargo clean
+	rm -rf rust-client/pkg/*
+	rm rust-client/Cargo.lock
 
