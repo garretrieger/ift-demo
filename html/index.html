@@ -16,6 +16,12 @@
       }
     </style>
     <script type="module" src="./demo.js"></script>
+    <script src="cc-client/brotli.js"></script>
+    <script>
+      createModule().then(function(Module) {
+          window.BrotliPatch = Module.BrotliPatch;
+      });
+    </script>
     <link href="fonts.css" rel="stylesheet" />
     <link href="common.css" rel="stylesheet" />
   </head>

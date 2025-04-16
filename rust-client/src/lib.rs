@@ -15,6 +15,17 @@ use wasm_bindgen_futures::JsFuture;
 use web_sys::{Request, RequestInit, RequestMode, Response};
 
 #[wasm_bindgen]
+extern "C" {
+    pub type BrotliPatcher;
+
+    #[wasm_bindgen(structural, method)]
+    pub fn patch(this: &BrotliPatcher, base: &[u8], patch: &[u8]) -> Option<Box<[u8]>>;
+
+    #[wasm_bindgen(js_namespace = console, js_name = log)]
+    fn log_u8(a: u8);
+}
+
+#[wasm_bindgen]
 pub struct IftState {
     font_url: String,
     target_subset_definition: SubsetDefinition,
@@ -75,7 +86,7 @@ impl IftState {
         self.target_subset_definition.codepoints.len() > start_len
     }
 
-    pub async fn current_font_subset(&self) -> Result<FontSubset, String> {
+    pub async fn current_font_subset(&self, patcher: &BrotliPatcher) -> Result<FontSubset, String> {
         let lock = Arc::clone(&self.state);
         let mut state = lock.lock().await;
 
@@ -84,7 +95,7 @@ impl IftState {
                 Status::Uninitialized => state.initialize(&self.font_url).await,
                 Status::Error(err) => return Err(err.clone()),
                 Status::Ready => {
-                    if let Err(msg) = self.ensure_extended(&mut state).await {
+                    if let Err(msg) = self.ensure_extended(&mut state, patcher).await {
                         state.status = Status::Error(msg);
                         continue;
                     }
@@ -99,7 +110,12 @@ impl IftState {
         })
     }
 
-    async fn ensure_extended(&self, state: &mut InnerState) -> Result<(), String> {
+    async fn ensure_extended(
+        &self,
+        state: &mut InnerState,
+        patcher: &BrotliPatcher,
+    ) -> Result<(), String> {
+        // TODO(garretrieger): use brotli patcher in patch application.
         loop {
             state.font_subset = {
                 // check the current font against the target subset
