@@ -131,6 +131,19 @@ function save_font(filename, data) {
   document.body.removeChild(elem);
 }
 
+const patcher = {
+  patch: (a, b) => {
+    // TODO(garretrieger): hook up the the cc-client.
+    // const base_data = new Uint8Array(window.ift_memory.buffer, base.data(), base.len());
+    // const patch_data = new Uint8Array(window.ift_memory.buffer, patch.data(), patch.len());
+    // let patcher = window.BrotliPatch(base_data, patch_data);
+    // patcher.apply(); // TODO check return
+    //return patcher.data();
+    console.log("patcher.patch(", a, ", ", b, ")");
+    return new Uint8Array([7, 8, 9]);
+  }
+};
+
 function patch_codepoints(font_id, font_face, cps, features, axes) {
   if (!states[font_id]) {
     states[font_id] = IftState.new(font_id);
@@ -145,7 +158,7 @@ function patch_codepoints(font_id, font_face, cps, features, axes) {
   // TODO add features once supported.
 
   state.add_to_target_subset_definition(cps);
-  return state.current_font_subset().then(font => {
+  return state.current_font_subset(patcher).then(font => {
     const font_data = new Uint8Array(window.ift_memory.buffer, font.data(), font.len());
     font = new FontFace(font_face, font_data);
     font.weight = "100 900";

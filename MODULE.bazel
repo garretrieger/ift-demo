@@ -1,2 +1,12 @@
 bazel_dep(name = "ift_encoder", version = "git")
 git_override(module_name = "ift_encoder", remote = "https://github.com/garretrieger/ift-encoder.git", branch = "init_codepoints_glyph_keyed")
+
+emsdk_version = "4.0.7"
+bazel_dep(name = "emsdk", version = emsdk_version)
+git_override(
+    module_name = "emsdk",
+    remote = "https://github.com/emscripten-core/emsdk.git",
+    strip_prefix = "bazel",
+    tag = emsdk_version,
+)
+
