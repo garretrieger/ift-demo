@@ -2,6 +2,7 @@
 
 #include "common/brotli_binary_patch.h"
 #include "common/font_data.h"
+#include "woff2/decode.h"
 
 using namespace emscripten;
 using common::hb_blob_unique_ptr;
@@ -38,9 +39,32 @@ class BrotliPatch {
   FontData out;
 };
 
+
+class Woff2Decoder {
+ public:
+  Woff2Decoder(std::string woff2) {
+    woff2::WOFF2StringOut out(&output_buffer);
+    woff2::ConvertWOFF2ToTTF((const uint8_t*) woff2.data(), woff2.size(), &out);
+  }
+
+  emscripten::val data() const {
+    return emscripten::val(emscripten::typed_memory_view(
+        output_buffer.size(), (const uint8_t*) output_buffer.data()));
+  }
+
+ private:
+  std::string output_buffer;
+};
+
 EMSCRIPTEN_BINDINGS(BrotliPatch) {
   emscripten::class_<BrotliPatch>("BrotliPatch")
       .constructor<std::string, std::string>()
           .function("apply", &BrotliPatch::apply)
           .function("data", &BrotliPatch::data);
+}
+
+EMSCRIPTEN_BINDINGS(Woff2Decoder) {
+  emscripten::class_<Woff2Decoder>("Woff2Decoder")
+      .constructor<std::string>()
+          .function("data", &Woff2Decoder::data);
 }
