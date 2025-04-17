@@ -22,5 +22,35 @@
      "đám mây ảm đạm bên dưới lõm xuống và chiếc xe như trôi bồng bềnh giữa quả cầu khổng lồ ",
      "tăm tối.",
      "</span>"
+   ]},
+
+  {"title_font": "fonts/roboto/Roboto-IFT.woff2",
+   "title": "<span style=\"font-weight: 100;\">Алая вспышка осветила силуэт зазубренного крыла.</span>",
+   "paragraph_font": "fonts/roboto/Roboto-IFT.woff2",
+   "paragraph": [
+     "<span style=\"font-weight: 400;\">",
+     "This sample demonstrates loading cyrillic and greek in a single patch: <br/><br/>",
+     "Είναι προικισμένοι με λογική και συνείδηση, και ",
+     "οφείλουν να συμπεριφέρονται μεταξύ τους με πνεύμα αδελφοσύνης. Όλοι οι άνθρωποι ",
+     "γεννιούνται ελεύθεροι και ίσοι στην αξιοπρέπεια και τα δικαιώματα. Είναι προικισμένοι με ",
+     "λογική και συνείδηση, και οφείλουν να συμπεριφέρονται μεταξύ τους με πνεύμα αδελφοσύνης.<br/><br/>",
+     "Высокая гравитация выматывала его, но мышцы изо ",
+     "всех сил пытались приспособиться. Обессиленный, он уже не валился в постель сразу ",
+     "после занятий. Кошмары, не покидавшие его, стали только хуже."
+     "</span>"
+   ]},
+
+  {"title_font": "fonts/roboto/Roboto-IFT.woff2",
+   "title": "<span style=\"font-weight: 100;\">Возвращаться назад предстояло в одиночку.</span>",
+   "paragraph_font": "fonts/roboto/Roboto-IFT.woff2",
+   "paragraph": [
+     "<span style=\"font-weight: 400;\">",
+     "Notice that kerning of punctuation and cyrillic codepoints is different versus unicode range. ",
+     "This happens because kerning rules for punctuation are only defined in the latin subset with unicode range. <br/><br/>",
+     "Мелкие детали значительно замедлили бы работу, ",
+     "поэтому, вопреки моему первоначальному намерению, я решил создать существо огромного ",
+     "размера: мощное, около двух с половиной метров ростом. Потратив несколько месяцев на ",
+     "сбор материалов, я приступил к делу.",
+     "</span>"
    ]}
 ]
