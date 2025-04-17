@@ -11,17 +11,18 @@ using common::FontData;
 
 class BrotliPatch {
  public:
-  BrotliPatch(std::string base_str, std::string patch_str) :
-      patcher(), base_data(make_hb_blob()), patch_data(make_hb_blob()), out() {
-    base_data = make_hb_blob(hb_blob_create(base_str.data(), base_str.length(),
-                                            HB_MEMORY_MODE_READONLY, nullptr, nullptr));
-    patch_data = make_hb_blob(hb_blob_create(patch_str.data(), patch_str.length(),
-                                             HB_MEMORY_MODE_READONLY, nullptr, nullptr));
+  BrotliPatch(std::string base, std::string patch) :
+      patcher(), base_str(base), patch_str(patch), out() {
   }
 
   bool apply() {
-    FontData base(base_data.get());
-    FontData patch(patch_data.get());
+    hb_blob_unique_ptr base_blob = make_hb_blob(hb_blob_create(base_str.data(), base_str.length(),
+                                                               HB_MEMORY_MODE_READONLY, nullptr, nullptr));
+    hb_blob_unique_ptr patch_blob = make_hb_blob(hb_blob_create(patch_str.data(), patch_str.length(),
+                                                               HB_MEMORY_MODE_READONLY, nullptr, nullptr));
+    FontData base(base_blob.get());
+    FontData patch(patch_blob.get());
+
     return patcher.Patch(base, patch, &out).ok();
   }
 
@@ -32,8 +33,8 @@ class BrotliPatch {
 
  private:
   common::BrotliBinaryPatch patcher;
-  hb_blob_unique_ptr base_data;
-  hb_blob_unique_ptr patch_data;
+  std::string base_str;
+  std::string patch_str;
   FontData out;
 };
 

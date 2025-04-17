@@ -132,15 +132,13 @@ function save_font(filename, data) {
 }
 
 const patcher = {
-  patch: (a, b) => {
-    // TODO(garretrieger): hook up the the cc-client.
-    // const base_data = new Uint8Array(window.ift_memory.buffer, base.data(), base.len());
-    // const patch_data = new Uint8Array(window.ift_memory.buffer, patch.data(), patch.len());
-    // let patcher = window.BrotliPatch(base_data, patch_data);
-    // patcher.apply(); // TODO check return
-    //return patcher.data();
-    console.log("patcher.patch(", a, ", ", b, ")");
-    return new Uint8Array([7, 8, 9]);
+  patch: (base_data, patch_data) => {
+    let patcher = new window.BrotliPatch(base_data, patch_data);
+    if (!patcher.apply()) {
+      return undefined;
+    }
+
+    return patcher.data();
   }
 };
 
@@ -188,7 +186,7 @@ const observer = new PerformanceObserver((list, obj) => {
     if ((r.name.includes("/experimental/patch_subset")
          || r.name.includes("/fonts/")
          || r.name.includes("_iftb"))
-        && (r.name.endsWith(".ttf") || r.name.endsWith(".otf") || r.name.endsWith(".tk") || r.name.endsWith(".gk") || r.name.endsWith(".woff2"))) {
+        && (r.name.endsWith(".ttf") || r.name.endsWith(".otf") || r.name.endsWith(".ift_tk") || r.name.endsWith(".ift_gk") || r.name.endsWith(".woff2"))) {
       pfe_total += r.transferSize;
     }
     if (r.name.includes("/s/")) {
