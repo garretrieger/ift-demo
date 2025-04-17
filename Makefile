@@ -1,5 +1,5 @@
 
-all: html/rust-client/pkg/rust_client.js fonts
+all: html/rust-client/pkg/rust_client.js html/cc-client/brotli.js fonts
 
 fonts: html/fonts/roboto/Roboto-IFT.woff2
 
@@ -8,6 +8,11 @@ always:
 html/rust-client/pkg/rust_client.js: always
 	cd rust-client; wasm-pack build --release --target web
 	cp rust-client/pkg/* html/rust-client/pkg/
+
+html/cc-client/brotli.js: always
+	bazel build cc-client:brotli-wasm
+	mkdir -p html/cc-client/
+	cat bazel-bin/cc-client/brotli-wasm/brotli-wasm.js > html/cc-client/brotli.js
 
 html/fonts/roboto/Roboto-IFT.woff2: html/fonts/roboto/Roboto-IFT.ttf
 	woff2_compress --in=html/fonts/roboto/Roboto-IFT.ttf --out=html/fonts/roboto/Roboto-IFT.woff2 --allow_transforms=false

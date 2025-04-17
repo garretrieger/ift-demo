@@ -7,6 +7,7 @@ use incremental_font_transfer::{
 };
 
 use read_fonts::FontRef;
+use shared_brotli_patch_decoder::{decode_error::DecodeError, SharedBrotliDecoder};
 use std::path::{Path, PathBuf};
 use std::{collections::HashMap, sync::Arc};
 use tokio::sync::Mutex;
@@ -23,6 +24,27 @@ extern "C" {
 
     #[wasm_bindgen(js_namespace = console, js_name = log)]
     fn log_u8(a: u8);
+}
+
+impl SharedBrotliDecoder for BrotliPatcher {
+    fn decode(
+        &self,
+        encoded: &[u8],
+        shared_dictionary: Option<&[u8]>,
+        max_uncompressed_length: usize,
+    ) -> Result<Vec<u8>, DecodeError> {
+        let bytes = match shared_dictionary {
+            None => self.patch(&[], encoded),
+            Some(shared_dictionary) => self.patch(shared_dictionary, encoded),
+        }
+        .ok_or(DecodeError::InvalidStream)?;
+
+        if bytes.len() > max_uncompressed_length {
+            return Err(DecodeError::MaxSizeExceeded);
+        }
+
+        Ok(bytes.iter().copied().collect())
+    }
 }
 
 #[wasm_bindgen]
@@ -115,7 +137,6 @@ impl IftState {
         state: &mut InnerState,
         patcher: &BrotliPatcher,
     ) -> Result<(), String> {
-        // TODO(garretrieger): use brotli patcher in patch application.
         loop {
             state.font_subset = {
                 // check the current font against the target subset
@@ -135,7 +156,7 @@ impl IftState {
 
                 // Apply them and update the current font subset
                 patch_group
-                    .apply_next_patches(&mut state.patch_cache)
+                    .apply_next_patches_with_decoder(&mut state.patch_cache, patcher)
                     .map_err(|e| format!("Failed to extend the current IFT font subset: {}", e))?
             };
         }
