@@ -31,9 +31,10 @@ build/roboto_all_cps.txt: subsets/latin.txt subsets/cyrillic.txt subsets/vietnam
 build/roboto_config.txtpb: build/roboto_table_keyed_config.txtpb build/roboto_glyph_keyed_config.txtpb
 	cat build/roboto_glyph_keyed_config.txtpb build/roboto_table_keyed_config.txtpb > build/roboto_config.txtpb
 
-build/roboto_table_keyed_config.txtpb: subsets/latin.txt subsets/cyrillic.txt subsets/vietnamese.txt subsets/greek.txt
+build/roboto_table_keyed_config.txtpb: subsets/latin.txt subsets/cyrillic.txt subsets/vietnamese.txt subsets/greek.txt original_fonts/roboto_additional_config.txtpb
 	bazel run -c opt @ift_encoder//util:generate_table_keyed_config -- \
 		$(CURDIR)/subsets/{latin,cyrillic,vietnamese,greek}.txt > $(CURDIR)/build/roboto_table_keyed_config.txtpb
+	cat $(CURDIR)/original_fonts/roboto_additional_config.txtpb >> $(CURDIR)/build/roboto_table_keyed_config.txtpb
 
 build/roboto_glyph_keyed_config.txtpb: original_fonts/Roboto[wdth,wght].ttf build/roboto_all_cps.txt
 	bazel run -c opt @ift_encoder//util:closure_glyph_keyed_segmenter_util -- \
