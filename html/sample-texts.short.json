@@ -55,7 +55,7 @@
    ]},
   
   {"title_font": "fonts/roboto/Roboto-IFT.woff2",
-   "title": "<span style=\"font-weight: 300; font-stretch: 87.5%;\">Variable <span style=\"font-weight: 900;\">Design Space</span> Augmentation Example (Condensed)</span>",
+   "title": "<span style=\"font-weight: 300; font-stretch: 75%;\">Variable <span style=\"font-weight: 900;\">Design Space</span> Augmentation Example (Condensed)</span>",
    "paragraph_font": "fonts/roboto/Roboto-IFT.woff2",
    "title_design_space": {
      "wdth": 87.5

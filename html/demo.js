@@ -169,6 +169,9 @@ function patch_codepoints(font_id, font_face, cps, features, axes) {
     const font_data = new Uint8Array(window.ift_memory.buffer, font.data(), font.len());
     font = new FontFace(font_face, font_data);
     font.weight = "100 900";
+    if (font_id.includes("Roboto")) {
+      font.stretch = "75% 100%";
+    }
     /*
       TODO reenable once other fonts have been re-added.
     if (font_face == "Title Font") {

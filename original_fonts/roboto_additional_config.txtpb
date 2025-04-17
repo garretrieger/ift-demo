@@ -7,3 +7,12 @@ initial_design_space {
     }
   }
 }
+non_glyph_design_space_segmentation {
+  ranges {
+    key: "wdth"
+    value: {
+      start: 75.0
+      end: 100.0
+    }
+  }
+}
