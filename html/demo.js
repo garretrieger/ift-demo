@@ -155,10 +155,12 @@ function patch_codepoints(font_id, font_face, cps, features, axes) {
   }
   let state = states[font_id];
 
-  // TODO re-enable once supported.
-  //for (const [tag, point] of axes) {
-  //  state.extend_axis(tag, point);
-  //}
+  // TODO(garretrieger): check return values of add_* methods and don't update the font
+  //                     if no changes are made.
+
+  for (const [tag, point] of axes) {
+    state.add_design_space_to_target_subset_definition(tag, point, point);
+  }
 
   // TODO add features once supported.
 

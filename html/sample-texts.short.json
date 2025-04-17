@@ -36,7 +36,7 @@
      "λογική και συνείδηση, και οφείλουν να συμπεριφέρονται μεταξύ τους με πνεύμα αδελφοσύνης.<br/><br/>",
      "Высокая гравитация выматывала его, но мышцы изо ",
      "всех сил пытались приспособиться. Обессиленный, он уже не валился в постель сразу ",
-     "после занятий. Кошмары, не покидавшие его, стали только хуже."
+     "после занятий. Кошмары, не покидавшие его, стали только хуже.",
      "</span>"
    ]},
 
@@ -52,5 +52,19 @@
      "размера: мощное, около двух с половиной метров ростом. Потратив несколько месяцев на ",
      "сбор материалов, я приступил к делу.",
      "</span>"
+   ]},
+  
+  {"title_font": "fonts/roboto/Roboto-IFT.woff2",
+   "title": "<span style=\"font-weight: 300; font-stretch: 87.5%;\">Variable <span style=\"font-weight: 900;\">Design Space</span> Augmentation Example (Condensed)</span>",
+   "paragraph_font": "fonts/roboto/Roboto-IFT.woff2",
+   "title_design_space": {
+     "wdth": 87.5
+   },
+   "paragraph": [
+     "<span style=\"font-weight: 400;\">",
+     "Here the width axis has been loaded on demand ",
+     "to display the title in the condensed style.",
+     "</span>"
    ]}
+
 ]

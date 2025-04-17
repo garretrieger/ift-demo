@@ -3,10 +3,14 @@ mod utils;
 use futures::future::join_all;
 use incremental_font_transfer::{
     patch_group::{PatchGroup, UriStatus},
-    patchmap::SubsetDefinition,
+    patchmap::{DesignSpace, SubsetDefinition},
 };
 
-use read_fonts::FontRef;
+use read_fonts::{
+    collections::RangeSet,
+    types::{Fixed, Tag},
+    FontRef,
+};
 use shared_brotli_patch_decoder::{decode_error::DecodeError, SharedBrotliDecoder};
 use std::path::{Path, PathBuf};
 use std::{collections::HashMap, sync::Arc};
@@ -111,6 +115,35 @@ impl IftState {
             .codepoints
             .extend_unsorted(codepoints.iter().map(|v| *v));
         self.target_subset_definition.codepoints.len() > start_len
+    }
+
+    pub fn add_design_space_to_target_subset_definition(
+        &mut self,
+        tag: &str,
+        start: f64,
+        end: f64,
+    ) -> bool {
+        let Ok(tag) = Tag::new_checked(tag.as_bytes()) else {
+            return false;
+        };
+
+        let range = Fixed::from_f64(start)..=Fixed::from_f64(end);
+        match &mut self.target_subset_definition.design_space {
+            DesignSpace::All => {
+                let mut ranges: RangeSet<Fixed> = Default::default();
+                ranges.insert(range);
+                self.target_subset_definition.design_space =
+                    DesignSpace::Ranges([(tag, ranges)].into_iter().collect());
+                true
+            }
+            DesignSpace::Ranges(ranges) => {
+                let range_set = ranges.entry(tag).or_default();
+                range_set.insert(range);
+                // TODO(garretrieger): detect if a change was made or not.
+                //   return true only if the insert made a change.
+                true
+            }
+        }
     }
 
     pub async fn current_font_subset(
