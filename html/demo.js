@@ -142,6 +142,13 @@ const patcher = {
   }
 };
 
+const woff2_decoder = {
+  unwoff2: (encoded) => {
+    let decoder = new window.Woff2Decoder(encoded);
+    return decoder.data();
+  }
+}
+
 function patch_codepoints(font_id, font_face, cps, features, axes) {
   if (!states[font_id]) {
     states[font_id] = IftState.new(font_id);
@@ -156,7 +163,7 @@ function patch_codepoints(font_id, font_face, cps, features, axes) {
   // TODO add features once supported.
 
   state.add_to_target_subset_definition(cps);
-  return state.current_font_subset(patcher).then(font => {
+  return state.current_font_subset(patcher, woff2_decoder).then(font => {
     const font_data = new Uint8Array(window.ift_memory.buffer, font.data(), font.len());
     font = new FontFace(font_face, font_data);
     font.weight = "100 900";

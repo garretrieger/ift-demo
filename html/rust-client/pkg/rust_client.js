@@ -229,7 +229,7 @@ function __wbg_adapter_22(arg0, arg1, arg2) {
     wasm.closure30_externref_shim(arg0, arg1, arg2);
 }
 
-function __wbg_adapter_60(arg0, arg1, arg2, arg3) {
+function __wbg_adapter_62(arg0, arg1, arg2, arg3) {
     wasm.closure42_externref_shim(arg0, arg1, arg2, arg3);
 }
 
@@ -326,10 +326,11 @@ export class IftState {
     }
     /**
      * @param {any} patcher
+     * @param {any} woff2
      * @returns {Promise<FontSubset>}
      */
-    current_font_subset(patcher) {
-        const ret = wasm.iftstate_current_font_subset(this.__wbg_ptr, patcher);
+    current_font_subset(patcher, woff2) {
+        const ret = wasm.iftstate_current_font_subset(this.__wbg_ptr, patcher, woff2);
         return ret;
     }
 }
@@ -423,7 +424,7 @@ function __wbg_get_imports() {
                 const a = state0.a;
                 state0.a = 0;
                 try {
-                    return __wbg_adapter_60(a, state0.b, arg0, arg1);
+                    return __wbg_adapter_62(a, state0.b, arg0, arg1);
                 } finally {
                     state0.a = a;
                 }
@@ -505,6 +506,13 @@ function __wbg_get_imports() {
         const ret = arg0.then(arg1, arg2);
         return ret;
     };
+    imports.wbg.__wbg_unwoff2_510001d5d7a20be1 = function(arg0, arg1, arg2, arg3) {
+        const ret = arg1.unwoff2(getArrayU8FromWasm0(arg2, arg3));
+        const ptr1 = passArray8ToWasm0(ret, wasm.__wbindgen_malloc);
+        const len1 = WASM_VECTOR_LEN;
+        getDataViewMemory0().setInt32(arg0 + 4 * 1, len1, true);
+        getDataViewMemory0().setInt32(arg0 + 4 * 0, ptr1, true);
+    };
     imports.wbg.__wbindgen_cb_drop = function(arg0) {
         const obj = arg0.original;
         if (obj.cnt-- == 1) {
@@ -514,7 +522,7 @@ function __wbg_get_imports() {
         const ret = false;
         return ret;
     };
-    imports.wbg.__wbindgen_closure_wrapper293 = function(arg0, arg1, arg2) {
+    imports.wbg.__wbindgen_closure_wrapper296 = function(arg0, arg1, arg2) {
         const ret = makeMutClosure(arg0, arg1, 31, __wbg_adapter_22);
         return ret;
     };

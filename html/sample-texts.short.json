@@ -1,7 +1,7 @@
 [
-  {"title_font": "fonts/roboto/Roboto-IFT.ttf",
+  {"title_font": "fonts/roboto/Roboto-IFT.woff2",
    "title": "<span style=\"font-weight: 100;\">In this first sample only basic latin support is loaded.</span>",
-   "paragraph_font": "fonts/roboto/Roboto-IFT.ttf",
+   "paragraph_font": "fonts/roboto/Roboto-IFT.woff2",
    "paragraph": [
      "<span style=\"font-weight: 400;\">",
      "A peep at some distant orb has power to raise and purify our ",
@@ -9,9 +9,9 @@
      "grander poets. It always does one good.",
      "</span>"
    ]},
-  {"title_font": "fonts/roboto/Roboto-IFT.ttf",
+  {"title_font": "fonts/roboto/Roboto-IFT.woff2",
    "title": "<span style=\"font-weight: 100;\">Bầu trời trong xanh thăm thẳm, không một gợn mây.</span>",
-   "paragraph_font": "fonts/roboto/Roboto-IFT.ttf",
+   "paragraph_font": "fonts/roboto/Roboto-IFT.woff2",
    "paragraph": [
      "<span style=\"font-weight: 400;\">",
      "Here we augment the font to add support for vietnamese. Notice that kerning is different ",

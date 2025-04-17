@@ -1,6 +1,7 @@
 bazel_dep(name = "ift_encoder", version = "git")
 git_override(module_name = "ift_encoder", remote = "https://github.com/garretrieger/ift-encoder.git", branch = "init_codepoints_glyph_keyed")
 
+# Emscripten for WASM compilation
 emsdk_version = "4.0.7"
 bazel_dep(name = "emsdk", version = emsdk_version)
 git_override(
@@ -8,5 +9,26 @@ git_override(
     remote = "https://github.com/emscripten-core/emsdk.git",
     strip_prefix = "bazel",
     tag = emsdk_version,
+)
+
+### Non Bazel Modules ###
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# WOFF2 Decoder
+http_archive(
+    name = "woff2",
+    build_file = "//third_party:woff2.BUILD",
+    sha256 = "730b7f9de381c7b5b09c81841604fa10c5dd67628822fa377b776ab7929fe18c",
+    strip_prefix = "woff2-c8c0d339131e8f1889ae8aac0075913d98d9a722",
+    url = "https://github.com/google/woff2/archive/c8c0d339131e8f1889ae8aac0075913d98d9a722.zip",
+)
+
+# Brotli Encoder/Decoder
+http_archive(
+    name = "brotli",
+    build_file = "//third_party:brotli.BUILD",
+    sha256 = "3b90c83489879701c05f39b68402ab9e5c880ec26142b5447e73afdda62ce525",
+    strip_prefix = "brotli-71fe6cac061ac62c0241f410fbd43a04a6b4f303",
+    url = "https://github.com/google/brotli/archive/71fe6cac061ac62c0241f410fbd43a04a6b4f303.zip",
 )
 

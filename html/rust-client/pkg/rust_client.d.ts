@@ -16,7 +16,7 @@ export class IftState {
    * Returns true if at least one new codepoint was added to the definition.
    */
   add_to_target_subset_definition(codepoints: Uint32Array): boolean;
-  current_font_subset(patcher: any): Promise<FontSubset>;
+  current_font_subset(patcher: any, woff2: any): Promise<FontSubset>;
 }
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
@@ -29,7 +29,7 @@ export interface InitOutput {
   readonly fontsubset_data: (a: number) => number;
   readonly iftstate_new: (a: number, b: number) => number;
   readonly iftstate_add_to_target_subset_definition: (a: number, b: number, c: number) => number;
-  readonly iftstate_current_font_subset: (a: number, b: any) => any;
+  readonly iftstate_current_font_subset: (a: number, b: any, c: any) => any;
   readonly __wbindgen_exn_store: (a: number) => void;
   readonly __externref_table_alloc: () => number;
   readonly __wbindgen_export_2: WebAssembly.Table;

@@ -22,6 +22,11 @@ extern "C" {
     #[wasm_bindgen(structural, method)]
     pub fn patch(this: &BrotliPatcher, base: &[u8], patch: &[u8]) -> Option<Box<[u8]>>;
 
+    pub type Woff2Decoder;
+
+    #[wasm_bindgen(structural, method)]
+    pub fn unwoff2(this: &Woff2Decoder, encoded: &[u8]) -> Box<[u8]>;
+
     #[wasm_bindgen(js_namespace = console, js_name = log)]
     fn log_u8(a: u8);
 }
@@ -108,13 +113,17 @@ impl IftState {
         self.target_subset_definition.codepoints.len() > start_len
     }
 
-    pub async fn current_font_subset(&self, patcher: &BrotliPatcher) -> Result<FontSubset, String> {
+    pub async fn current_font_subset(
+        &self,
+        patcher: &BrotliPatcher,
+        woff2: &Woff2Decoder,
+    ) -> Result<FontSubset, String> {
         let lock = Arc::clone(&self.state);
         let mut state = lock.lock().await;
 
         loop {
             match &state.status {
-                Status::Uninitialized => state.initialize(&self.font_url).await,
+                Status::Uninitialized => state.initialize(&self.font_url, woff2).await,
                 Status::Error(err) => return Err(err.clone()),
                 Status::Ready => {
                     if let Err(msg) = self.ensure_extended(&mut state, patcher).await {
@@ -210,19 +219,23 @@ impl InnerState {
         }
     }
 
-    async fn initialize(&mut self, init_font_url: &str) {
+    async fn initialize(&mut self, init_font_url: &str, woff2: &Woff2Decoder) {
         if matches!(self.status, Status::Uninitialized) {
         } else {
             panic!("Can only be called on an uninitialized client.");
         }
 
-        self.font_subset = match load_file(init_font_url).await {
+        let woff2_data = match load_file(init_font_url).await {
             Err(msg) => {
                 self.status = Status::Error(msg);
                 return;
             }
             Ok(data) => data,
         };
+
+        let ttf = woff2.unwoff2(&woff2_data);
+        self.font_subset = ttf.iter().copied().collect();
+
         self.status = Status::Ready;
     }
 }
