@@ -46,7 +46,7 @@ impl SharedBrotliDecoder for BrotliPatcher {
             None => self.patch(&[], encoded),
             Some(shared_dictionary) => self.patch(shared_dictionary, encoded),
         }
-        .ok_or(DecodeError::InvalidStream)?;
+        .ok_or(DecodeError::InvalidStream("".to_string()))?;
 
         if bytes.len() > max_uncompressed_length {
             return Err(DecodeError::MaxSizeExceeded);
@@ -198,7 +198,7 @@ impl IftState {
 
                 // Apply them and update the current font subset
                 patch_group
-                    .apply_next_patches_with_decoder(&mut state.patch_cache, patcher)
+                    .apply_next_patches(&mut state.patch_cache)
                     .map_err(|e| format!("Failed to extend the current IFT font subset: {}", e))?
             };
         }
