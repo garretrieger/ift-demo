@@ -17,13 +17,19 @@ html/cc-client/brotli.js: always
 html/fonts/roboto/Roboto-IFT.woff2: html/fonts/roboto/Roboto-IFT.ttf
 	woff2_compress --in=html/fonts/roboto/Roboto-IFT.ttf --out=html/fonts/roboto/Roboto-IFT.woff2 --allow_transforms=false
 
-html/fonts/roboto/Roboto-IFT.ttf: original_fonts/Roboto[wdth,wght].ttf build/roboto_config.txtpb
+html/fonts/roboto/Roboto-IFT.ttf: build/Roboto-Preprocessed.ttf build/roboto_config.txtpb
 	mkdir -p html/fonts/roboto
 	bazel run -c opt  @ift_encoder//util:font2ift -- \
-		--input_font=$(CURDIR)/original_fonts//Roboto[wdth,wght].ttf \
+		--input_font=$(CURDIR)/build/Roboto-Preprocessed.ttf \
 		--config=$(CURDIR)/build/roboto_config.txtpb \
 		--output_path=$(CURDIR)/html/fonts/roboto/ \
 		--output_font="Roboto-IFT.ttf"
+
+build/Roboto-Preprocessed.ttf: original_fonts/Roboto[wdth,wght].ttf
+	bazel run @harfbuzz//:hb-subset -- $(CURDIR)/original_fonts/Roboto[wdth,wght].ttf \
+		--keep-everything \
+		--no-hinting \
+		-o $(CURDIR)/build/Roboto-Preprocessed.ttf
 
 build/roboto_all_cps.txt: subsets/latin.txt subsets/cyrillic.txt subsets/vietnamese.txt subsets/greek.txt
 	cat subsets/{latin,cyrillic,vietnamese,greek}.txt > build/roboto_all_cps.txt
