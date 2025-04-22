@@ -1,6 +1,9 @@
 bazel_dep(name = "ift_encoder", version = "git")
 git_override(module_name = "ift_encoder", remote = "https://github.com/garretrieger/ift-encoder.git", branch = "init_codepoints_glyph_keyed")
 
+bazel_dep(name = "platforms", version = "0.0.11")
+bazel_dep(name = "glib", version = "2.82.2.bcr.5")
+
 # Emscripten for WASM compilation
 emsdk_version = "4.0.7"
 bazel_dep(name = "emsdk", version = emsdk_version)
@@ -32,3 +35,11 @@ http_archive(
     url = "https://github.com/google/brotli/archive/71fe6cac061ac62c0241f410fbd43a04a6b4f303.zip",
 )
 
+# Harfbuzz
+http_archive(
+    name = "harfbuzz",
+    build_file = "//third_party:harfbuzz.BUILD",
+    integrity = "sha256-LwhLlBZXpUZKSXuC/wc0X2jNTkALysLYVxL7vHGG2R0=",
+    strip_prefix = "harfbuzz-87bbb9fadf45ee04c7425d7e8f22072fdd827edb",
+    urls = ["https://github.com/harfbuzz/harfbuzz/archive/87bbb9fadf45ee04c7425d7e8f22072fdd827edb.zip"],
+)
