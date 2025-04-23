@@ -43,6 +43,7 @@ async function update_all_fonts() {
       document.getElementById("title_ur").classList.remove("playfair");
     }
 
+
     let p1 = update_fonts(title_text,
 			  title_font,
 			  "Title Font",
@@ -53,8 +54,12 @@ async function update_all_fonts() {
 			  "Paragraph Font",
 			  paragraph_features,
 			  paragraph_ds);
-    await p1;
-    await p2;
+
+    let f1 = await p1;
+    let f2 = await p2;
+    document.fonts.clear();
+    document.fonts.add(f1);
+    document.fonts.add(f2);
 
     document.getElementById("title_pfe").innerHTML = title_text;
     document.getElementById("paragraph_pfe").innerHTML = paragraph_text;
@@ -175,7 +180,7 @@ function patch_codepoints(font_id, font_face, cps, features, axes) {
     if (font_id.includes("NotoSerif")) {
       font.weight = "200 900";
     }
-    document.fonts.add(font);
+
     return font.load();
   })
 }
@@ -268,12 +273,12 @@ window.addEventListener('DOMContentLoaded', function() {
     });
     let w = document.getElementById("to-width");
     w.addEventListener("click", function() {
-        page_index = 5;
+        page_index = 4;
         update_all_fonts();
     });
     let sim_chinese = document.getElementById("to-sim-chinese");
     sim_chinese.addEventListener("click", function() {
-        page_index = 7;
+        page_index = 5;
         update_all_fonts();
     });
     let lo_freq_sim_chinese = document.getElementById("to-lo-freq-sim-chinese");
