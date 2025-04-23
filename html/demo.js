@@ -178,7 +178,7 @@ function patch_codepoints(font_id, font_face, cps, features, axes) {
       font.stretch = "75% 100%";
     }
     if (font_id.includes("NotoSerif")) {
-      font.weight = "200 900";
+      font.weight = "900";
     }
 
     return font.load();
