@@ -46,7 +46,7 @@ impl SharedBrotliDecoder for BrotliPatcher {
             None => self.patch(&[], encoded),
             Some(shared_dictionary) => self.patch(shared_dictionary, encoded),
         }
-        .ok_or(DecodeError::InvalidStream("".to_string()))?;
+        .ok_or(DecodeError::InvalidStream)?;
 
         if bytes.len() > max_uncompressed_length {
             return Err(DecodeError::MaxSizeExceeded);
