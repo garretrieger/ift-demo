@@ -78,7 +78,7 @@ build/noto_serif_high_freq_config.txtpb: build/noto_serif_high_freq_glyph_keyed_
 build/noto_serif_high_freq_glyph_keyed_config.txtpb: build/NotoSerifSC-HighFreq.otf subsets/simplified-chinese-ordered.txt
 	bazel run -c opt @ift_encoder//util:closure_glyph_keyed_segmenter_util -- \
 	      --input_font=$(CURDIR)/build/NotoSerifSC-HighFreq.otf \
-	      --number_of_segments=17792 --min_patch_size_bytes=3000 --max_patch_size_bytes=12000 \
+	      --number_of_segments=17792 --min_patch_size_bytes=2000 --max_patch_size_bytes=12000 \
 	      --nooutput_segmentation_analysis \
 	      --noinclude_initial_codepoints_in_config \
 	      --initial_codepoints_file=$(CURDIR)/subsets/empty.txt \
@@ -115,7 +115,7 @@ build/noto_sans_high_freq_config.txtpb: build/noto_sans_high_freq_glyph_keyed_co
 build/noto_sans_high_freq_glyph_keyed_config.txtpb: build/NotoSansSC-HighFreq.ttf subsets/simplified-chinese-ordered.txt
 	bazel run -c opt @ift_encoder//util:closure_glyph_keyed_segmenter_util -- \
 	      --input_font=$(CURDIR)/build/NotoSansSC-HighFreq.ttf \
-	      --number_of_segments=17792 --min_patch_size_bytes=3000 --max_patch_size_bytes=12000 \
+	      --number_of_segments=17792 --min_patch_size_bytes=2000 --max_patch_size_bytes=12000 \
 	      --nooutput_segmentation_analysis \
 	      --noinclude_initial_codepoints_in_config \
 	      --initial_codepoints_file=$(CURDIR)/subsets/empty.txt \
