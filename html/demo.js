@@ -180,6 +180,9 @@ function patch_codepoints(font_id, font_face, cps, features, axes) {
     if (font_id.includes("NotoSerif")) {
       font.weight = "900";
     }
+    if (font_id.includes("NotoSans")) {
+      font.weight = "100 900";
+    }
 
     return font.load();
   })
