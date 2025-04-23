@@ -1,7 +1,7 @@
 
 all: html/rust-client/pkg/rust_client.js html/cc-client/brotli.js fonts
 
-fonts: html/fonts/roboto/Roboto-IFT.woff2 html/fonts/notoserif/NotoSerifcSC-HighFreq-IFT.woff2
+fonts: html/fonts/roboto/Roboto-IFT.woff2 html/fonts/notoserif/NotoSerifSC-HighFreq-IFT.woff2
 
 always:
 
@@ -58,16 +58,16 @@ build/NotoSerifSC-HighFreq.otf: original_fonts/NotoSerifSC-VF.otf build/simplifi
 		--no-hinting \
 		-o $(CURDIR)/build/NotoSerifSC-HighFreq.otf
 
-html/fonts/notoserif/NotoSerifcSC-HighFreq-IFT.otf: build/NotoSerifSC-HighFreq.otf build/noto_serif_high_freq_config.txtpb
+html/fonts/notoserif/NotoSerifSC-HighFreq-IFT.otf: build/NotoSerifSC-HighFreq.otf build/noto_serif_high_freq_config.txtpb
 	mkdir -p html/fonts/notoserif
 	bazel run -c opt  @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSerifSC-HighFreq.otf \
 		--config=$(CURDIR)/build/noto_serif_high_freq_config.txtpb \
 		--output_path=$(CURDIR)/html/fonts/notoserif/ \
-		--output_font="NotoSerifcSC-HighFreq-IFT.otf"
+		--output_font="NotoSerifSC-HighFreq-IFT.otf"
 
-html/fonts/notoserif/NotoSerifcSC-HighFreq-IFT.woff2: html/fonts/notoserif/NotoSerifcSC-HighFreq-IFT.otf
-	woff2_compress --in=html/fonts/notoserif/NotoSerifcSC-HighFreq-IFT.otf --out=html/fonts/notoserif/NotoSerifcSC-HighFreq-IFT.woff2 --allow_transforms=false
+html/fonts/notoserif/NotoSerifSC-HighFreq-IFT.woff2: html/fonts/notoserif/NotoSerifSC-HighFreq-IFT.otf
+	woff2_compress --in=html/fonts/notoserif/NotoSerifSC-HighFreq-IFT.otf --out=html/fonts/notoserif/NotoSerifSC-HighFreq-IFT.woff2 --allow_transforms=false
 
 build/simplified-chinese_split1_unicodes.txt: subsets/simplified-chinese_split1.txt
 	cat $(CURDIR)/subsets/simplified-chinese_split1.txt | awk '{print substr($$1, 3)}' > build/simplified-chinese_split1_unicodes.txt
