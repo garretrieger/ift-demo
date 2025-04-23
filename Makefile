@@ -56,6 +56,7 @@ build/NotoSerifSC-HighFreq.otf: original_fonts/NotoSerifSC-VF.otf build/simplifi
 	bazel run @harfbuzz//:hb-subset -- $(CURDIR)/original_fonts/NotoSerifSC-VF.otf \
 		--unicodes-file=$(CURDIR)/build/simplified-chinese_split1_unicodes.txt \
 		--no-hinting \
+		--instance="wght=900" \
 		-o $(CURDIR)/build/NotoSerifSC-HighFreq.otf
 
 html/fonts/notoserif/NotoSerifSC-HighFreq-IFT.otf: build/NotoSerifSC-HighFreq.otf build/noto_serif_high_freq_config.txtpb
