@@ -68,9 +68,9 @@
      "</span>"
    ]},
 
-  {"title_font": "fonts/notoserif/NotoSerifSC-HighFreq-IFT.woff2",
+  {"title_font": "fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2",
    "title": "<span style=\"font-weight: 900;\">《出师表》〔两汉〕诸葛亮</span>",
-   "paragraph_font": "fonts/notosans/NotoSansSC-HighFreq-IFT.woff2",
+   "paragraph_font": "fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2",
    "paragraph": [
      "<span style=\"font-weight: 200\">",
      "<p>先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。然侍卫之臣不懈于内，忠志之士忘身于外者，盖追先帝之殊遇，欲报之于陛下也。诚宜开张圣听，以光先帝遗德，恢弘志士之气，不宜妄自菲薄，引喻失义，以塞忠谏之路也。</p>",
@@ -84,9 +84,9 @@
      "</span>"
    ]},
 
-    {"title_font": "fonts/notoserif/NotoSerifSC-HighFreq-IFT.woff2",
+  {"title_font": "fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2",
    "title": "<span style=\"font-weight: 900;\">红色火光映出锯齿形机翼的轮廓。</span>",
-   "paragraph_font": "fonts/notosans/NotoSansSC-HighFreq-IFT.woff2",
+   "paragraph_font": "fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2",
    "paragraph_design_space": {
      "wght": 400
    },
@@ -100,9 +100,9 @@
      "</span>"
    ]},
 
-  {"title_font": "fonts/notoserif/NotoSerifSC-HighFreq-IFT.woff2",
+  {"title_font": "fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2",
    "title": "<span style=\"font-weight: 900;\">我看着暴风雨，美不胜收却也惊心动魄。</span>",
-   "paragraph_font": "fonts/notosans/NotoSansSC-HighFreq-IFT.woff2",
+   "paragraph_font": "fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2",
    "paragraph_design_space": {
      "wght": 700
    },
@@ -115,9 +115,9 @@
      "</span>"
    ]},
   
-  {"title_font": "fonts/notoserif/NotoSerifSC-HighFreq-IFT.woff2",
+  {"title_font": "fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2",
    "title": "<span style=\"font-weight: 900;\">不知不觉间，我们已经离开了地面。</span>",
-   "paragraph_font": "fonts/notosans/NotoSansSC-HighFreq-IFT.woff2",
+   "paragraph_font": "fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2",
    "paragraph_design_space": {
      "wght": 900
    },
@@ -130,9 +130,9 @@
      "</span>"
    ]},
 
-  {"title_font": "fonts/notoserif/NotoSerifSC-HighFreq-IFT.woff2",
+  {"title_font": "fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2",
    "title": "<span style=\"font-weight: 900;\">在飞船下方的远处，有一轮闪耀的新月。</span>",
-   "paragraph_font": "fonts/notosans/NotoSansSC-HighFreq-IFT.woff2",
+   "paragraph_font": "fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2",
    "paragraph": [
      "<span style=\"font-weight: 100\">",
      "无论如何，我将会看到火星的面貌，而这将会是一次",
@@ -141,9 +141,9 @@
      "</span>"
    ]},
   
-  {"title_font": "fonts/notoserif/NotoSerifSC-HighFreq-IFT.woff2",
+  {"title_font": "fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2",
    "title": "<span style=\"font-weight: 200;\">回程会是一趟孤独的旅途。</span>",
-   "paragraph_font": "fonts/notosans/NotoSansSC-HighFreq-IFT.woff2",
+   "paragraph_font": "fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2",
    "paragraph": [
      "<span style=\"font-weight: 100\">",
      "尽管地心引力仍使他难以前行，但他的肌肉在努力",
@@ -151,9 +151,9 @@
      "</span>"
    ]},
 
-  {"title_font": "fonts/notoserif/NotoSerifSC-HighFreq-IFT.woff2",
+  {"title_font": "fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2",
    "title": "<span style=\"font-weight: 900;\">船只离开港口后，就在薄雾的笼罩下航行了三小时。</span>",
-   "paragraph_font": "fonts/notosans/NotoSansSC-HighFreq-IFT.woff2",
+   "paragraph_font": "fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2",
    "paragraph": [
      "<span style=\"font-weight: 100\">",
      "这确实是一次十分不错的旅程。在旅途中，我遇到了",
@@ -163,9 +163,9 @@
      "</span>"
    ]},
 
-  {"title_font": "fonts/notoserif/NotoSerifSC-HighFreq-IFT.woff2",
+  {"title_font": "fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2",
    "title": "<span style=\"font-weight: 900;\">我的两种人格拥有共同的记忆。</span>",
-   "paragraph_font": "fonts/notosans/NotoSansSC-HighFreq-IFT.woff2",
+   "paragraph_font": "fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2",
    "paragraph": [
      "<span style=\"font-weight: 100\">",
      "有一个不明物体，看起来像是一小片紫色的草，且",
@@ -173,6 +173,43 @@
      "没有叶子，只有紫色的根。这一整片中的每株小植物的紫色根都在旋转，就像无边缘轮轴的辐条",
      "一样。",
      "</span>"
+   ]},
+
+  {"title_font": "fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2",
+   "title": "<span style=\"font-weight: 900;\">鷺鸊骯骹靐靥</span>",
+   "paragraph_font": "fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2",
+   "paragraph": [
+     "<span style=\"font-weight: 100\">",
+     "The last two samples test out loading of low frequency Chinese codepoints.<br/>",
+     "醍醤迴遐踺辗",
+     "</span>"
+   ]},
+
+  {"title_font": "fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2",
+   "title": "<span style=\"font-weight: 900;\">隻铪锖锠鐖鐗</span>",
+   "paragraph_font": "fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2",
+   "paragraph": [
+     "<span style=\"font-weight: 100;\">",
+      "魃魈魁鬾魑魅魍魉<br>",
+      "又双叒叕<br>",
+      "火炎焱燚<br>",
+      "水沝淼㵘<br>",
+      "土圭垚㙓<br>",
+      "犇骉羴麤<br>",
+      "猋驫鱻蟲<br>",
+      "茕茕孑立 沆瀣一气<br>",
+      "踽踽独行 醍醐灌顶<br>",
+      "绵绵瓜瓞 奉为圭臬<br>",
+      "龙行龘龘 犄角旮旯<br>",
+      "娉婷袅娜 涕泗滂沱<br>",
+      "呶呶不休 不稂不莠<br>",
+      "咄嗟 蹀躞 耄耋 饕餮<br>",
+      "囹圄 蘡薁 觊觎 龃龉<br>",
+      "狖轭鼯轩 怙恶不悛<br>",
+      "其靁虺虺 腌臢孑孓<br>",
+      "陟罚臧否 针砭时弊<br>",
+      "鳞次栉比 一张一翕<br>",
+       "</span>"
    ]}
 
 ]
