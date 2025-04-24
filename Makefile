@@ -1,7 +1,7 @@
 
 all: html/rust-client/pkg/rust_client.js html/cc-client/brotli.js fonts
 
-fonts: html/fonts/roboto/Roboto-IFT.woff2 html/fonts/notoserif/NotoSerifSC-HighFreq-IFT.woff2 html/fonts/notosans/NotoSansSC-HighFreq-IFT.woff2
+fonts: html/fonts/roboto/Roboto-IFT.woff2 html/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2 html/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2 html/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2 html/fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2
 
 always:
 
@@ -52,7 +52,7 @@ build/roboto_glyph_keyed_config.txtpb: original_fonts/Roboto[wdth,wght].ttf buil
 	      --codepoints_file=$(CURDIR)/build/roboto_all_cps.txt \
 	      --output_encoder_config > $(CURDIR)/build/roboto_glyph_keyed_config.txtpb
 
-##### Noto Serif Build Rules #####
+##### Noto Serif High Freq Build Rules #####
 
 build/NotoSerifSC-HighFreq.otf: original_fonts/NotoSerifSC-VF.otf build/simplified-chinese_split1_unicodes.txt
 	bazel run @harfbuzz//:hb-subset -- $(CURDIR)/original_fonts/NotoSerifSC-VF.otf \
@@ -61,16 +61,16 @@ build/NotoSerifSC-HighFreq.otf: original_fonts/NotoSerifSC-VF.otf build/simplifi
 		--instance="wght=900" \
 		-o $(CURDIR)/build/NotoSerifSC-HighFreq.otf
 
-html/fonts/notoserif/NotoSerifSC-HighFreq-IFT.otf: build/NotoSerifSC-HighFreq.otf build/noto_serif_high_freq_config.txtpb
-	mkdir -p html/fonts/notoserif
+html/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.otf: build/NotoSerifSC-HighFreq.otf build/noto_serif_high_freq_config.txtpb
+	mkdir -p html/fonts/notoserifhigh
 	bazel run -c opt  @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSerifSC-HighFreq.otf \
 		--config=$(CURDIR)/build/noto_serif_high_freq_config.txtpb \
-		--output_path=$(CURDIR)/html/fonts/notoserif/ \
+		--output_path=$(CURDIR)/html/fonts/notoserifhigh/ \
 		--output_font="NotoSerifSC-HighFreq-IFT.otf"
 
-html/fonts/notoserif/NotoSerifSC-HighFreq-IFT.woff2: html/fonts/notoserif/NotoSerifSC-HighFreq-IFT.otf
-	woff2_compress --in=html/fonts/notoserif/NotoSerifSC-HighFreq-IFT.otf --out=html/fonts/notoserif/NotoSerifSC-HighFreq-IFT.woff2 --allow_transforms=false
+html/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2: html/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.otf
+	woff2_compress --in=html/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.otf --out=html/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2 --allow_transforms=false
 
 build/noto_serif_high_freq_config.txtpb: build/noto_serif_high_freq_glyph_keyed_config.txtpb build/noto_serif_high_freq_table_keyed_config.txtpb
 	cat build/noto_serif_high_freq_glyph_keyed_config.txtpb build/noto_serif_high_freq_table_keyed_config.txtpb > build/noto_serif_high_freq_config.txtpb
@@ -90,7 +90,45 @@ build/noto_serif_high_freq_table_keyed_config.txtpb: subsets/empty.txt subsets/s
 		$(CURDIR)/subsets/{empty,simplified-chinese_split1}.txt > $(CURDIR)/build/noto_serif_high_freq_table_keyed_config.txtpb
 	cat $(CURDIR)/original_fonts/noto_serif_additional_config.txtpb >> $(CURDIR)/build/noto_serif_high_freq_table_keyed_config.txtpb
 
-##### Noto Sans Build Rules #####
+##### Noto Serif Low Freq Build Rules #####
+
+build/NotoSerifSC-LowFreq.otf: original_fonts/NotoSerifSC-VF.otf build/simplified-chinese_split1_unicodes.txt
+	bazel run @harfbuzz//:hb-subset -- $(CURDIR)/original_fonts/NotoSerifSC-VF.otf \
+		--unicodes=* \
+		--unicodes-=`paste -sd, build/simplified-chinese_split1_unicodes.txt` \
+		--no-hinting \
+		--instance="wght=900" \
+		-o $(CURDIR)/build/NotoSerifSC-LowFreq.otf
+
+html/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.otf: build/NotoSerifSC-LowFreq.otf build/noto_serif_low_freq_config.txtpb
+	mkdir -p html/fonts/notoseriflow/
+	bazel run -c opt  @ift_encoder//util:font2ift -- \
+		--input_font=$(CURDIR)/build/NotoSerifSC-LowFreq.otf \
+		--config=$(CURDIR)/build/noto_serif_low_freq_config.txtpb \
+		--output_path=$(CURDIR)/html/fonts/notoseriflow/ \
+		--output_font="NotoSerifSC-LowFreq-IFT.otf"
+
+html/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2: html/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.otf
+	woff2_compress --in=html/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.otf --out=html/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2 --allow_transforms=false
+
+build/noto_serif_low_freq_config.txtpb: build/noto_serif_low_freq_glyph_keyed_config.txtpb build/noto_serif_low_freq_table_keyed_config.txtpb
+	cat build/noto_serif_low_freq_glyph_keyed_config.txtpb build/noto_serif_low_freq_table_keyed_config.txtpb > build/noto_serif_low_freq_config.txtpb
+
+build/noto_serif_low_freq_glyph_keyed_config.txtpb: build/NotoSerifSC-LowFreq.otf
+	bazel run -c opt @ift_encoder//util:closure_glyph_keyed_segmenter_util -- \
+	      --input_font=$(CURDIR)/build/NotoSerifSC-LowFreq.otf \
+	      --number_of_segments=3500 --min_patch_size_bytes=5000 --max_patch_size_bytes=12000 \
+	      --nooutput_segmentation_analysis \
+	      --noinclude_initial_codepoints_in_config \
+	      --output_encoder_config > $(CURDIR)/build/noto_serif_low_freq_glyph_keyed_config.txtpb
+
+build/noto_serif_low_freq_table_keyed_config.txtpb: subsets/empty.txt original_fonts/noto_serif_additional_config.txtpb build/NotoSerifSC-LowFreq.otf
+	bazel run -c opt @ift_encoder//util:generate_table_keyed_config -- \
+		--font=$(CURDIR)/build/NotoSerifSC-LowFreq.otf \
+		$(CURDIR)/subsets/empty.txt > $(CURDIR)/build/noto_serif_low_freq_table_keyed_config.txtpb
+	cat $(CURDIR)/original_fonts/noto_serif_additional_config.txtpb >> $(CURDIR)/build/noto_serif_low_freq_table_keyed_config.txtpb
+
+##### Noto Sans High Freq Build Rules #####
 
 build/NotoSansSC-HighFreq.ttf: original_fonts/NotoSansSC-VF.ttf build/simplified-chinese_split1_unicodes.txt
 	bazel run @harfbuzz//:hb-subset -- $(CURDIR)/original_fonts/NotoSansSC-VF.ttf \
@@ -98,16 +136,16 @@ build/NotoSansSC-HighFreq.ttf: original_fonts/NotoSansSC-VF.ttf build/simplified
 		--no-hinting \
 		-o $(CURDIR)/build/NotoSansSC-HighFreq.ttf
 
-html/fonts/notosans/NotoSansSC-HighFreq-IFT.ttf: build/NotoSansSC-HighFreq.ttf build/noto_sans_high_freq_config.txtpb
-	mkdir -p html/fonts/notosans
+html/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.ttf: build/NotoSansSC-HighFreq.ttf build/noto_sans_high_freq_config.txtpb
+	mkdir -p html/fonts/notosanshigh/
 	bazel run -c opt  @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSansSC-HighFreq.ttf \
 		--config=$(CURDIR)/build/noto_sans_high_freq_config.txtpb \
-		--output_path=$(CURDIR)/html/fonts/notosans/ \
+		--output_path=$(CURDIR)/html/fonts/notosanshigh/ \
 		--output_font="NotoSansSC-HighFreq-IFT.ttf"
 
-html/fonts/notosans/NotoSansSC-HighFreq-IFT.woff2: html/fonts/notosans/NotoSansSC-HighFreq-IFT.ttf
-	woff2_compress --in=html/fonts/notosans/NotoSansSC-HighFreq-IFT.ttf --out=html/fonts/notosans/NotoSansSC-HighFreq-IFT.woff2 --allow_transforms=false
+html/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2: html/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.ttf
+	woff2_compress --in=html/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.ttf --out=html/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2 --allow_transforms=false
 
 build/noto_sans_high_freq_config.txtpb: build/noto_sans_high_freq_glyph_keyed_config.txtpb build/noto_sans_high_freq_table_keyed_config.txtpb
 	cat build/noto_sans_high_freq_glyph_keyed_config.txtpb build/noto_sans_high_freq_table_keyed_config.txtpb > build/noto_sans_high_freq_config.txtpb
@@ -126,6 +164,44 @@ build/noto_sans_high_freq_table_keyed_config.txtpb: subsets/empty.txt subsets/si
 	bazel run -c opt @ift_encoder//util:generate_table_keyed_config -- \
 		$(CURDIR)/subsets/{empty,simplified-chinese_split1}.txt > $(CURDIR)/build/noto_sans_high_freq_table_keyed_config.txtpb
 	cat $(CURDIR)/original_fonts/noto_sans_additional_config.txtpb >> $(CURDIR)/build/noto_sans_high_freq_table_keyed_config.txtpb
+
+##### Noto Sans Low Freq Build Rules #####
+
+build/NotoSansSC-LowFreq.ttf: original_fonts/NotoSansSC-VF.ttf build/simplified-chinese_split1_unicodes.txt
+	bazel run @harfbuzz//:hb-subset -- $(CURDIR)/original_fonts/NotoSansSC-VF.ttf \
+		--unicodes=* \
+		--unicodes-=`paste -sd, build/simplified-chinese_split1_unicodes.txt` \
+		--no-hinting \
+		-o $(CURDIR)/build/NotoSansSC-LowFreq.ttf
+
+html/fonts/notosanslow/NotoSansSC-LowFreq-IFT.ttf: build/NotoSansSC-LowFreq.ttf build/noto_sans_low_freq_config.txtpb
+	mkdir -p html/fonts/notosanslow/
+	bazel run -c opt  @ift_encoder//util:font2ift -- \
+		--input_font=$(CURDIR)/build/NotoSansSC-LowFreq.ttf \
+		--config=$(CURDIR)/build/noto_sans_low_freq_config.txtpb \
+		--output_path=$(CURDIR)/html/fonts/notosanslow/ \
+		--output_font="NotoSansSC-LowFreq-IFT.ttf"
+
+html/fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2: html/fonts/notosanslow/NotoSansSC-LowFreq-IFT.ttf
+	woff2_compress --in=html/fonts/notosanslow/NotoSansSC-LowFreq-IFT.ttf --out=html/fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2 --allow_transforms=false
+
+build/noto_sans_low_freq_config.txtpb: build/noto_sans_low_freq_glyph_keyed_config.txtpb build/noto_sans_low_freq_table_keyed_config.txtpb
+	cat build/noto_sans_low_freq_glyph_keyed_config.txtpb build/noto_sans_low_freq_table_keyed_config.txtpb > build/noto_sans_low_freq_config.txtpb
+
+build/noto_sans_low_freq_glyph_keyed_config.txtpb: build/NotoSansSC-LowFreq.ttf subsets/simplified-chinese-ordered.txt
+	bazel run -c opt @ift_encoder//util:closure_glyph_keyed_segmenter_util -- \
+	      --input_font=$(CURDIR)/build/NotoSansSC-LowFreq.ttf \
+	      --number_of_segments=3500 --min_patch_size_bytes=5000 --max_patch_size_bytes=12000 \
+	      --nooutput_segmentation_analysis \
+	      --noinclude_initial_codepoints_in_config \
+	      --output_encoder_config > $(CURDIR)/build/noto_sans_low_freq_glyph_keyed_config.txtpb
+
+build/noto_sans_low_freq_table_keyed_config.txtpb: subsets/empty.txt subsets/simplified-chinese_split1.txt original_fonts/noto_sans_additional_config.txtpb build/NotoSansSC-LowFreq.ttf
+	bazel run -c opt @ift_encoder//util:generate_table_keyed_config -- \
+		--font=$(CURDIR)/build/NotoSansSC-LowFreq.ttf \
+		$(CURDIR)/subsets/empty.txt > $(CURDIR)/build/noto_sans_low_freq_table_keyed_config.txtpb
+	cat $(CURDIR)/original_fonts/noto_sans_additional_config.txtpb >> $(CURDIR)/build/noto_sans_low_freq_table_keyed_config.txtpb
+
 
 build/simplified-chinese_split1_unicodes.txt: subsets/simplified-chinese_split1.txt
 	cat $(CURDIR)/subsets/simplified-chinese_split1.txt | awk '{print substr($$1, 3)}' > build/simplified-chinese_split1_unicodes.txt

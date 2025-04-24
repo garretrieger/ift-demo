@@ -286,7 +286,7 @@ window.addEventListener('DOMContentLoaded', function() {
     });
     let lo_freq_sim_chinese = document.getElementById("to-lo-freq-sim-chinese");
     lo_freq_sim_chinese.addEventListener("click", function() {
-        page_index = 15;
+        page_index = 13;
         update_all_fonts();
     });
 
