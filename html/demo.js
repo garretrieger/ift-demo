@@ -259,19 +259,14 @@ window.addEventListener('DOMContentLoaded', function() {
       page_index++;
       update_all_fonts();
     });
-    let sc = document.getElementById("to-small-caps");
-    sc.addEventListener("click", function() {
-        page_index = 1;
-        update_all_fonts();
-    });
     let viet = document.getElementById("to-vietnamese");
     viet.addEventListener("click", function() {
-        page_index = 2;
+        page_index = 1;
         update_all_fonts();
     });
     let cg = document.getElementById("to-cyr-greek");
     cg.addEventListener("click", function() {
-        page_index = 3;
+        page_index = 2;
         update_all_fonts();
     });
     let w = document.getElementById("to-width");
