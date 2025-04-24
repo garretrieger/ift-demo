@@ -4,7 +4,7 @@ let page_index = -1;
 let states = {};
 let also_load_unicode_range = true;
 let show_unicode_range = false;
-let text_samples_promise = fetch("./sample-texts.short.json").then(response => response.json());
+let text_samples_promise = fetch("./sample-texts.json").then(response => response.json());
 
 async function update_all_fonts() {
   if (page_index < 0) {
