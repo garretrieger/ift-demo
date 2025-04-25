@@ -185,7 +185,6 @@ function patch_codepoints(font_id, font_face, cps, features, axes) {
     } else if (font_id.includes("NotoSans")) {
       descriptor = {
 	weight: "100 900",
-	stretch: "75% 100%"
       };
     }
 
