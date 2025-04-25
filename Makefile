@@ -1,28 +1,28 @@
 
-all: html/rust-client/pkg/rust_client.js html/cc-client/brotli.js fonts
+all: docs/rust-client/pkg/rust_client.js docs/cc-client/brotli.js fonts
 
-fonts: html/fonts/roboto/Roboto-IFT.woff2 html/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2 html/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2 html/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2 html/fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2
+fonts: docs/fonts/roboto/Roboto-IFT.woff2 docs/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2 docs/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2 docs/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2 docs/fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2
 
 always:
 
-html/rust-client/pkg/rust_client.js: always
+docs/rust-client/pkg/rust_client.js: always
 	cd rust-client; wasm-pack build --release --target web
-	cp rust-client/pkg/* html/rust-client/pkg/
+	cp rust-client/pkg/* docs/rust-client/pkg/
 
-html/cc-client/brotli.js: always
+docs/cc-client/brotli.js: always
 	bazel build cc-client:brotli-wasm
-	mkdir -p html/cc-client/
-	cat bazel-bin/cc-client/brotli-wasm/brotli-wasm.js > html/cc-client/brotli.js
+	mkdir -p docs/cc-client/
+	cat bazel-bin/cc-client/brotli-wasm/brotli-wasm.js > docs/cc-client/brotli.js
 
-html/fonts/roboto/Roboto-IFT.woff2: html/fonts/roboto/Roboto-IFT.ttf
-	woff2_compress --in=html/fonts/roboto/Roboto-IFT.ttf --out=html/fonts/roboto/Roboto-IFT.woff2 --allow_transforms=false
+docs/fonts/roboto/Roboto-IFT.woff2: docs/fonts/roboto/Roboto-IFT.ttf
+	woff2_compress --in=docs/fonts/roboto/Roboto-IFT.ttf --out=docs/fonts/roboto/Roboto-IFT.woff2 --allow_transforms=false
 
-html/fonts/roboto/Roboto-IFT.ttf: build/Roboto-Preprocessed.ttf build/roboto_config.txtpb
-	mkdir -p html/fonts/roboto
+docs/fonts/roboto/Roboto-IFT.ttf: build/Roboto-Preprocessed.ttf build/roboto_config.txtpb
+	mkdir -p docs/fonts/roboto
 	bazel run -c opt  @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/Roboto-Preprocessed.ttf \
 		--config=$(CURDIR)/build/roboto_config.txtpb \
-		--output_path=$(CURDIR)/html/fonts/roboto/ \
+		--output_path=$(CURDIR)/docs/fonts/roboto/ \
 		--output_font="Roboto-IFT.ttf"
 
 build/Roboto-Preprocessed.ttf: original_fonts/Roboto[wdth,wght].ttf
@@ -61,16 +61,16 @@ build/NotoSerifSC-HighFreq.otf: original_fonts/NotoSerifSC-VF.otf build/simplifi
 		--instance="wght=900" \
 		-o $(CURDIR)/build/NotoSerifSC-HighFreq.otf
 
-html/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.otf: build/NotoSerifSC-HighFreq.otf build/noto_serif_high_freq_config.txtpb
-	mkdir -p html/fonts/notoserifhigh
+docs/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.otf: build/NotoSerifSC-HighFreq.otf build/noto_serif_high_freq_config.txtpb
+	mkdir -p docs/fonts/notoserifhigh
 	bazel run -c opt  @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSerifSC-HighFreq.otf \
 		--config=$(CURDIR)/build/noto_serif_high_freq_config.txtpb \
-		--output_path=$(CURDIR)/html/fonts/notoserifhigh/ \
+		--output_path=$(CURDIR)/docs/fonts/notoserifhigh/ \
 		--output_font="NotoSerifSC-HighFreq-IFT.otf"
 
-html/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2: html/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.otf
-	woff2_compress --in=html/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.otf --out=html/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2 --allow_transforms=false
+docs/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2: docs/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.otf
+	woff2_compress --in=docs/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.otf --out=docs/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2 --allow_transforms=false
 
 build/noto_serif_high_freq_config.txtpb: build/noto_serif_high_freq_glyph_keyed_config.txtpb build/noto_serif_high_freq_table_keyed_config.txtpb
 	cat build/noto_serif_high_freq_glyph_keyed_config.txtpb build/noto_serif_high_freq_table_keyed_config.txtpb > build/noto_serif_high_freq_config.txtpb
@@ -100,16 +100,16 @@ build/NotoSerifSC-LowFreq.otf: original_fonts/NotoSerifSC-VF.otf build/simplifie
 		--instance="wght=900" \
 		-o $(CURDIR)/build/NotoSerifSC-LowFreq.otf
 
-html/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.otf: build/NotoSerifSC-LowFreq.otf build/noto_serif_low_freq_config.txtpb
-	mkdir -p html/fonts/notoseriflow/
+docs/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.otf: build/NotoSerifSC-LowFreq.otf build/noto_serif_low_freq_config.txtpb
+	mkdir -p docs/fonts/notoseriflow/
 	bazel run -c opt  @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSerifSC-LowFreq.otf \
 		--config=$(CURDIR)/build/noto_serif_low_freq_config.txtpb \
-		--output_path=$(CURDIR)/html/fonts/notoseriflow/ \
+		--output_path=$(CURDIR)/docs/fonts/notoseriflow/ \
 		--output_font="NotoSerifSC-LowFreq-IFT.otf"
 
-html/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2: html/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.otf
-	woff2_compress --in=html/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.otf --out=html/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2 --allow_transforms=false
+docs/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2: docs/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.otf
+	woff2_compress --in=docs/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.otf --out=docs/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2 --allow_transforms=false
 
 build/noto_serif_low_freq_config.txtpb: build/noto_serif_low_freq_glyph_keyed_config.txtpb build/noto_serif_low_freq_table_keyed_config.txtpb
 	cat build/noto_serif_low_freq_glyph_keyed_config.txtpb build/noto_serif_low_freq_table_keyed_config.txtpb > build/noto_serif_low_freq_config.txtpb
@@ -136,16 +136,16 @@ build/NotoSansSC-HighFreq.ttf: original_fonts/NotoSansSC-VF.ttf build/simplified
 		--no-hinting \
 		-o $(CURDIR)/build/NotoSansSC-HighFreq.ttf
 
-html/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.ttf: build/NotoSansSC-HighFreq.ttf build/noto_sans_high_freq_config.txtpb
-	mkdir -p html/fonts/notosanshigh/
+docs/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.ttf: build/NotoSansSC-HighFreq.ttf build/noto_sans_high_freq_config.txtpb
+	mkdir -p docs/fonts/notosanshigh/
 	bazel run -c opt  @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSansSC-HighFreq.ttf \
 		--config=$(CURDIR)/build/noto_sans_high_freq_config.txtpb \
-		--output_path=$(CURDIR)/html/fonts/notosanshigh/ \
+		--output_path=$(CURDIR)/docs/fonts/notosanshigh/ \
 		--output_font="NotoSansSC-HighFreq-IFT.ttf"
 
-html/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2: html/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.ttf
-	woff2_compress --in=html/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.ttf --out=html/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2 --allow_transforms=false
+docs/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2: docs/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.ttf
+	woff2_compress --in=docs/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.ttf --out=docs/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2 --allow_transforms=false
 
 build/noto_sans_high_freq_config.txtpb: build/noto_sans_high_freq_glyph_keyed_config.txtpb build/noto_sans_high_freq_table_keyed_config.txtpb
 	cat build/noto_sans_high_freq_glyph_keyed_config.txtpb build/noto_sans_high_freq_table_keyed_config.txtpb > build/noto_sans_high_freq_config.txtpb
@@ -174,16 +174,16 @@ build/NotoSansSC-LowFreq.ttf: original_fonts/NotoSansSC-VF.ttf build/simplified-
 		--no-hinting \
 		-o $(CURDIR)/build/NotoSansSC-LowFreq.ttf
 
-html/fonts/notosanslow/NotoSansSC-LowFreq-IFT.ttf: build/NotoSansSC-LowFreq.ttf build/noto_sans_low_freq_config.txtpb
-	mkdir -p html/fonts/notosanslow/
+docs/fonts/notosanslow/NotoSansSC-LowFreq-IFT.ttf: build/NotoSansSC-LowFreq.ttf build/noto_sans_low_freq_config.txtpb
+	mkdir -p docs/fonts/notosanslow/
 	bazel run -c opt  @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSansSC-LowFreq.ttf \
 		--config=$(CURDIR)/build/noto_sans_low_freq_config.txtpb \
-		--output_path=$(CURDIR)/html/fonts/notosanslow/ \
+		--output_path=$(CURDIR)/docs/fonts/notosanslow/ \
 		--output_font="NotoSansSC-LowFreq-IFT.ttf"
 
-html/fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2: html/fonts/notosanslow/NotoSansSC-LowFreq-IFT.ttf
-	woff2_compress --in=html/fonts/notosanslow/NotoSansSC-LowFreq-IFT.ttf --out=html/fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2 --allow_transforms=false
+docs/fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2: docs/fonts/notosanslow/NotoSansSC-LowFreq-IFT.ttf
+	woff2_compress --in=docs/fonts/notosanslow/NotoSansSC-LowFreq-IFT.ttf --out=docs/fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2 --allow_transforms=false
 
 build/noto_sans_low_freq_config.txtpb: build/noto_sans_low_freq_glyph_keyed_config.txtpb build/noto_sans_low_freq_table_keyed_config.txtpb
 	cat build/noto_sans_low_freq_glyph_keyed_config.txtpb build/noto_sans_low_freq_table_keyed_config.txtpb > build/noto_sans_low_freq_config.txtpb
@@ -208,7 +208,7 @@ build/simplified-chinese_split1_unicodes.txt: subsets/simplified-chinese_split1.
 
 clean: clean_rust
 	rm -f build/*
-	rm -rf html/fonts/* html/rust-client/pkg/*
+	rm -rf docs/fonts/* docs/rust-client/pkg/*
 
 clean_rust:
 	cd rust-client/; cargo clean
