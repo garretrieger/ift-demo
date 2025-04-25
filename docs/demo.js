@@ -172,18 +172,24 @@ function patch_codepoints(font_id, font_face, cps, features, axes) {
   state.add_to_target_subset_definition(cps);
   return state.current_font_subset(patcher, woff2_decoder).then(font => {
     const font_data = new Uint8Array(window.ift_memory.buffer, font.data(), font.len());
-    font = new FontFace(font_face, font_data);
+    let descriptor = {};
     if (font_id.includes("Roboto")) {
-      font.weight = "100 900";
-      font.stretch = "75% 100%";
-    }
-    if (font_id.includes("NotoSerif")) {
-      font.weight = "900";
-    }
-    if (font_id.includes("NotoSans")) {
-      font.weight = "100 900";
+      descriptor = {
+	weight: "100 900",
+	stretch: "75% 100%"
+      };
+    } else  if (font_id.includes("NotoSerif")) {
+      descriptor = {
+	weight: "900",
+      };
+    } else if (font_id.includes("NotoSans")) {
+      descriptor = {
+	weight: "100 900",
+	stretch: "75% 100%"
+      };
     }
 
+    font = new FontFace(font_face, font_data, descriptor);
     return font.load();
   })
 }
