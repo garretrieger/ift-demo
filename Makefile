@@ -43,7 +43,8 @@ build/roboto_table_keyed_config.txtpb: subsets/latin.txt subsets/cyrillic.txt su
 	cat $(CURDIR)/original_fonts/roboto_additional_config.txtpb >> $(CURDIR)/build/roboto_table_keyed_config.txtpb
 
 build/roboto_glyph_keyed_config.txtpb: original_fonts/Roboto[wdth,wght].ttf build/roboto_all_cps.txt
-	bazel run -c opt @ift_encoder//util:closure_glyph_keyed_segmenter_util -- \
+	bazel run -c opt @ift_encoder//util:closure_glyph_keyed_segmenter_util \
+	      --copt="-DABSL_MIN_LOG_LEVEL=absl::LogSeverity::kWarning" -- \
 	      --input_font=$(CURDIR)/original_fonts/Roboto[wdth,wght].ttf \
 	      --number_of_segments=412 --min_patch_size_bytes=4000 --max_patch_size_bytes=12000 \
 	      --nooutput_segmentation_analysis \
@@ -76,7 +77,8 @@ build/noto_serif_high_freq_config.txtpb: build/noto_serif_high_freq_glyph_keyed_
 	cat build/noto_serif_high_freq_glyph_keyed_config.txtpb build/noto_serif_high_freq_table_keyed_config.txtpb > build/noto_serif_high_freq_config.txtpb
 
 build/noto_serif_high_freq_glyph_keyed_config.txtpb: build/NotoSerifSC-HighFreq.otf subsets/simplified-chinese-ordered.txt
-	bazel run -c opt @ift_encoder//util:closure_glyph_keyed_segmenter_util -- \
+	bazel run -c opt @ift_encoder//util:closure_glyph_keyed_segmenter_util \
+	      --copt="-DABSL_MIN_LOG_LEVEL=absl::LogSeverity::kWarning" -- \
 	      --input_font=$(CURDIR)/build/NotoSerifSC-HighFreq.otf \
 	      --number_of_segments=17792 --min_patch_size_bytes=2000 --max_patch_size_bytes=12000 \
 	      --nooutput_segmentation_analysis \
@@ -115,11 +117,13 @@ build/noto_serif_low_freq_config.txtpb: build/noto_serif_low_freq_glyph_keyed_co
 	cat build/noto_serif_low_freq_glyph_keyed_config.txtpb build/noto_serif_low_freq_table_keyed_config.txtpb > build/noto_serif_low_freq_config.txtpb
 
 build/noto_serif_low_freq_glyph_keyed_config.txtpb: build/NotoSerifSC-LowFreq.otf
-	bazel run -c opt @ift_encoder//util:closure_glyph_keyed_segmenter_util -- \
+	bazel run -c opt @ift_encoder//util:closure_glyph_keyed_segmenter_util \
+	      --copt="-DABSL_MIN_LOG_LEVEL=absl::LogSeverity::kWarning" -- \
 	      --input_font=$(CURDIR)/build/NotoSerifSC-LowFreq.otf \
 	      --number_of_segments=3500 --min_patch_size_bytes=5000 --max_patch_size_bytes=12000 \
 	      --nooutput_segmentation_analysis \
 	      --noinclude_initial_codepoints_in_config \
+	      --initial_codepoints_file=$(CURDIR)/subsets/empty.txt \
 	      --output_encoder_config > $(CURDIR)/build/noto_serif_low_freq_glyph_keyed_config.txtpb
 
 build/noto_serif_low_freq_table_keyed_config.txtpb: subsets/empty.txt original_fonts/noto_serif_additional_config.txtpb build/NotoSerifSC-LowFreq.otf
@@ -151,7 +155,8 @@ build/noto_sans_high_freq_config.txtpb: build/noto_sans_high_freq_glyph_keyed_co
 	cat build/noto_sans_high_freq_glyph_keyed_config.txtpb build/noto_sans_high_freq_table_keyed_config.txtpb > build/noto_sans_high_freq_config.txtpb
 
 build/noto_sans_high_freq_glyph_keyed_config.txtpb: build/NotoSansSC-HighFreq.ttf subsets/simplified-chinese-ordered.txt
-	bazel run -c opt @ift_encoder//util:closure_glyph_keyed_segmenter_util -- \
+	bazel run -c opt @ift_encoder//util:closure_glyph_keyed_segmenter_util \
+	      --copt="-DABSL_MIN_LOG_LEVEL=absl::LogSeverity::kWarning" -- \
 	      --input_font=$(CURDIR)/build/NotoSansSC-HighFreq.ttf \
 	      --number_of_segments=17792 --min_patch_size_bytes=2000 --max_patch_size_bytes=12000 \
 	      --nooutput_segmentation_analysis \
@@ -189,7 +194,8 @@ build/noto_sans_low_freq_config.txtpb: build/noto_sans_low_freq_glyph_keyed_conf
 	cat build/noto_sans_low_freq_glyph_keyed_config.txtpb build/noto_sans_low_freq_table_keyed_config.txtpb > build/noto_sans_low_freq_config.txtpb
 
 build/noto_sans_low_freq_glyph_keyed_config.txtpb: build/NotoSansSC-LowFreq.ttf subsets/simplified-chinese-ordered.txt
-	bazel run -c opt @ift_encoder//util:closure_glyph_keyed_segmenter_util -- \
+	bazel run -c opt @ift_encoder//util:closure_glyph_keyed_segmenter_util \
+	      --copt="-DABSL_MIN_LOG_LEVEL=absl::LogSeverity::kWarning" -- \
 	      --input_font=$(CURDIR)/build/NotoSansSC-LowFreq.ttf \
 	      --number_of_segments=3500 --min_patch_size_bytes=5000 --max_patch_size_bytes=12000 \
 	      --nooutput_segmentation_analysis \
