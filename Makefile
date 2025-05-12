@@ -215,5 +215,5 @@ clean: clean_rust
 clean_rust:
 	cd rust-client/; cargo clean
 	rm -rf rust-client/pkg/*
-	rm rust-client/Cargo.lock
+	rm -f rust-client/Cargo.lock
 
