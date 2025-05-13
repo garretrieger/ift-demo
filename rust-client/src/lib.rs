@@ -11,7 +11,6 @@ use read_fonts::{
     types::{Fixed, Tag},
     FontRef,
 };
-use shared_brotli_patch_decoder::{decode_error::DecodeError, SharedBrotliDecoder};
 use std::path::{Path, PathBuf};
 use std::{collections::HashMap, sync::Arc};
 use tokio::sync::Mutex;
@@ -21,11 +20,6 @@ use web_sys::{Request, RequestInit, RequestMode, Response};
 
 #[wasm_bindgen]
 extern "C" {
-    pub type BrotliPatcher;
-
-    #[wasm_bindgen(structural, method)]
-    pub fn patch(this: &BrotliPatcher, base: &[u8], patch: &[u8]) -> Option<Box<[u8]>>;
-
     pub type Woff2Decoder;
 
     #[wasm_bindgen(structural, method)]
@@ -33,27 +27,6 @@ extern "C" {
 
     #[wasm_bindgen(js_namespace = console, js_name = log)]
     fn log_u8(a: u8);
-}
-
-impl SharedBrotliDecoder for BrotliPatcher {
-    fn decode(
-        &self,
-        encoded: &[u8],
-        shared_dictionary: Option<&[u8]>,
-        max_uncompressed_length: usize,
-    ) -> Result<Vec<u8>, DecodeError> {
-        let bytes = match shared_dictionary {
-            None => self.patch(&[], encoded),
-            Some(shared_dictionary) => self.patch(shared_dictionary, encoded),
-        }
-        .ok_or(DecodeError::InvalidStream)?;
-
-        if bytes.len() > max_uncompressed_length {
-            return Err(DecodeError::MaxSizeExceeded);
-        }
-
-        Ok(bytes.iter().copied().collect())
-    }
 }
 
 #[wasm_bindgen]
@@ -146,11 +119,7 @@ impl IftState {
         }
     }
 
-    pub async fn current_font_subset(
-        &self,
-        patcher: &BrotliPatcher,
-        woff2: &Woff2Decoder,
-    ) -> Result<FontSubset, String> {
+    pub async fn current_font_subset(&self, woff2: &Woff2Decoder) -> Result<FontSubset, String> {
         let lock = Arc::clone(&self.state);
         let mut state = lock.lock().await;
 
@@ -159,7 +128,7 @@ impl IftState {
                 Status::Uninitialized => state.initialize(&self.font_url, woff2).await,
                 Status::Error(err) => return Err(err.clone()),
                 Status::Ready => {
-                    if let Err(msg) = self.ensure_extended(&mut state, patcher).await {
+                    if let Err(msg) = self.ensure_extended(&mut state).await {
                         state.status = Status::Error(msg);
                         continue;
                     }
@@ -174,19 +143,18 @@ impl IftState {
         })
     }
 
-    async fn ensure_extended(
-        &self,
-        state: &mut InnerState,
-        patcher: &BrotliPatcher,
-    ) -> Result<(), String> {
+    async fn ensure_extended(&self, state: &mut InnerState) -> Result<(), String> {
         loop {
             state.font_subset = {
                 // check the current font against the target subset
                 let font = FontRef::new(&state.font_subset)
                     .map_err(|e| format!("Failed to load current font subset: {}", e))?;
-                let patch_group =
-                    PatchGroup::select_next_patches(font, &self.target_subset_definition)
-                        .map_err(|e| format!("Failed to compute the patch group: {}", e))?;
+                let patch_group = PatchGroup::select_next_patches(
+                    font,
+                    &state.patch_cache,
+                    &self.target_subset_definition,
+                )
+                .map_err(|e| format!("Failed to compute the patch group: {}", e))?;
                 if !patch_group.has_uris() {
                     // No more remaining work.
                     return Ok(());

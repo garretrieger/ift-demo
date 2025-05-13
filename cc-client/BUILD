@@ -27,7 +27,6 @@ cc_binary(
     srcs = ["brotli.cc"],
     linkopts = DEFAULT_EMSCRIPTEN_LINKOPTS + WASM_LINKOPTS,
     deps = [
-        "@ift_encoder//common",
         "@woff2",
     ],
 )

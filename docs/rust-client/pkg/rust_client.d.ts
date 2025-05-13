@@ -17,7 +17,7 @@ export class IftState {
    */
   add_to_target_subset_definition(codepoints: Uint32Array): boolean;
   add_design_space_to_target_subset_definition(tag: string, start: number, end: number): boolean;
-  current_font_subset(patcher: any, woff2: any): Promise<FontSubset>;
+  current_font_subset(woff2: any): Promise<FontSubset>;
 }
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
@@ -31,7 +31,7 @@ export interface InitOutput {
   readonly iftstate_new: (a: number, b: number) => number;
   readonly iftstate_add_to_target_subset_definition: (a: number, b: number, c: number) => number;
   readonly iftstate_add_design_space_to_target_subset_definition: (a: number, b: number, c: number, d: number, e: number) => number;
-  readonly iftstate_current_font_subset: (a: number, b: any, c: any) => any;
+  readonly iftstate_current_font_subset: (a: number, b: any) => any;
   readonly __wbindgen_exn_store: (a: number) => void;
   readonly __externref_table_alloc: () => number;
   readonly __wbindgen_export_2: WebAssembly.Table;

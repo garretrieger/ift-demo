@@ -337,12 +337,11 @@ export class IftState {
         return ret !== 0;
     }
     /**
-     * @param {any} patcher
      * @param {any} woff2
      * @returns {Promise<FontSubset>}
      */
-    current_font_subset(patcher, woff2) {
-        const ret = wasm.iftstate_current_font_subset(this.__wbg_ptr, patcher, woff2);
+    current_font_subset(woff2) {
+        const ret = wasm.iftstate_current_font_subset(this.__wbg_ptr, woff2);
         return ret;
     }
 }
@@ -527,7 +526,7 @@ function __wbg_get_imports() {
         const ret = false;
         return ret;
     };
-    imports.wbg.__wbindgen_closure_wrapper286 = function(arg0, arg1, arg2) {
+    imports.wbg.__wbindgen_closure_wrapper285 = function(arg0, arg1, arg2) {
         const ret = makeMutClosure(arg0, arg1, 31, __wbg_adapter_22);
         return ret;
     };
