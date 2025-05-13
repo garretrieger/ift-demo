@@ -136,17 +136,6 @@ function save_font(filename, data) {
   document.body.removeChild(elem);
 }
 
-const patcher = {
-  patch: (base_data, patch_data) => {
-    let patcher = new window.BrotliPatch(base_data, patch_data);
-    if (!patcher.apply()) {
-      return undefined;
-    }
-
-    return patcher.data();
-  }
-};
-
 const woff2_decoder = {
   unwoff2: (encoded) => {
     let decoder = new window.Woff2Decoder(encoded);
@@ -170,7 +159,7 @@ function patch_codepoints(font_id, font_face, cps, features, axes) {
   // TODO add features once supported.
 
   state.add_to_target_subset_definition(cps);
-  return state.current_font_subset(patcher, woff2_decoder).then(font => {
+  return state.current_font_subset(woff2_decoder).then(font => {
     const font_data = new Uint8Array(window.ift_memory.buffer, font.data(), font.len());
     let descriptor = {};
     if (font_id.includes("Roboto")) {
