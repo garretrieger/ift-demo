@@ -15,16 +15,13 @@ docs/cc-client/brotli.js: always
 	mkdir -p docs/cc-client/
 	cat bazel-bin/cc-client/brotli-wasm/brotli-wasm.js > docs/cc-client/brotli.js
 
-docs/fonts/roboto/Roboto-IFT.woff2: docs/fonts/roboto/Roboto-IFT.ttf
-	woff2_compress --in=docs/fonts/roboto/Roboto-IFT.ttf --out=docs/fonts/roboto/Roboto-IFT.woff2 --allow_transforms=false
-
-docs/fonts/roboto/Roboto-IFT.ttf: build/Roboto-Preprocessed.ttf build/roboto_config.txtpb
+docs/fonts/roboto/Roboto-IFT.woff2: build/Roboto-Preprocessed.ttf build/roboto_config.txtpb
 	mkdir -p docs/fonts/roboto
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/Roboto-Preprocessed.ttf \
 		--config=$(CURDIR)/build/roboto_config.txtpb \
 		--output_path=$(CURDIR)/docs/fonts/roboto/ \
-		--output_font="Roboto-IFT.ttf"
+		--output_font="Roboto-IFT.woff2"
 
 build/Roboto-Preprocessed.ttf: original_fonts/Roboto[wdth,wght].ttf
 	bazel run $(BAZEL_OPTS) @harfbuzz//:hb-subset -- $(CURDIR)/original_fonts/Roboto[wdth,wght].ttf \
@@ -62,16 +59,13 @@ build/NotoSerifSC-HighFreq.otf: original_fonts/NotoSerifSC-VF.otf build/simplifi
 		--instance="wght=900" \
 		-o $(CURDIR)/build/NotoSerifSC-HighFreq.otf
 
-docs/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.otf: build/NotoSerifSC-HighFreq.otf build/noto_serif_high_freq_config.txtpb
+docs/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2: build/NotoSerifSC-HighFreq.otf build/noto_serif_high_freq_config.txtpb
 	mkdir -p docs/fonts/notoserifhigh
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSerifSC-HighFreq.otf \
 		--config=$(CURDIR)/build/noto_serif_high_freq_config.txtpb \
 		--output_path=$(CURDIR)/docs/fonts/notoserifhigh/ \
-		--output_font="NotoSerifSC-HighFreq-IFT.otf"
-
-docs/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2: docs/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.otf
-	woff2_compress --in=docs/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.otf --out=docs/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2 --allow_transforms=false
+		--output_font="NotoSerifSC-HighFreq-IFT.woff2"
 
 build/noto_serif_high_freq_config.txtpb: build/noto_serif_high_freq_glyph_keyed_config.txtpb build/noto_serif_high_freq_table_keyed_config.txtpb
 	cat build/noto_serif_high_freq_glyph_keyed_config.txtpb build/noto_serif_high_freq_table_keyed_config.txtpb > build/noto_serif_high_freq_config.txtpb
@@ -101,16 +95,13 @@ build/NotoSerifSC-LowFreq.otf: original_fonts/NotoSerifSC-VF.otf build/simplifie
 		--instance="wght=900" \
 		-o $(CURDIR)/build/NotoSerifSC-LowFreq.otf
 
-docs/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.otf: build/NotoSerifSC-LowFreq.otf build/noto_serif_low_freq_config.txtpb
+docs/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2: build/NotoSerifSC-LowFreq.otf build/noto_serif_low_freq_config.txtpb
 	mkdir -p docs/fonts/notoseriflow/
 	bazel run $(BAZEL_OPTS)  @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSerifSC-LowFreq.otf \
 		--config=$(CURDIR)/build/noto_serif_low_freq_config.txtpb \
 		--output_path=$(CURDIR)/docs/fonts/notoseriflow/ \
-		--output_font="NotoSerifSC-LowFreq-IFT.otf"
-
-docs/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2: docs/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.otf
-	woff2_compress --in=docs/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.otf --out=docs/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2 --allow_transforms=false
+		--output_font="NotoSerifSC-LowFreq-IFT.woff2"
 
 build/noto_serif_low_freq_config.txtpb: build/noto_serif_low_freq_glyph_keyed_config.txtpb build/noto_serif_low_freq_table_keyed_config.txtpb
 	cat build/noto_serif_low_freq_glyph_keyed_config.txtpb build/noto_serif_low_freq_table_keyed_config.txtpb > build/noto_serif_low_freq_config.txtpb
@@ -138,16 +129,13 @@ build/NotoSansSC-HighFreq.ttf: original_fonts/NotoSansSC-VF.ttf build/simplified
 		--no-hinting \
 		-o $(CURDIR)/build/NotoSansSC-HighFreq.ttf
 
-docs/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.ttf: build/NotoSansSC-HighFreq.ttf build/noto_sans_high_freq_config.txtpb
+docs/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2: build/NotoSansSC-HighFreq.ttf build/noto_sans_high_freq_config.txtpb
 	mkdir -p docs/fonts/notosanshigh/
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSansSC-HighFreq.ttf \
 		--config=$(CURDIR)/build/noto_sans_high_freq_config.txtpb \
 		--output_path=$(CURDIR)/docs/fonts/notosanshigh/ \
-		--output_font="NotoSansSC-HighFreq-IFT.ttf"
-
-docs/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2: docs/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.ttf
-	woff2_compress --in=docs/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.ttf --out=docs/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2 --allow_transforms=false
+		--output_font="NotoSansSC-HighFreq-IFT.woff2"
 
 build/noto_sans_high_freq_config.txtpb: build/noto_sans_high_freq_glyph_keyed_config.txtpb build/noto_sans_high_freq_table_keyed_config.txtpb
 	cat build/noto_sans_high_freq_glyph_keyed_config.txtpb build/noto_sans_high_freq_table_keyed_config.txtpb > build/noto_sans_high_freq_config.txtpb
@@ -176,16 +164,13 @@ build/NotoSansSC-LowFreq.ttf: original_fonts/NotoSansSC-VF.ttf build/simplified-
 		--no-hinting \
 		-o $(CURDIR)/build/NotoSansSC-LowFreq.ttf
 
-docs/fonts/notosanslow/NotoSansSC-LowFreq-IFT.ttf: build/NotoSansSC-LowFreq.ttf build/noto_sans_low_freq_config.txtpb
+docs/fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2: build/NotoSansSC-LowFreq.ttf build/noto_sans_low_freq_config.txtpb
 	mkdir -p docs/fonts/notosanslow/
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSansSC-LowFreq.ttf \
 		--config=$(CURDIR)/build/noto_sans_low_freq_config.txtpb \
 		--output_path=$(CURDIR)/docs/fonts/notosanslow/ \
-		--output_font="NotoSansSC-LowFreq-IFT.ttf"
-
-docs/fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2: docs/fonts/notosanslow/NotoSansSC-LowFreq-IFT.ttf
-	woff2_compress --in=docs/fonts/notosanslow/NotoSansSC-LowFreq-IFT.ttf --out=docs/fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2 --allow_transforms=false
+		--output_font="NotoSansSC-LowFreq-IFT.woff2"
 
 build/noto_sans_low_freq_config.txtpb: build/noto_sans_low_freq_glyph_keyed_config.txtpb build/noto_sans_low_freq_table_keyed_config.txtpb
 	cat build/noto_sans_low_freq_glyph_keyed_config.txtpb build/noto_sans_low_freq_table_keyed_config.txtpb > build/noto_sans_low_freq_config.txtpb
