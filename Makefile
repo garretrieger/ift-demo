@@ -48,6 +48,7 @@ build/roboto_glyph_keyed_config.txtpb: original_fonts/Roboto[wdth,wght].ttf buil
 	      --noinclude_initial_codepoints_in_config \
 	      --initial_codepoints_file=$(CURDIR)/subsets/latin.txt \
 	      --codepoints_file=$(CURDIR)/build/roboto_all_cps.txt \
+	      --optional_feature_tags=c2sc,smcp \
 	      --output_encoder_config > $(CURDIR)/build/roboto_glyph_keyed_config.txtpb
 
 ##### Noto Serif High Freq Build Rules #####
