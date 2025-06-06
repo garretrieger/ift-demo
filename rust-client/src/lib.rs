@@ -3,7 +3,7 @@ mod utils;
 use futures::future::join_all;
 use incremental_font_transfer::{
     patch_group::{PatchGroup, UriStatus},
-    patchmap::{DesignSpace, SubsetDefinition},
+    patchmap::{DesignSpace, PatchUri, SubsetDefinition},
 };
 
 use read_fonts::{
@@ -11,8 +11,11 @@ use read_fonts::{
     types::{Fixed, Tag},
     FontRef,
 };
-use std::path::{Path, PathBuf};
 use std::{collections::HashMap, sync::Arc};
+use std::{
+    path::{Path, PathBuf},
+    str::FromStr,
+};
 use tokio::sync::Mutex;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::JsFuture;
@@ -58,7 +61,7 @@ impl FontSubset {
 struct InnerState {
     status: Status,
     font_subset: Vec<u8>,
-    patch_cache: HashMap<String, UriStatus>,
+    patch_cache: HashMap<PatchUri, UriStatus>,
     // TODO store requested codepoints, features, design space.
     // TODO store loaded patch data by url
 }
@@ -88,6 +91,14 @@ impl IftState {
             .codepoints
             .extend_unsorted(codepoints.iter().map(|v| *v));
         self.target_subset_definition.codepoints.len() > start_len
+    }
+
+    pub fn add_feature_to_target_subset_definition(&mut self, feature: &str) -> bool {
+        if let Ok(tag) = Tag::from_str(feature) {
+            self.target_subset_definition.feature_tags.insert(tag)
+        } else {
+            false
+        }
     }
 
     pub fn add_design_space_to_target_subset_definition(
@@ -174,16 +185,16 @@ impl IftState {
 
     async fn ensure_patches_loaded(
         &self,
-        patch_cache: &mut HashMap<String, UriStatus>,
+        patch_cache: &mut HashMap<PatchUri, UriStatus>,
         patch_group: &PatchGroup<'_>,
     ) -> Result<(), String> {
         // TODO change back to iter
-        let mut uris_to_load: Vec<(&str, String)> = vec![];
+        let mut uris_to_load: Vec<(&PatchUri, String)> = vec![];
         for uri in patch_group.uris() {
             if patch_cache.contains_key(uri) {
                 continue;
             }
-            uris_to_load.push((uri, combine_urls(&self.font_url, uri)));
+            uris_to_load.push((&uri, combine_urls(&self.font_url, uri.as_ref())));
         }
 
         let uris_to_load = uris_to_load;
@@ -192,7 +203,7 @@ impl IftState {
             return Ok(());
         };
 
-        let patches: Vec<Result<(String, Vec<u8>), String>> = join_all(
+        let patches: Vec<Result<(PatchUri, Vec<u8>), String>> = join_all(
             uris_to_load
                 .iter()
                 .map(|(uri, full_uri)| IftState::load_patch(uri, &full_uri)),
@@ -206,8 +217,8 @@ impl IftState {
         Ok(())
     }
 
-    async fn load_patch(uri: &str, full_uri: &str) -> Result<(String, Vec<u8>), String> {
-        Ok((uri.to_string(), load_file(full_uri).await?))
+    async fn load_patch(uri: &PatchUri, full_uri: &str) -> Result<(PatchUri, Vec<u8>), String> {
+        Ok((uri.clone(), load_file(full_uri).await?))
     }
 }
 

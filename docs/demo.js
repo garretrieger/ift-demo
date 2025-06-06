@@ -156,7 +156,9 @@ function patch_codepoints(font_id, font_face, cps, features, axes) {
     state.add_design_space_to_target_subset_definition(tag, point, point);
   }
 
-  // TODO add features once supported.
+  for (const tag of features) {
+    state.add_feature_to_target_subset_definition(tag);
+  }
 
   state.add_to_target_subset_definition(cps);
   return state.current_font_subset(woff2_decoder).then(font => {
@@ -263,19 +265,24 @@ window.addEventListener('DOMContentLoaded', function() {
         page_index = 2;
         update_all_fonts();
     });
+    let sc = document.getElementById("to-small-caps");
+    sc.addEventListener("click", function() {
+        page_index = 4;
+        update_all_fonts();
+    });
     let w = document.getElementById("to-width");
     w.addEventListener("click", function() {
-        page_index = 4;
+        page_index = 5;
         update_all_fonts();
     });
     let sim_chinese = document.getElementById("to-sim-chinese");
     sim_chinese.addEventListener("click", function() {
-        page_index = 5;
+        page_index = 6;
         update_all_fonts();
     });
     let lo_freq_sim_chinese = document.getElementById("to-lo-freq-sim-chinese");
     lo_freq_sim_chinese.addEventListener("click", function() {
-        page_index = 13;
+        page_index = 14;
         update_all_fonts();
     });
 
