@@ -16,6 +16,7 @@ export class IftState {
    * Returns true if at least one new codepoint was added to the definition.
    */
   add_to_target_subset_definition(codepoints: Uint32Array): boolean;
+  add_feature_to_target_subset_definition(feature: string): boolean;
   add_design_space_to_target_subset_definition(tag: string, start: number, end: number): boolean;
   current_font_subset(woff2: any): Promise<FontSubset>;
 }
@@ -30,6 +31,7 @@ export interface InitOutput {
   readonly fontsubset_data: (a: number) => number;
   readonly iftstate_new: (a: number, b: number) => number;
   readonly iftstate_add_to_target_subset_definition: (a: number, b: number, c: number) => number;
+  readonly iftstate_add_feature_to_target_subset_definition: (a: number, b: number, c: number) => number;
   readonly iftstate_add_design_space_to_target_subset_definition: (a: number, b: number, c: number, d: number, e: number) => number;
   readonly iftstate_current_font_subset: (a: number, b: any) => any;
   readonly __wbindgen_exn_store: (a: number) => void;
