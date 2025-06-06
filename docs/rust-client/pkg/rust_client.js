@@ -229,7 +229,7 @@ function __wbg_adapter_22(arg0, arg1, arg2) {
     wasm.closure30_externref_shim(arg0, arg1, arg2);
 }
 
-function __wbg_adapter_61(arg0, arg1, arg2, arg3) {
+function __wbg_adapter_62(arg0, arg1, arg2, arg3) {
     wasm.closure42_externref_shim(arg0, arg1, arg2, arg3);
 }
 
@@ -322,6 +322,16 @@ export class IftState {
         const ptr0 = passArray32ToWasm0(codepoints, wasm.__wbindgen_malloc);
         const len0 = WASM_VECTOR_LEN;
         const ret = wasm.iftstate_add_to_target_subset_definition(this.__wbg_ptr, ptr0, len0);
+        return ret !== 0;
+    }
+    /**
+     * @param {string} feature
+     * @returns {boolean}
+     */
+    add_feature_to_target_subset_definition(feature) {
+        const ptr0 = passStringToWasm0(feature, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ret = wasm.iftstate_add_feature_to_target_subset_definition(this.__wbg_ptr, ptr0, len0);
         return ret !== 0;
     }
     /**
@@ -435,7 +445,7 @@ function __wbg_get_imports() {
                 const a = state0.a;
                 state0.a = 0;
                 try {
-                    return __wbg_adapter_61(a, state0.b, arg0, arg1);
+                    return __wbg_adapter_62(a, state0.b, arg0, arg1);
                 } finally {
                     state0.a = a;
                 }
@@ -526,7 +536,7 @@ function __wbg_get_imports() {
         const ret = false;
         return ret;
     };
-    imports.wbg.__wbindgen_closure_wrapper285 = function(arg0, arg1, arg2) {
+    imports.wbg.__wbindgen_closure_wrapper295 = function(arg0, arg1, arg2) {
         const ret = makeMutClosure(arg0, arg1, 31, __wbg_adapter_22);
         return ret;
     };
