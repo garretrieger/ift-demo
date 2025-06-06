@@ -16,5 +16,9 @@ non_glyph_design_space_segmentation {
     }
   }
 }
+non_glyph_feature_segmentation {
+  values: "smcp"
+  values: "c2sc"
+}
 jump_ahead: 2
 use_preload_lists: true
