@@ -15,9 +15,9 @@ wasm-bindgen = "0.2.100"
 wasm-bindgen-futures = "0.4.50"
 js-sys = "0.3.77"
 web-sys = { version = "0.3.77", features = ['Request', 'RequestInit', 'RequestMode', 'Response', 'Window'] }
-read-fonts = { git = "https://github.com/googlefonts/fontations.git", rev = "f432df99fedc86672b106486848f8896482dfce6" }
-incremental-font-transfer = { git = "https://github.com/googlefonts/fontations.git", rev = "f432df99fedc86672b106486848f8896482dfce6", default-features = false, features = [ "rust-brotli" ] }
-shared-brotli-patch-decoder = { git = "https://github.com/googlefonts/fontations.git", rev = "f432df99fedc86672b106486848f8896482dfce6", default-features = false, features = [ "rust-brotli" ] }
+read-fonts = { git = "https://github.com/googlefonts/fontations.git", rev = "e8dbf2a0bf68ca7526cb4d507c25c75b7d2e3e9f" }
+incremental-font-transfer = { git = "https://github.com/googlefonts/fontations.git", rev = "e8dbf2a0bf68ca7526cb4d507c25c75b7d2e3e9f", default-features = false, features = [ "rust-brotli" ] }
+shared-brotli-patch-decoder = { git = "https://github.com/googlefonts/fontations.git", rev = "e8dbf2a0bf68ca7526cb4d507c25c75b7d2e3e9f", default-features = false, features = [ "rust-brotli" ] }
 tokio = { version = "1.43.0", features = [ "sync" ] }
 futures = { version = "0.3.31" }
 digest = "0.10.7"
