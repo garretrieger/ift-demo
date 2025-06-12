@@ -2,8 +2,8 @@ mod utils;
 
 use futures::future::join_all;
 use incremental_font_transfer::{
-    patch_group::{PatchGroup, UriStatus},
-    patchmap::{DesignSpace, PatchUri, SubsetDefinition},
+    patch_group::{PatchGroup, UrlStatus},
+    patchmap::{DesignSpace, PatchUrl, SubsetDefinition},
 };
 
 use read_fonts::{
@@ -61,7 +61,7 @@ impl FontSubset {
 struct InnerState {
     status: Status,
     font_subset: Vec<u8>,
-    patch_cache: HashMap<PatchUri, UriStatus>,
+    patch_cache: HashMap<PatchUrl, UrlStatus>,
     // TODO store requested codepoints, features, design space.
     // TODO store loaded patch data by url
 }
@@ -166,7 +166,7 @@ impl IftState {
                     &self.target_subset_definition,
                 )
                 .map_err(|e| format!("Failed to compute the patch group: {}", e))?;
-                if !patch_group.has_uris() {
+                if !patch_group.has_urls() {
                     // No more remaining work.
                     return Ok(());
                 }
@@ -185,40 +185,40 @@ impl IftState {
 
     async fn ensure_patches_loaded(
         &self,
-        patch_cache: &mut HashMap<PatchUri, UriStatus>,
+        patch_cache: &mut HashMap<PatchUrl, UrlStatus>,
         patch_group: &PatchGroup<'_>,
     ) -> Result<(), String> {
         // TODO change back to iter
-        let mut uris_to_load: Vec<(&PatchUri, String)> = vec![];
-        for uri in patch_group.uris() {
-            if patch_cache.contains_key(uri) {
+        let mut urls_to_load: Vec<(&PatchUrl, String)> = vec![];
+        for url in patch_group.urls() {
+            if patch_cache.contains_key(url) {
                 continue;
             }
-            uris_to_load.push((&uri, combine_urls(&self.font_url, uri.as_ref())));
+            urls_to_load.push((&url, combine_urls(&self.font_url, url.as_ref())));
         }
 
-        let uris_to_load = uris_to_load;
-        if uris_to_load.is_empty() {
+        let urls_to_load = urls_to_load;
+        if urls_to_load.is_empty() {
             // Nothing to do.
             return Ok(());
         };
 
-        let patches: Vec<Result<(PatchUri, Vec<u8>), String>> = join_all(
-            uris_to_load
+        let patches: Vec<Result<(PatchUrl, Vec<u8>), String>> = join_all(
+            urls_to_load
                 .iter()
-                .map(|(uri, full_uri)| IftState::load_patch(uri, &full_uri)),
+                .map(|(url, full_url)| IftState::load_patch(url, &full_url)),
         )
         .await;
         for result in patches {
-            let (uri, data) = result?;
-            patch_cache.insert(uri, UriStatus::Pending(data));
+            let (url, data) = result?;
+            patch_cache.insert(url, UrlStatus::Pending(data));
         }
 
         Ok(())
     }
 
-    async fn load_patch(uri: &PatchUri, full_uri: &str) -> Result<(PatchUri, Vec<u8>), String> {
-        Ok((uri.clone(), load_file(full_uri).await?))
+    async fn load_patch(url: &PatchUrl, full_url: &str) -> Result<(PatchUrl, Vec<u8>), String> {
+        Ok((url.clone(), load_file(full_url).await?))
     }
 }
 
@@ -259,18 +259,18 @@ fn combine_urls(base: &str, relative: &str) -> String {
     result.to_string_lossy().to_string()
 }
 
-async fn load_file(uri: &str) -> Result<Vec<u8>, String> {
+async fn load_file(url: &str) -> Result<Vec<u8>, String> {
     let opts = RequestInit::new();
     opts.set_method("GET");
     opts.set_mode(RequestMode::Cors);
 
-    let Ok(request) = Request::new_with_str_and_init(uri, &opts) else {
-        return Err(format!("Failed to create new GET request for: {}", uri));
+    let Ok(request) = Request::new_with_str_and_init(url, &opts) else {
+        return Err(format!("Failed to create new GET request for: {}", url));
     };
 
     let window = web_sys::window().unwrap();
     let Ok(response) = JsFuture::from(window.fetch_with_request(&request)).await else {
-        return Err(format!("Load request for {} failed.", uri));
+        return Err(format!("Load request for {} failed.", url));
     };
 
     assert!(response.is_instance_of::<Response>());
@@ -278,7 +278,7 @@ async fn load_file(uri: &str) -> Result<Vec<u8>, String> {
     if response.status() != 200 {
         return Err(format!(
             "Load request for {} failed. Status = {}",
-            uri,
+            url,
             response.status()
         ));
     }
