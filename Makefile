@@ -19,7 +19,7 @@ docs/fonts/roboto/Roboto-IFT.woff2: build/Roboto-Preprocessed.ttf build/roboto_c
 	mkdir -p docs/fonts/roboto
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/Roboto-Preprocessed.ttf \
-		--config=$(CURDIR)/build/roboto_config.txtpb \
+		--plan=$(CURDIR)/build/roboto_config.txtpb \
 		--output_path=$(CURDIR)/docs/fonts/roboto/ \
 		--output_font="Roboto-IFT.woff2"
 
@@ -49,7 +49,7 @@ build/roboto_glyph_keyed_config.txtpb: original_fonts/Roboto[wdth,wght].ttf buil
 	      --initial_codepoints_file=$(CURDIR)/subsets/latin.txt \
 	      --codepoints_file=$(CURDIR)/build/roboto_all_cps.txt \
 	      --optional_feature_tags=c2sc,smcp \
-	      --output_encoder_config > $(CURDIR)/build/roboto_glyph_keyed_config.txtpb
+	      --output_segmentation_plan > $(CURDIR)/build/roboto_glyph_keyed_config.txtpb
 
 ##### Noto Serif High Freq Build Rules #####
 
@@ -64,7 +64,7 @@ docs/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2: build/NotoSerifSC-HighF
 	mkdir -p docs/fonts/notoserifhigh
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSerifSC-HighFreq.otf \
-		--config=$(CURDIR)/build/noto_serif_high_freq_config.txtpb \
+		--plan=$(CURDIR)/build/noto_serif_high_freq_config.txtpb \
 		--output_path=$(CURDIR)/docs/fonts/notoserifhigh/ \
 		--output_font="NotoSerifSC-HighFreq-IFT.woff2"
 
@@ -79,7 +79,7 @@ build/noto_serif_high_freq_glyph_keyed_config.txtpb: build/NotoSerifSC-HighFreq.
 	      --noinclude_initial_codepoints_in_config \
 	      --initial_codepoints_file=$(CURDIR)/subsets/empty.txt \
 	      --codepoints_file=$(CURDIR)/subsets/simplified-chinese-ordered.txt \
-	      --output_encoder_config > $(CURDIR)/build/noto_serif_high_freq_glyph_keyed_config.txtpb
+	      --output_segmentation_plan > $(CURDIR)/build/noto_serif_high_freq_glyph_keyed_config.txtpb
 
 build/noto_serif_high_freq_table_keyed_config.txtpb: subsets/empty.txt subsets/simplified-chinese_split1.txt original_fonts/noto_serif_additional_config.txtpb
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:generate_table_keyed_config -- \
@@ -100,7 +100,7 @@ docs/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2: build/NotoSerifSC-LowFreq
 	mkdir -p docs/fonts/notoseriflow/
 	bazel run $(BAZEL_OPTS)  @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSerifSC-LowFreq.otf \
-		--config=$(CURDIR)/build/noto_serif_low_freq_config.txtpb \
+		--plan=$(CURDIR)/build/noto_serif_low_freq_config.txtpb \
 		--output_path=$(CURDIR)/docs/fonts/notoseriflow/ \
 		--output_font="NotoSerifSC-LowFreq-IFT.woff2"
 
@@ -114,7 +114,7 @@ build/noto_serif_low_freq_glyph_keyed_config.txtpb: build/NotoSerifSC-LowFreq.ot
 	      --nooutput_segmentation_analysis \
 	      --noinclude_initial_codepoints_in_config \
 	      --initial_codepoints_file=$(CURDIR)/subsets/empty.txt \
-	      --output_encoder_config > $(CURDIR)/build/noto_serif_low_freq_glyph_keyed_config.txtpb
+	      --output_segmentation_plan > $(CURDIR)/build/noto_serif_low_freq_glyph_keyed_config.txtpb
 
 build/noto_serif_low_freq_table_keyed_config.txtpb: subsets/empty.txt original_fonts/noto_serif_additional_config.txtpb build/NotoSerifSC-LowFreq.otf
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:generate_table_keyed_config -- \
@@ -134,7 +134,7 @@ docs/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2: build/NotoSansSC-HighFreq
 	mkdir -p docs/fonts/notosanshigh/
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSansSC-HighFreq.ttf \
-		--config=$(CURDIR)/build/noto_sans_high_freq_config.txtpb \
+		--plan=$(CURDIR)/build/noto_sans_high_freq_config.txtpb \
 		--output_path=$(CURDIR)/docs/fonts/notosanshigh/ \
 		--output_font="NotoSansSC-HighFreq-IFT.woff2"
 
@@ -149,7 +149,7 @@ build/noto_sans_high_freq_glyph_keyed_config.txtpb: build/NotoSansSC-HighFreq.tt
 	      --noinclude_initial_codepoints_in_config \
 	      --initial_codepoints_file=$(CURDIR)/subsets/empty.txt \
 	      --codepoints_file=$(CURDIR)/subsets/simplified-chinese-ordered.txt \
-	      --output_encoder_config > $(CURDIR)/build/noto_sans_high_freq_glyph_keyed_config.txtpb
+	      --output_segmentation_plan > $(CURDIR)/build/noto_sans_high_freq_glyph_keyed_config.txtpb
 
 build/noto_sans_high_freq_table_keyed_config.txtpb: subsets/empty.txt subsets/simplified-chinese_split1.txt original_fonts/noto_sans_additional_config.txtpb
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:generate_table_keyed_config -- \
@@ -169,7 +169,7 @@ docs/fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2: build/NotoSansSC-LowFreq.tt
 	mkdir -p docs/fonts/notosanslow/
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSansSC-LowFreq.ttf \
-		--config=$(CURDIR)/build/noto_sans_low_freq_config.txtpb \
+		--plan=$(CURDIR)/build/noto_sans_low_freq_config.txtpb \
 		--output_path=$(CURDIR)/docs/fonts/notosanslow/ \
 		--output_font="NotoSansSC-LowFreq-IFT.woff2"
 
@@ -182,7 +182,7 @@ build/noto_sans_low_freq_glyph_keyed_config.txtpb: build/NotoSansSC-LowFreq.ttf 
 	      --number_of_segments=3500 --min_patch_size_bytes=5000 --max_patch_size_bytes=12000 \
 	      --nooutput_segmentation_analysis \
 	      --noinclude_initial_codepoints_in_config \
-	      --output_encoder_config > $(CURDIR)/build/noto_sans_low_freq_glyph_keyed_config.txtpb
+	      --output_segmentation_plan > $(CURDIR)/build/noto_sans_low_freq_glyph_keyed_config.txtpb
 
 build/noto_sans_low_freq_table_keyed_config.txtpb: subsets/empty.txt subsets/simplified-chinese_split1.txt original_fonts/noto_sans_additional_config.txtpb build/NotoSansSC-LowFreq.ttf
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:generate_table_keyed_config -- \
