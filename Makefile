@@ -1,3 +1,5 @@
+SHELL=/bin/bash
+SHELLOPTS=braceexpand:emacs:hashall:histexpand:history:interactive-comments:monitor
 BAZEL_OPTS = -c opt --copt=-DABSL_MIN_LOG_LEVEL=absl::LogSeverity::kWarning
 
 all: docs/rust-client/pkg/rust_client.js docs/cc-client/brotli.js fonts
