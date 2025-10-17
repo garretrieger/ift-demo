@@ -3,12 +3,14 @@
 export class FontSubset {
   private constructor();
   free(): void;
+  [Symbol.dispose](): void;
   len(): number;
   data(): number;
 }
 export class IftState {
   private constructor();
   free(): void;
+  [Symbol.dispose](): void;
   static new(font_url: string): IftState;
   /**
    * Adds the supplied codepoints to the target subset definition.
@@ -38,10 +40,10 @@ export interface InitOutput {
   readonly __externref_table_alloc: () => number;
   readonly __wbindgen_export_2: WebAssembly.Table;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
-  readonly __wbindgen_export_4: WebAssembly.Table;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
+  readonly __wbindgen_export_5: WebAssembly.Table;
   readonly closure30_externref_shim: (a: number, b: number, c: any) => void;
-  readonly closure42_externref_shim: (a: number, b: number, c: any, d: any) => void;
+  readonly closure41_externref_shim: (a: number, b: number, c: any, d: any) => void;
   readonly __wbindgen_start: () => void;
 }
 

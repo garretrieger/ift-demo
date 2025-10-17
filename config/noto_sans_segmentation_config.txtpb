@@ -1,0 +1,152 @@
+generate_table_keyed_segments: true
+brotli_quality: 9
+
+ungrouped_config {
+  min_patch_size: 5000
+}
+
+base_cost_config {
+  use_bigrams: true
+  optimization_cutoff_fraction: 0.10
+  min_group_size: 4
+}
+
+# Latin
+merge_groups {
+  name: "English"
+  cost_config {
+    path_to_frequency_data: "Language_en.riegeli"
+    #initial_font_merge_threshold: -70
+    #initial_font_merge_probability_threshold: 0.60
+  }
+}
+
+# Chinese
+merge_groups {
+  name: "Simplified Chinese"
+  cost_config {
+    path_to_frequency_data: "Script_chinese-simplified.riegeli"
+    #initial_font_merge_threshold: -70
+    #initial_font_merge_probability_threshold: 0.60
+  }
+}
+
+initial_segment {
+  codepoints {
+  values: 32
+  values: 33
+  values: 34
+  values: 38
+  values: 39
+  values: 40
+  values: 41
+  values: 44
+  values: 45
+  values: 46
+  values: 47
+  values: 48
+  values: 49
+  values: 50
+  values: 51
+  values: 52
+  values: 53
+  values: 54
+  values: 55
+  values: 56
+  values: 57
+  values: 58
+  values: 59
+  values: 61
+  values: 63
+  values: 65
+  values: 66
+  values: 67
+  values: 68
+  values: 69
+  values: 70
+  values: 71
+  values: 72
+  values: 73
+  values: 74
+  values: 75
+  values: 76
+  values: 77
+  values: 78
+  values: 79
+  values: 80
+  values: 81
+  values: 82
+  values: 83
+  values: 84
+  values: 85
+  values: 86
+  values: 87
+  values: 88
+  values: 89
+  values: 90
+  values: 95
+  values: 97
+  values: 98
+  values: 99
+  values: 100
+  values: 101
+  values: 102
+  values: 103
+  values: 104
+  values: 105
+  values: 106
+  values: 107
+  values: 108
+  values: 109
+  values: 110
+  values: 111
+  values: 112
+  values: 113
+  values: 114
+  values: 115
+  values: 116
+  values: 117
+  values: 118
+  values: 119
+  values: 120
+  values: 121
+  values: 122
+  values: 12289
+  values: 12290
+  values: 19968
+  values: 19978
+  values: 19979
+  values: 19981
+  values: 20013
+  values: 20026
+  values: 20102
+  values: 20154
+  values: 20840
+  values: 20851
+  values: 20998
+  values: 21487
+  values: 22312
+  values: 22823
+  values: 24180
+  values: 25105
+  values: 25152
+  values: 25991
+  values: 26032
+  values: 26085
+  values: 26102
+  values: 26159
+  values: 26356
+  values: 26368
+  values: 26377
+  values: 26412
+  values: 29983
+  values: 29992
+  values: 30340
+  values: 33258
+  values: 39318
+  values: 39640
+  values: 65292
+  values: 65306  
+  }
+}
+

@@ -1,0 +1,24 @@
+generate_table_keyed_segments: true
+brotli_quality: 0
+
+ungrouped_config {
+  min_patch_size: 2000
+}
+preprocess_merging_group_size_for_ungrouped: 10
+
+base_cost_config {
+  use_bigrams: false
+  optimization_cutoff_fraction: 1.0
+  min_group_size: 7
+}
+
+# Chinese
+merge_groups {
+  name: "Simplified Chinese"
+  preprocess_merging_group_size: 7
+  preprocess_merging_probability_threshold: 0.5
+  cost_config {
+    path_to_frequency_data: "Script_chinese-simplified.riegeli"
+  }
+}
+
