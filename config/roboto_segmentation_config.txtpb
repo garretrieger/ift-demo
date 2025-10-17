@@ -1,0 +1,276 @@
+generate_table_keyed_segments: true
+brotli_quality: 11
+
+feature_segments {
+  key: 1
+  value: {
+    values: "c2sc"
+    values: "smcp"
+  }
+}
+
+base_segmentation_plan {
+  initial_design_space {
+    ranges {
+      key: "wdth"
+      value: {
+        start: 100.0
+        end: 100.0
+      }
+    }
+    ranges {
+      key: "wght"
+      value: {
+        start: 100.0
+        end: 400.0
+      }
+    }
+  }
+  non_glyph_design_space_segmentation {
+    ranges {
+      key: "wdth"
+      value: {
+        start: 75.0
+        end: 100.0
+      }
+    }
+    ranges {
+      key: "wght"
+      value: {
+        start: 100.0
+        end: 900.0
+      }
+    }
+  }
+  jump_ahead: 2
+  use_prefetch_lists: true
+}
+
+# These were copied from a previous run where initial font merging
+# was enabled using brotli 11. With brotli 11 the init font merge
+# processing is quite slow so recording the previously found set
+# here saves a lot of processing time.
+initial_segment {
+  codepoints {
+  values: 32
+  values: 33
+  values: 34
+  values: 44
+  values: 45
+  values: 46
+  values: 47
+  values: 48
+  values: 49
+  values: 50
+  values: 51
+  values: 52
+  values: 53
+  values: 54
+  values: 55
+  values: 56
+  values: 57
+  values: 58
+  values: 59
+  values: 61
+  values: 65
+  values: 66
+  values: 67
+  values: 68
+  values: 69
+  values: 70
+  values: 71
+  values: 72
+  values: 73
+  values: 74
+  values: 75
+  values: 76
+  values: 77
+  values: 78
+  values: 79
+  values: 80
+  values: 81
+  values: 82
+  values: 83
+  values: 84
+  values: 85
+  values: 86
+  values: 87
+  values: 88
+  values: 89
+  values: 90
+  values: 96
+  values: 97
+  values: 98
+  values: 99
+  values: 100
+  values: 101
+  values: 102
+  values: 103
+  values: 104
+  values: 105
+  values: 106
+  values: 107
+  values: 108
+  values: 109
+  values: 110
+  values: 111
+  values: 112
+  values: 113
+  values: 114
+  values: 115
+  values: 116
+  values: 117
+  values: 118
+  values: 119
+  values: 120
+  values: 121
+  values: 122
+  values: 168
+  values: 178
+  values: 179
+  values: 180
+  values: 181
+  values: 185
+  values: 198
+  values: 216
+  values: 221
+  values: 230
+  values: 235
+  values: 236
+  values: 237
+  values: 246
+  values: 248
+  values: 259
+  values: 290
+  values: 297
+  values: 305
+  values: 310
+  values: 311
+  values: 315
+  values: 316
+  values: 325
+  values: 326
+  values: 342
+  values: 343
+  values: 353
+  values: 357
+  values: 416
+  values: 417
+  values: 431
+  values: 432
+  values: 508
+  values: 509
+  values: 510
+  values: 511
+  values: 536
+  values: 537
+  values: 538
+  values: 539
+  values: 567
+  values: 711
+  values: 728
+  values: 732
+  values: 777
+  values: 803
+  values: 900
+  values: 7840
+  values: 7841
+  values: 7842
+  values: 7843
+  values: 7864
+  values: 7865
+  values: 7866
+  values: 7867
+  values: 7880
+  values: 7881
+  values: 7882
+  values: 7883
+  values: 7884
+  values: 7885
+  values: 7886
+  values: 7887
+  values: 7898
+  values: 7899
+  values: 7900
+  values: 7901
+  values: 7902
+  values: 7903
+  values: 7904
+  values: 7905
+  values: 7906
+  values: 7907
+  values: 7908
+  values: 7909
+  values: 7910
+  values: 7911
+  values: 7912
+  values: 7913
+  values: 7914
+  values: 7915
+  values: 7916
+  values: 7917
+  values: 7918
+  values: 7919
+  values: 7920
+  values: 7921
+  values: 7922
+  values: 7924
+  values: 7925
+  values: 7926
+  values: 7927
+  values: 7928
+  values: 8260
+  values: 63171
+  values: 64257
+  values: 64258
+  values: 64259
+  values: 64260
+  }
+}
+
+ungrouped_config {
+  min_patch_size: 5000
+}
+
+base_cost_config {
+  use_bigrams: true
+  optimization_cutoff_fraction: 0.0025
+  min_group_size: 4
+}
+
+# Latin
+merge_groups {
+  name: "Latin"
+  cost_config {
+f    path_to_frequency_data: "Script_latin.riegeli"
+  }
+}
+
+# Cyrillic
+merge_groups {
+  name: "Cyrillic"
+  cost_config {
+    path_to_frequency_data: "Script_cyrillic.riegeli"
+  }
+}
+
+# Greek
+merge_groups {
+  name: "Greek"
+  cost_config {
+    path_to_frequency_data: "Script_greek.riegeli"
+  }
+}
+
+# Group for optional features
+merge_groups {
+  name: "Optional Features"
+  segment_ids {
+    # disable automatic assignment.
+  }
+  feature_segment_ids {
+    values: 1
+  }
+  heuristic_config {
+  }
+}

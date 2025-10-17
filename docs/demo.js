@@ -280,9 +280,14 @@ window.addEventListener('DOMContentLoaded', function() {
         page_index = 6;
         update_all_fonts();
     });
+    let japanese = document.getElementById("to-japanese");
+    japanese.addEventListener("click", function() {
+        page_index = 14;
+        update_all_fonts();
+    });
     let lo_freq_sim_chinese = document.getElementById("to-lo-freq-sim-chinese");
     lo_freq_sim_chinese.addEventListener("click", function() {
-        page_index = 14;
+        page_index = 16;
         update_all_fonts();
     });
 
