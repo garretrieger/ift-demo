@@ -15,7 +15,7 @@ base_cost_config {
 merge_groups {
   name: "English"
   cost_config {
-    path_to_frequency_data: "Language_en.riegeli"
+    built_in_freq_data_name: "Language_en.riegeli"
     #initial_font_merge_threshold: -70
     #initial_font_merge_probability_threshold: 0.60
   }
@@ -25,7 +25,7 @@ merge_groups {
 merge_groups {
   name: "Simplified Chinese"
   cost_config {
-    path_to_frequency_data: "Script_chinese-simplified.riegeli"
+    built_in_freq_data_name: "Script_chinese-simplified.riegeli@*"
     #initial_font_merge_threshold: -70
     #initial_font_merge_probability_threshold: 0.60
   }
