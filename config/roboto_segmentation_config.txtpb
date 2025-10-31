@@ -242,7 +242,7 @@ base_cost_config {
 merge_groups {
   name: "Latin"
   cost_config {
-f    path_to_frequency_data: "Script_latin.riegeli"
+    built_in_freq_data_name: "Script_latin.riegeli"
   }
 }
 
@@ -250,7 +250,7 @@ f    path_to_frequency_data: "Script_latin.riegeli"
 merge_groups {
   name: "Cyrillic"
   cost_config {
-    path_to_frequency_data: "Script_cyrillic.riegeli"
+    built_in_freq_data_name: "Script_cyrillic.riegeli"
   }
 }
 
@@ -258,7 +258,7 @@ merge_groups {
 merge_groups {
   name: "Greek"
   cost_config {
-    path_to_frequency_data: "Script_greek.riegeli"
+    built_in_freq_data_name: "Script_greek.riegeli"
   }
 }
 

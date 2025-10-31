@@ -18,7 +18,7 @@ merge_groups {
   preprocess_merging_group_size: 7
   preprocess_merging_probability_threshold: 0.5
   cost_config {
-    path_to_frequency_data: "Script_chinese-simplified.riegeli"
+    built_in_freq_data_name: "Script_chinese-simplified.riegeli@*"
   }
 }
 
