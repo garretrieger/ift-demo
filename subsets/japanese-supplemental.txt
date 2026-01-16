@@ -1,0 +1,4 @@
+# codepoints needed for the demo that don't appear in the JP freq data.
+0x2015
+0x544e
+0x6583

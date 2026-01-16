@@ -46,6 +46,7 @@ config/roboto_segmentation_plan.txtpb: build/Roboto-Preprocessed.ttf config/robo
 build/NotoSerifSC-HighFreq.otf: original_fonts/NotoSerifSC-VF.otf build/simplified-chinese_split1_unicodes.txt
 	bazel run $(BAZEL_OPTS) @harfbuzz//:hb-subset -- $(CURDIR)/original_fonts/NotoSerifSC-VF.otf \
 		--unicodes-file=$(CURDIR)/build/simplified-chinese_split1_unicodes.txt \
+		--desubroutinize \
 		--no-hinting \
 		--instance="wght=900" \
 		-o $(CURDIR)/build/NotoSerifSC-HighFreq.otf
@@ -72,6 +73,7 @@ build/NotoSerifSC-LowFreq.otf: original_fonts/NotoSerifSC-VF.otf build/simplifie
 	bazel run $(BAZEL_OPTS) @harfbuzz//:hb-subset -- $(CURDIR)/original_fonts/NotoSerifSC-VF.otf \
 		--unicodes=* \
 		--unicodes-=`paste -sd, build/simplified-chinese_split1_unicodes.txt` \
+		--desubroutinize \
 		--no-hinting \
 		--instance="wght=900" \
 		-o $(CURDIR)/build/NotoSerifSC-LowFreq.otf
@@ -195,7 +197,8 @@ config/noto_sans_jp_segmentation_plan.txtpb: build/NotoSansJP-HighFreq.ttf confi
 	      --output_segmentation_plan > $(CURDIR)/config/noto_sans_jp_segmentation_plan.txtpb
 
 build/japanese-hifreq.txt : subsets/japanese-ordered.txt
-	cat subsets/japanese-ordered.txt | grep 0x | head -n 2300 | awk '{print $$1}' > build/japanese-hifreq.txt
+	cat subsets/japanese-ordered.txt | grep 0x | head -n 6000 | awk '{print $$1}' > build/japanese-hifreq.txt
+	cat subsets/japanese-supplemental.txt | grep -v "^#" >> build/japanese-hifreq.txt
 	cat subsets/latin.txt | awk '{print $$1}' >> build/japanese-hifreq.txt
 
 clean: clean_rust
