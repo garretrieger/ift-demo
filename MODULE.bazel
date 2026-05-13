@@ -1,9 +1,9 @@
 bazel_dep(name = "ift_encoder", version = "git")
-git_override(module_name = "ift_encoder", remote = "https://github.com/garretrieger/ift-encoder.git", commit = "7ef6fe73d886fabd8f0057fd5ac52b0e21bd8bcd")
-git_override(module_name = "ift_encoder_data", remote = "https://github.com/w3c/ift-encoder-data.git", commit = "317ea02ac68d45004aa842f831c65ed33c891701")
+git_override(module_name = "ift_encoder", remote = "https://github.com/garretrieger/ift-encoder.git", commit = "4de659892dbc756591b13f6b5e19b239c5dd9b82")
+git_override(module_name = "ift_encoder_data", remote = "https://github.com/w3c/ift-encoder-data.git", commit = "d3314fab829cf58d93d0afb224926180be0b8842")
 
-bazel_dep(name = "platforms", version = "0.0.11")
-bazel_dep(name = "glib", version = "2.82.2.bcr.5")
+bazel_dep(name = "platforms", version = "1.1.0")
+bazel_dep(name = "glib", version = "2.82.2.bcr.8")
 
 # Emscripten for WASM compilation
 emsdk_version = "4.0.7"
@@ -12,7 +12,7 @@ git_override(
     module_name = "emsdk",
     remote = "https://github.com/emscripten-core/emsdk.git",
     strip_prefix = "bazel",
-    tag = emsdk_version,
+    commit = "c69d433d8509c5c64564c2f0d054bf102a5cf67e", # 4.0.7
 )
 
 ### Non Bazel Modules ###
