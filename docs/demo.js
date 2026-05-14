@@ -108,9 +108,13 @@ function update_sample_toggle() {
 }
 
 function update_fonts(text, font_id, font_face, features, ds) {
+  let div = document.createElement('div');
+  div.innerHTML = text;
+  let plain_text = div.textContent || div.innerText || '';
+
   let cps = new Set();
-  for (let i = 0; text.codePointAt(i); i++) {
-    cps.add(text.codePointAt(i));
+  for (let i = 0; plain_text.codePointAt(i); i++) {
+    cps.add(plain_text.codePointAt(i));
   }
 
   let cps_array = [];
