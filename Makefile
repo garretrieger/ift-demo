@@ -52,21 +52,14 @@ build/NotoSerifSC-HighFreq.otf: original_fonts/NotoSerifSC-VF.otf build/simplifi
 		--instance="wght=900" \
 		-o $(CURDIR)/build/NotoSerifSC-HighFreq.otf
 
-docs/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2: build/NotoSerifSC-HighFreq.otf build/noto_serif_segmentation_plan.txtpb
+docs/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2: build/NotoSerifSC-HighFreq.otf
 	mkdir -p docs/fonts/notoserifhigh
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSerifSC-HighFreq.otf \
-		--plan=$(CURDIR)/build/noto_serif_segmentation_plan.txtpb \
+	        --auto_config_quality=3 \
+	        --auto_config_primary_script=Script_chinese-simplified \
 		--output_path=$(CURDIR)/docs/fonts/notoserifhigh/ \
 		--output_font="NotoSerifSC-HighFreq-IFT.woff2"
-
-build/noto_serif_segmentation_plan.txtpb: build/NotoSerifSC-HighFreq.otf
-	bazel run $(BAZEL_OPTS) @ift_encoder//util:gen_ift_segmentation_plan -- \
-	      --input_font=$(CURDIR)/build/NotoSerifSC-HighFreq.otf \
-	      --auto_config_quality=3 \
-	      --auto_config_primary_script=Script_chinese-simplified \
-	      --nooutput_segmentation_analysis \
-	      --output_segmentation_plan > $(CURDIR)/build/noto_serif_segmentation_plan.txtpb
 
 ##### Noto Serif Low Freq Build Rules #####
 
@@ -79,21 +72,14 @@ build/NotoSerifSC-LowFreq.otf: original_fonts/NotoSerifSC-VF.otf build/simplifie
 		--instance="wght=900" \
 		-o $(CURDIR)/build/NotoSerifSC-LowFreq.otf
 
-docs/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2: build/NotoSerifSC-LowFreq.otf build/noto_serif_low_freq_segmentation_plan.txtpb
+docs/fonts/notoseriflow/NotoSerifSC-LowFreq-IFT.woff2: build/NotoSerifSC-LowFreq.otf
 	mkdir -p docs/fonts/notoseriflow/
 	bazel run $(BAZEL_OPTS)  @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSerifSC-LowFreq.otf \
-		--plan=$(CURDIR)/build/noto_serif_low_freq_segmentation_plan.txtpb \
+	        --auto_config_quality=2 \
+	        --auto_config_primary_script=Script_chinese-simplified \
 		--output_path=$(CURDIR)/docs/fonts/notoseriflow/ \
 		--output_font="NotoSerifSC-LowFreq-IFT.woff2"
-
-build/noto_serif_low_freq_segmentation_plan.txtpb: build/NotoSerifSC-LowFreq.otf
-	bazel run $(BAZEL_OPTS) @ift_encoder//util:gen_ift_segmentation_plan -- \
-	      --input_font=$(CURDIR)/build/NotoSerifSC-LowFreq.otf \
-	      --auto_config_quality=2 \
-	      --auto_config_primary_script=Script_chinese-simplified \
-	      --nooutput_segmentation_analysis \
-	      --output_segmentation_plan > $(CURDIR)/build/noto_serif_low_freq_segmentation_plan.txtpb
 
 ##### Noto Sans High Freq Build Rules #####
 
@@ -103,22 +89,15 @@ build/NotoSansSC-HighFreq.ttf: original_fonts/NotoSansSC-VF.ttf build/simplified
 		--no-hinting \
 		-o $(CURDIR)/build/NotoSansSC-HighFreq.ttf
 
-docs/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2: build/NotoSansSC-HighFreq.ttf build/noto_sans_segmentation_plan.txtpb
+# TODO Make wght axis extensible in the generated segmentation plan.
+docs/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2: build/NotoSansSC-HighFreq.ttf
 	mkdir -p docs/fonts/notosanshigh/
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSansSC-HighFreq.ttf \
-		--plan=$(CURDIR)/build/noto_sans_segmentation_plan.txtpb \
+	        --auto_config_quality=3 \
+	        --auto_config_primary_script=Script_chinese-simplified \
 		--output_path=$(CURDIR)/docs/fonts/notosanshigh/ \
 		--output_font="NotoSansSC-HighFreq-IFT.woff2"
-
-# TODO Make wght axis extensible in the generated segmentation plan.
-build/noto_sans_segmentation_plan.txtpb: build/NotoSansSC-HighFreq.ttf
-	bazel run $(BAZEL_OPTS) @ift_encoder//util:gen_ift_segmentation_plan -- \
-	      --input_font=$(CURDIR)/build/NotoSansSC-HighFreq.ttf \
-	      --auto_config_quality=3 \
-	      --auto_config_primary_script=Script_chinese-simplified \
-	      --nooutput_segmentation_analysis \
-	      --output_segmentation_plan > $(CURDIR)/build/noto_sans_segmentation_plan.txtpb
 
 ##### Noto Sans Low Freq Build Rules #####
 
@@ -129,21 +108,14 @@ build/NotoSansSC-LowFreq.ttf: original_fonts/NotoSansSC-VF.ttf build/simplified-
 		--no-hinting \
 		-o $(CURDIR)/build/NotoSansSC-LowFreq.ttf
 
-docs/fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2: build/NotoSansSC-LowFreq.ttf build/noto_sans_low_freq_segmentation_plan.txtpb
+docs/fonts/notosanslow/NotoSansSC-LowFreq-IFT.woff2: build/NotoSansSC-LowFreq.ttf
 	mkdir -p docs/fonts/notosanslow/
 	bazel run $(BAZEL_OPTS)  @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSansSC-LowFreq.ttf \
-		--plan=$(CURDIR)/build/noto_sans_low_freq_segmentation_plan.txtpb \
+	        --auto_config_quality=2 \
+	        --auto_config_primary_script=Script_chinese-simplified \
 		--output_path=$(CURDIR)/docs/fonts/notosanslow/ \
 		--output_font="NotoSansSC-LowFreq-IFT.woff2"
-
-build/noto_sans_low_freq_segmentation_plan.txtpb: build/NotoSansSC-LowFreq.ttf
-	bazel run $(BAZEL_OPTS) @ift_encoder//util:gen_ift_segmentation_plan -- \
-	      --input_font=$(CURDIR)/build/NotoSansSC-LowFreq.ttf \
-	      --auto_config_quality=2 \
-	      --auto_config_primary_script=Script_chinese-simplified \
-	      --nooutput_segmentation_analysis \
-	      --output_segmentation_plan > $(CURDIR)/build/noto_sans_low_freq_segmentation_plan.txtpb
 
 build/simplified-chinese_split1_unicodes.txt: subsets/simplified-chinese_split1.txt
 	cat $(CURDIR)/subsets/simplified-chinese_split1.txt | awk '{print substr($$1, 3)}' > build/simplified-chinese_split1_unicodes.txt
@@ -157,21 +129,14 @@ build/NotoSerifJP-HighFreq.ttf: original_fonts/NotoSerifJP-VF.ttf build/japanese
 		--instance="wght=900" \
 		-o $(CURDIR)/build/NotoSerifJP-HighFreq.ttf
 
-docs/fonts/notoserifjphigh/NotoSerifJP-HighFreq-IFT.woff2: build/NotoSerifJP-HighFreq.ttf build/noto_serif_jp_segmentation_plan.txtpb
+docs/fonts/notoserifjphigh/NotoSerifJP-HighFreq-IFT.woff2: build/NotoSerifJP-HighFreq.ttf
 	mkdir -p docs/fonts/notoserifjphigh
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSerifJP-HighFreq.ttf \
-		--plan=$(CURDIR)/build/noto_serif_jp_segmentation_plan.txtpb \
+	        --auto_config_quality=3 \
+	        --auto_config_primary_script=Script_japanese \
 		--output_path=$(CURDIR)/docs/fonts/notoserifjphigh/ \
 		--output_font="NotoSerifJP-HighFreq-IFT.woff2"
-
-build/noto_serif_jp_segmentation_plan.txtpb: build/NotoSerifJP-HighFreq.ttf
-	bazel run $(BAZEL_OPTS) @ift_encoder//util:gen_ift_segmentation_plan -- \
-	      --input_font=$(CURDIR)/build/NotoSerifJP-HighFreq.ttf \
-	      --auto_config_quality=3 \
-	      --auto_config_primary_script=Script_japanese \
-	      --nooutput_segmentation_analysis \
-	      --output_segmentation_plan > $(CURDIR)/build/noto_serif_jp_segmentation_plan.txtpb
 
 ##### Japanese (Noto Sans) #####
 
@@ -182,21 +147,14 @@ build/NotoSansJP-HighFreq.ttf: original_fonts/NotoSansJP-VF.ttf build/japanese-h
 		--instance="wght=400" \
 		-o $(CURDIR)/build/NotoSansJP-HighFreq.ttf
 
-docs/fonts/notosansjphigh/NotoSansJP-HighFreq-IFT.woff2: build/NotoSansJP-HighFreq.ttf build/noto_sans_jp_segmentation_plan.txtpb
+docs/fonts/notosansjphigh/NotoSansJP-HighFreq-IFT.woff2: build/NotoSansJP-HighFreq.ttf
 	mkdir -p docs/fonts/notosansjphigh
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSansJP-HighFreq.ttf \
-		--plan=$(CURDIR)/build/noto_sans_jp_segmentation_plan.txtpb \
+	        --auto_config_quality=3 \
+	        --auto_config_primary_script=Script_japanese \
 		--output_path=$(CURDIR)/docs/fonts/notosansjphigh/ \
 		--output_font="NotoSansJP-HighFreq-IFT.woff2"
-
-build/noto_sans_jp_segmentation_plan.txtpb: build/NotoSansJP-HighFreq.ttf
-	bazel run $(BAZEL_OPTS) @ift_encoder//util:gen_ift_segmentation_plan -- \
-	      --input_font=$(CURDIR)/build/NotoSansJP-HighFreq.ttf \
-	      --auto_config_quality=3 \
-	      --auto_config_primary_script=Script_japanese \
-	      --nooutput_segmentation_analysis \
-	      --output_segmentation_plan > $(CURDIR)/build/noto_sans_jp_segmentation_plan.txtpb
 
 build/japanese-hifreq.txt : subsets/japanese-ordered.txt
 	cat subsets/japanese-ordered.txt | grep 0x | head -n 6000 | awk '{print $$1}' > build/japanese-hifreq.txt
