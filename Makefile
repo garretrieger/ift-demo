@@ -37,7 +37,7 @@ build/Roboto-Preprocessed.ttf: original_fonts/Roboto[wdth,wght].ttf
 build/roboto_segmentation_plan.txtpb: build/Roboto-Preprocessed.ttf config/roboto_table_keyed_segmentation_plan.txtpb
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:gen_ift_segmentation_plan -- \
 	      --input_font=$(CURDIR)/build/Roboto-Preprocessed.ttf \
-	      --auto_config_quality=8 \
+	      --auto_config_quality=7 \
 	      --nooutput_segmentation_analysis \
 	      --output_segmentation_plan > $(CURDIR)/build/roboto_segmentation_plan.txtpb
 	cat  $(CURDIR)/config/roboto_table_keyed_segmentation_plan.txtpb >> $(CURDIR)/build/roboto_segmentation_plan.txtpb
