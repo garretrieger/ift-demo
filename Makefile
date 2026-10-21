@@ -56,7 +56,7 @@ docs/fonts/notoserifhigh/NotoSerifSC-HighFreq-IFT.woff2: build/NotoSerifSC-HighF
 	mkdir -p docs/fonts/notoserifhigh
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSerifSC-HighFreq.otf \
-	        --auto_config_quality=3 \
+	        --auto_config_quality=4 \
 	        --auto_config_primary_script=Script_chinese-simplified \
 		--output_path=$(CURDIR)/docs/fonts/notoserifhigh/ \
 		--output_font="NotoSerifSC-HighFreq-IFT.woff2"
@@ -94,7 +94,7 @@ docs/fonts/notosanshigh/NotoSansSC-HighFreq-IFT.woff2: build/NotoSansSC-HighFreq
 	mkdir -p docs/fonts/notosanshigh/
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSansSC-HighFreq.ttf \
-	        --auto_config_quality=3 \
+	        --auto_config_quality=4 \
 	        --auto_config_primary_script=Script_chinese-simplified \
 		--output_path=$(CURDIR)/docs/fonts/notosanshigh/ \
 		--output_font="NotoSansSC-HighFreq-IFT.woff2"
@@ -133,7 +133,7 @@ docs/fonts/notoserifjphigh/NotoSerifJP-HighFreq-IFT.woff2: build/NotoSerifJP-Hig
 	mkdir -p docs/fonts/notoserifjphigh
 	bazel run $(BAZEL_OPTS) @ift_encoder//util:font2ift -- \
 		--input_font=$(CURDIR)/build/NotoSerifJP-HighFreq.ttf \
-	        --auto_config_quality=3 \
+	        --auto_config_quality=5 \
 	        --auto_config_primary_script=Script_japanese \
 		--output_path=$(CURDIR)/docs/fonts/notoserifjphigh/ \
 		--output_font="NotoSerifJP-HighFreq-IFT.woff2"
