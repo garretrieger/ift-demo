@@ -1,4 +1,13 @@
-import init, { IftState } from './rust-client/pkg/rust_client.js';
+const use_polyfill = (window.use_ift_polyfill !== false);
+let IftState = null;
+let rust_init_promise = null;
+if (use_polyfill) {
+  rust_init_promise = import('./rust-client/pkg/rust_client.js').then(async (mod) => {
+    IftState = mod.IftState;
+    const Module = await mod.default();
+    window.ift_memory = Module.memory;
+  });
+}
 
 let page_index = -1;
 let states = {};
@@ -44,22 +53,25 @@ async function update_all_fonts() {
     }
 
 
-    let p1 = update_fonts(title_text,
-			  title_font,
-			  "Title Font",
-			  title_features,
-			  title_ds);
-    let p2 = update_fonts(paragraph_text,
-			  paragraph_font,
-			  "Paragraph Font",
-			  paragraph_features,
-			  paragraph_ds);
+    if (use_polyfill) {
+      await rust_init_promise;
+      let p1 = update_fonts(title_text,
+			    title_font,
+			    "Title Font",
+			    title_features,
+			    title_ds);
+      let p2 = update_fonts(paragraph_text,
+			    paragraph_font,
+			    "Paragraph Font",
+			    paragraph_features,
+			    paragraph_ds);
 
-    let f1 = await p1;
-    let f2 = await p2;
-    document.fonts.clear();
-    document.fonts.add(f1);
-    document.fonts.add(f2);
+      let f1 = await p1;
+      let f2 = await p2;
+      document.fonts.clear();
+      document.fonts.add(f1);
+      document.fonts.add(f2);
+    }
 
     document.getElementById("title_pfe").innerHTML = title_text;
     document.getElementById("paragraph_pfe").innerHTML = paragraph_text;
@@ -243,9 +255,6 @@ function as_string(byte_count) {
     return Math.round(byte_count / 1000).toLocaleString() + " kb";
 }
 
-init().then(function(Module) {
-  window.ift_memory = Module.memory;
-});
 
 window.addEventListener('DOMContentLoaded', function() {
     let prev = document.getElementById("prev");
